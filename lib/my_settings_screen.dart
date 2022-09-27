@@ -21,7 +21,14 @@ class _MySettingsScreen extends ConsumerState<MySettingsScreen> {
         sections: [
           SettingsSection(
             title: const Text("URL"),
-            tiles: <SettingsTile>[],
+            tiles: <SettingsTile>[
+              SettingsTile.navigation(
+                title: const Text("URL"),
+                onPressed: (context) {
+                  Navigator.pushNamed(context, "/settings_url");
+                },
+              ),
+            ],
           ),
           SettingsSection(
             title: const Text('Général'),

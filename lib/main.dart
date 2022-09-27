@@ -6,6 +6,8 @@ import 'calendar_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'settings_screen_url.dart';
+
 Future<void> main() async {
   // à faire au démarrage de l'app
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,7 +40,10 @@ class MyApp extends ConsumerWidget {
       ],
       title: 'Agenda Lyon1',
       initialRoute: '/',
-      routes: {'/settings': ((context) => const MySettingsScreen())},
+      routes: {
+        '/settings': ((context) => const MySettingsScreen()),
+        '/settings_url': ((context) => const SettingsScreenURL()),
+      },
       theme: ref.watch(themeApp),
       home: CalendarScreen(),
     );
