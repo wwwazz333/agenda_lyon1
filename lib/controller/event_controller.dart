@@ -9,7 +9,8 @@ class EventController {
   EventController(this._ev);
 
   double getPositionY({required int startHour, required double oneHourH}) {
-    return oneHourH * (_ev.date.hour - startHour);
+    return oneHourH * (_ev.date.hour - startHour) +
+        oneHourH / 60 * _ev.date.minute;
   }
 
   double getHeight({required double oneHourH}) {
