@@ -2,6 +2,12 @@ import '../model/event_calendrier.dart';
 
 final firstDate = DateTime(2000, 1, 1); //must be on 0 time
 const calendarDurationDay = 365 * 2;
+
+enum MyTheme {
+  black,
+  light;
+}
+
 // const sizeOfCalendarInWeeks = 52 * 2;
 
 final List<EventCalendrier> eventsCalendrierTestList = [

@@ -1,3 +1,4 @@
+import 'package:agenda_lyon1/common/global_data.dart';
 import 'package:agenda_lyon1/data/shared_pref.dart';
 import 'package:agenda_lyon1/settings_screen.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,9 @@ class _LoaderSettingsState extends State<LoaderSettings> {
         DataReader.getBool("alarm_activated").then((alarm) => setState(
               () {
                 widgetToLoad = SettingsScreen(
-                    alarmActivated: alarm, notifActivated: notif);
+                  alarmActivated: alarm,
+                  notifActivated: notif,
+                );
               },
             )));
 

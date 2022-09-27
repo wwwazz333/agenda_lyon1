@@ -1,81 +1,95 @@
-import 'package:agenda_lyon1/data/shared_pref.dart';
+import 'package:agenda_lyon1/providers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:settings_ui/settings_ui.dart';
 
-class SettingsToggle extends AbstractSettingsTile {
+import 'common/global_data.dart';
+import 'views/custom_widgets/toggle_settings.dart';
+
+class RadioSettings extends AbstractSettingsTile {
+  final StateProvider provider;
+  final List<String> entries;
+  final List<dynamic> values;
   final String title;
   final String? description;
-  final String keySave;
-  final bool value;
-  final Function? onChange;
-  const SettingsToggle(
-      {super.key,
+
+  const RadioSettings(
+      {required this.provider,
+      required this.entries,
+      required this.values,
       required this.title,
-      required this.keySave,
-      required this.value,
-      this.onChange,
-      this.description});
+      this.description,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
-    return _SettingsToggle(
+    return _RadioSettings(
+      provider: provider,
+      entries: entries,
+      values: values,
       title: title,
       description: description,
-      value: value,
-      keySave: keySave,
-      onChange: onChange,
       key: key,
     );
   }
 }
 
-class _SettingsToggle extends StatefulWidget {
+class _RadioSettings extends ConsumerWidget {
+  final StateProvider provider;
+  final List<String> entries;
+  final List<dynamic> values;
   final String title;
   final String? description;
-  final String keySave;
-  bool value;
-  final Function? onChange;
 
-  _SettingsToggle(
-      {super.key,
+  const _RadioSettings(
+      {required this.provider,
+      required this.entries,
+      required this.values,
       required this.title,
-      required this.keySave,
-      required this.value,
-      this.onChange,
-      this.description});
+      this.description,
+      super.key});
 
   @override
-  State<_SettingsToggle> createState() => _SettingsToggleState();
-}
-
-class _SettingsToggleState extends State<_SettingsToggle> {
-  @override
-  Widget build(BuildContext context) {
-    return SettingsTile.switchTile(
-      title: Text(widget.title),
-      initialValue: widget.value,
-      description:
-          (widget.description != null) ? Text(widget.description!) : null,
-      onToggle: (value) {
-        setState(() {
-          widget.value = !widget.value;
-          DataReader.save(widget.keySave, widget.value);
-          widget.onChange != null ? widget.onChange!(value) : null;
-        });
-        ;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final value = ref.watch(provider);
+    return SettingsTile(
+      title: Text(title),
+      description: description != null ? Text(description!) : null,
+      onPressed: (context) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text(title),
+            content: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: List.generate(
+                  values.length,
+                  (index) => RadioListTile(
+                        title: Text(entries[index]),
+                        value: values[index],
+                        groupValue: value,
+                        onChanged: (value) {
+                          ref.read(provider.notifier).state = value;
+                        },
+                      )),
+            ),
+          ),
+        );
       },
     );
   }
 }
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends ConsumerWidget {
   final bool notifActivated;
   final bool alarmActivated;
+
   const SettingsScreen(
       {super.key, required this.alarmActivated, required this.notifActivated});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Settings"),
@@ -100,13 +114,19 @@ class SettingsScreen extends StatelessWidget {
                 value: notifActivated,
                 keySave: "notif_activated",
               ),
-              SettingsTile(
-                title: Text("Langue"),
-                description: Text("Changer la langue"),
+              RadioSettings(
+                provider: languageApp,
+                entries: const ["Français", "English"],
+                values: const [Locale("fr", "FR"), Locale("en", "EN")],
+                title: "Langue",
+                description: "Changer de langue",
               ),
-              SettingsTile(
-                title: Text("Thème"),
-                description: Text("Changer de thème"),
+              RadioSettings(
+                provider: themeApp,
+                entries: const ["Black", "Light"],
+                values: const [MyTheme.black, MyTheme.light],
+                title: "Thème",
+                description: "Changer de thème",
               ),
             ],
           ),
@@ -119,7 +139,6 @@ class SettingsScreen extends StatelessWidget {
                 value: alarmActivated,
                 description:
                     "Une alarme automatique vas s'activé en fontion des préférences",
-                onChange: (value) {},
               ),
               SettingsTile.navigation(
                 enabled: alarmActivated,
