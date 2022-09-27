@@ -1,6 +1,7 @@
 import 'package:agenda_lyon1/data/shared_pref.dart';
 import 'package:agenda_lyon1/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:path/path.dart';
 
 import 'common/global_data.dart';
 
@@ -38,6 +39,12 @@ class SettingsApp {
 }
 
 void loadCriticalSettings(ProviderContainer ref) {
+  DataReader.getString("urlCalendar", "")
+      .then((value) => ref.read(urlCalendar.notifier).state = value);
+  ref.listen(urlCalendar, (previous, next) {
+    DataReader.save("urlCalendar", next);
+  });
+
   DataReader.getBool("isDark").then((value) => ref
       .read(themeApp.notifier)
       .state = value ? themes["dark"]! : themes["light"]!);

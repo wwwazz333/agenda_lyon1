@@ -10,3 +10,5 @@ final selectedDate = StateProvider<DateTime>((ref) => DateTime.now());
 final languageApp = StateProvider<Locale>((ref) => languages.values.first);
 
 final themeApp = StateProvider<ThemeData>((ref) => themes.values.first);
+
+final urlCalendar = StateProvider<String>((ref) => "");

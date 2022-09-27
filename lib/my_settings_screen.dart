@@ -20,6 +20,10 @@ class _MySettingsScreen extends ConsumerState<MySettingsScreen> {
       body: SettingsList(
         sections: [
           SettingsSection(
+            title: const Text("URL"),
+            tiles: <SettingsTile>[],
+          ),
+          SettingsSection(
             title: const Text('Général'),
             tiles: <SettingsTile>[
               SettingsTile.switchTile(
