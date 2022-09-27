@@ -13,7 +13,7 @@ class EventController {
   }
 
   double getHeight({required double oneHourH}) {
-    return oneHourH / 60 * _ev.duree.inMinutes;
+    return (oneHourH / 60 * _ev.duree.inMinutes).abs();
   }
 
   void onTap(BuildContext context) {

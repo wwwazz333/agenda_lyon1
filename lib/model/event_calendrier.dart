@@ -1,3 +1,4 @@
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 class EventCalendrier implements Comparable<EventCalendrier> {
@@ -80,11 +81,29 @@ class EventCalendrier implements Comparable<EventCalendrier> {
     final min = str.substring(11, 13);
     DateFormat format = DateFormat("yyyy-MM-dd HH:mm"); //20220318090000
 
-    return format.parse("$year-$month-$day $hour:$min");
+    return format.parse("$year-$month-$day $hour:$min").toUtc();
   }
 
   @override
   int compareTo(EventCalendrier other) {
     return date.compareTo(other.date);
   }
+
+  EventCalendrier.fromJson(Map<String, dynamic> json) {
+    _date = DateTime.fromMillisecondsSinceEpoch(json["debut"]);
+    _duree = Duration(seconds: json["duree"]);
+    _nameEvent = json["name"];
+    _salle = json["salle"];
+    _description = json["description"];
+    _uid = json["uid"];
+  }
+
+  Map<String, dynamic> toJson() => {
+        "uid": uid,
+        "name": summary,
+        "description": description,
+        "debut": date.millisecondsSinceEpoch,
+        "duree": duree.inSeconds,
+        "salle": salle,
+      };
 }

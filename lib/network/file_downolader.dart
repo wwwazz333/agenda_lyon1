@@ -19,7 +19,7 @@ class FileDownloader {
         throw DownloadError("Error", response.statusCode);
       } else {
         final contentOfFile = await response.transform(utf8.decoder).join();
-        FlutterLogs.logInfo("Download", "url", contentOfFile);
+        // FlutterLogs.logInfo("Download", "url", contentOfFile);
         return Future.value(contentOfFile);
       }
     } on SocketException catch (_) {

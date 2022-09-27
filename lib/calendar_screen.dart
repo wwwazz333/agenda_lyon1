@@ -1,3 +1,4 @@
+import 'package:agenda_lyon1/controller/data_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -6,18 +7,29 @@ import 'providers.dart';
 import 'views/custom_widgets/navigator.dart';
 import 'views/my_tab_calendar/tab_calendar.dart';
 
-class CalendarScreen extends ConsumerWidget {
+class CalendarScreen extends ConsumerStatefulWidget {
+  const CalendarScreen({super.key});
+
+  @override
+  _CalendarScreen createState() => _CalendarScreen();
+}
+
+class _CalendarScreen extends ConsumerState<CalendarScreen> {
   late final CalendarUIController _controller;
 
-  CalendarScreen({DateTime? startingDate, super.key}) {
+  _CalendarScreen({DateTime? startingDate}) {
     _controller = CalendarUIController(startingDate: startingDate);
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     ref.listen(selectedDate, (previous, next) {
       _controller.goToGoodPage(next);
     });
+
+    DataController().addListenerUpdate(() => setState(
+          () {},
+        ));
 
     return Scaffold(
       body: SafeArea(

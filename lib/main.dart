@@ -15,6 +15,7 @@ Future<void> main() async {
   loadCriticalSettings(container);
 
   // démarrage app
+
   runApp(UncontrolledProviderScope(
     container: container,
     child: const MyApp(),
@@ -45,7 +46,7 @@ class MyApp extends ConsumerWidget {
         '/settings_url': ((context) => const SettingsScreenURL()),
       },
       theme: ref.watch(themeApp),
-      home: CalendarScreen(),
+      home: const CalendarScreen(),
     );
   }
 }

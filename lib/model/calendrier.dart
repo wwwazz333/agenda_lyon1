@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_logs/flutter_logs.dart';
 import '../common/error/file_error.dart';
 import '../data/file_manager.dart';
@@ -32,6 +34,12 @@ class Calendrier {
   Calendrier(this._events);
   Calendrier.load(String txtIcs) {
     loadFromString(txtIcs);
+  }
+  Calendrier.fromJson(Map<String, dynamic> json) {
+    _events = [];
+    for (var jsonObj in jsonDecode(json["events"])) {
+      _events.add(EventCalendrier.fromJson(jsonObj));
+    }
   }
 
   void loadFromString(String txtIcs) {
@@ -99,4 +107,8 @@ class Calendrier {
       throw InvalideFormatException("Le format du calendrier n'est pas valide");
     }
   }
+
+  Map<String, dynamic> toJson() => {
+        "events": jsonEncode(_events),
+      };
 }

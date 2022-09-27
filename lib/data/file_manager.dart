@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
 class FileManager {
+  static const calendrierFile = "savedCal.ics";
   static Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
     return directory.path;
@@ -37,15 +38,14 @@ class FileManager {
     }
   }
 
-  static Future<String> readObject(String fileName) async {
+  static Future<String?> readObject(String fileName) async {
     try {
       final file = await _localFile(fileName);
 
       // Read the file
       return jsonDecode(await file.readAsString());
     } catch (e) {
-      // If encountering an error, return 0
-      return "";
+      return null;
     }
   }
 }

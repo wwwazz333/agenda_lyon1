@@ -36,13 +36,13 @@ class _SettingsScreenURL extends ConsumerState<SettingsScreenURL> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                ElevatedButton(onPressed: () {}, child: Text("Cancel")),
+                ElevatedButton(onPressed: () {}, child: const Text("Cancel")),
                 ElevatedButton(
                     onPressed: () {
                       ref.read(urlCalendar.notifier).state = urlController.text;
                       Navigator.pop(context);
                     },
-                    child: Text("OK"))
+                    child: const Text("OK"))
               ],
             )
           ],
