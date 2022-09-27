@@ -9,6 +9,7 @@ class TabCalendarUIController {
   final int startDayWeek;
   late final PageController _pageController;
   late final DateTime firstDay; //init in controller
+  DateFormat? lastFormatter;
 
   List<String>? _dayNames;
 
@@ -26,7 +27,9 @@ class TabCalendarUIController {
   }
 
   List<String> dayNames(DateFormat dayFormatter) {
-    dayFormatter.locale;
+    if (lastFormatter != null && lastFormatter?.locale != dayFormatter.locale) {
+      _dayNames = null;
+    }
     _dayNames ??= List.generate(
       7,
       (index) {
@@ -37,6 +40,7 @@ class TabCalendarUIController {
             .substring(0, 3);
       },
     );
+    lastFormatter = dayFormatter;
     return _dayNames!;
   }
 

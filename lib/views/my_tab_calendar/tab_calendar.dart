@@ -123,7 +123,8 @@ class TabCalendar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final dayFormatter = DateFormat.EEEE(ref.watch(languageApp).languageCode);
+    final language = ref.watch(languageApp);
+    final dayFormatter = DateFormat.EEEE(language.languageCode);
 
     ref.listen(selectedDate, (previous, next) {
       _controller.goToGoodPage(next);

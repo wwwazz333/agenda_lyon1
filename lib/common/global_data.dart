@@ -1,12 +1,19 @@
+import 'package:flutter/material.dart';
+
 import '../model/event_calendrier.dart';
 
 final firstDate = DateTime(2000, 1, 1); //must be on 0 time
 const calendarDurationDay = 365 * 2;
 
-enum MyTheme {
-  black,
-  light;
-}
+final themes = {
+  "light": ThemeData.light(),
+  "dark": ThemeData.dark(),
+};
+
+final languages = {
+  "fr": const Locale("fr", "FR"),
+  "en": const Locale("en", "EN"),
+};
 
 // const sizeOfCalendarInWeeks = 52 * 2;
 
