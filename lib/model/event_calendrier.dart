@@ -1,5 +1,8 @@
-import 'package:intl/date_symbol_data_local.dart';
+import 'package:agenda_lyon1/model/date.dart';
 import 'package:intl/intl.dart';
+
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 class EventCalendrier implements Comparable<EventCalendrier> {
   String _nameEvent = "";
@@ -79,9 +82,10 @@ class EventCalendrier implements Comparable<EventCalendrier> {
     final day = str.substring(6, 8);
     final hour = str.substring(9, 11);
     final min = str.substring(11, 13);
-    DateFormat format = DateFormat("yyyy-MM-dd HH:mm"); //20220318090000
 
-    return format.parse("$year-$month-$day $hour:$min").toUtc();
+    DateFormat format = DateFormat("yyyy-MM-dd HH:mm"); //20220318090000
+    DateTime time = format.parse("$year-$month-$day $hour:$min");
+    return time.toLocaleFrance();
   }
 
   @override
