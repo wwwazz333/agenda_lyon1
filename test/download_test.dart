@@ -1,4 +1,3 @@
-import 'package:agenda_lyon1/model/calendrier.dart';
 import 'package:agenda_lyon1/network/file_downolader.dart';
 import 'package:flutter/material.dart';
 import 'package:test/test.dart';

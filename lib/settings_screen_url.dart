@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SettingsScreenURL extends ConsumerStatefulWidget {
   const SettingsScreenURL({super.key});
-
   @override
   _SettingsScreenURL createState() => _SettingsScreenURL();
 }

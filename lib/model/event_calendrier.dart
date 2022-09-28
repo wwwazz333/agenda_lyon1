@@ -1,8 +1,6 @@
 import 'package:agenda_lyon1/model/date.dart';
 import 'package:intl/intl.dart';
 
-import 'package:timezone/data/latest.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
 
 class EventCalendrier implements Comparable<EventCalendrier> {
   String _nameEvent = "";
