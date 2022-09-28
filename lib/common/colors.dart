@@ -3,21 +3,19 @@ import 'package:flutter/material.dart';
 
 Future<void> loadColors() async {
   final darks = await DBManager.readDB("ColorsDark");
-  print(darks);
   for (var row in darks) {
-    if (row["nameEvent"] != null) {
-      fixedColorsDark[row["eventName"]] =
-          Color.fromARGB(255, row["r"], row["g"], row["b"]);
-    }
+    fixedColorsDark[row["nameEvent"]] =
+        Color.fromARGB(255, row["r"], row["g"], row["b"]);
   }
 
   final light = await DBManager.readDB("ColorsLight");
-  print(light);
   for (var row in light) {
     fixedColorsLight[row["nameEvent"]] =
         Color.fromARGB(255, row["r"], row["g"], row["b"]);
   }
 }
+
+const Color redOnePlus = Color.fromARGB(255, 230, 23, 75);
 
 int countColor = 0;
 

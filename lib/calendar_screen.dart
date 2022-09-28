@@ -24,6 +24,16 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
   }
 
   @override
+  void initState() {
+    DataController().addListenerUpdate(
+        "updateCalendarScreenView",
+        () => setState(
+              () {},
+            ));
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final typeCardToDisplay = ref.watch(cardTypeDisplay);
     ref.listen(selectedDate, (previous, next) {
@@ -36,12 +46,12 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
         DataController().updateCalendrier(next);
       },
     );
-
-    DataController().addListenerUpdate(
-        "updateCalendarScreenView",
-        () => setState(
-              () {},
-            ));
+    ref.listen(
+      themeApp,
+      (previous, next) {
+        setState(() {});
+      },
+    );
     return Scaffold(
       body: SafeArea(
         child: FutureBuilder(

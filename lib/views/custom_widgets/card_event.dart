@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import '../../controller/event_controller.dart';
 
 abstract class CardEvent extends StatelessWidget {
-  static const fontColorBold =
-      TextStyle(fontWeight: FontWeight.bold, color: Colors.black);
-  static const fontColor = TextStyle(color: Colors.black);
   final Color _bgColor;
   final String _title;
   final String _subTitle;
@@ -75,11 +72,11 @@ class CardEventTimeLine extends CardEvent {
                         children: [
                           Text(
                             _debut,
-                            style: CardEvent.fontColor,
+                            style: Theme.of(context).textTheme.bodyText1,
                           ),
                           Text(
                             _fin,
-                            style: CardEvent.fontColor,
+                            style: Theme.of(context).textTheme.bodyText1,
                           )
                         ],
                       ),
@@ -92,14 +89,14 @@ class CardEventTimeLine extends CardEvent {
                             child: Center(
                                 child: Text(
                               _title,
-                              style: CardEvent.fontColor,
+                              style: Theme.of(context).textTheme.bodyText1,
                             )),
                           ),
                           Expanded(
                               flex: 1,
                               child: Text(
                                 _subTitle,
-                                style: CardEvent.fontColorBold,
+                                style: Theme.of(context).textTheme.bodyText2,
                               ))
                         ],
                       ))
@@ -144,22 +141,22 @@ class CardEventList extends CardEvent {
                       children: [
                         Text(
                           _debut,
-                          style: CardEvent.fontColor,
+                          style: Theme.of(context).textTheme.bodyText1,
                         ),
                         Text(
                           _fin,
-                          style: CardEvent.fontColor,
+                          style: Theme.of(context).textTheme.bodyText1,
                         )
                       ],
                     ),
                   ),
                   Text(
                     _title,
-                    style: CardEvent.fontColor,
+                    style: Theme.of(context).textTheme.bodyText1,
                   ),
                   Text(
                     _subTitle,
-                    style: CardEvent.fontColorBold,
+                    style: Theme.of(context).textTheme.bodyText2,
                   )
                 ],
               )),

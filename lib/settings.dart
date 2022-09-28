@@ -4,6 +4,7 @@ import 'package:agenda_lyon1/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'common/global_data.dart';
+import 'common/themes.dart';
 
 class SettingsApp {
   static bool _notifEnabled = true;
