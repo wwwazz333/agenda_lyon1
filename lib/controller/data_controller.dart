@@ -9,7 +9,7 @@ import 'event_controller.dart';
 
 class DataController {
   Calendrier calendrier = Calendrier([]);
-  Map<String, void Function()> updateListeners = {};
+  static Map<String, void Function()> updateListeners = {};
 
   static DataController? _instance;
 
@@ -72,7 +72,7 @@ class DataController {
     return tabs;
   }
 
-  void addListenerUpdate(String uniquKey, void Function() fun) {
+  static void addListenerUpdate(String uniquKey, void Function() fun) {
     updateListeners[uniquKey] = fun;
   }
 }
