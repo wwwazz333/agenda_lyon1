@@ -9,15 +9,15 @@ import 'event_controller.dart';
 
 class DataController {
   Calendrier calendrier = Calendrier([]);
-  static Map<String, void Function()> updateListeners = {};
+  Map<String, void Function()> updateListeners = {};
 
   static DataController? _instance;
 
   DataController._() {
-    loadCalendrier();
-    DataReader.getString("urlCalendar", "").then(
-      (value) => updateCalendrier(value),
-    );
+    // loadCalendrier();
+    // DataReader.getString("urlCalendar", "").then(
+    //   (value) => updateCalendrier(value),
+    // );
   }
 
   factory DataController() {
@@ -43,13 +43,16 @@ class DataController {
     }
   }
 
-  void loadCalendrier() async {
+  Future<bool> loadCalendrier() async {
+    await Future.delayed(Duration(seconds: 2));
     final String? jsonCal =
         await FileManager.readObject(FileManager.calendrierFile);
     if (jsonCal != null) {
       calendrier = Calendrier.fromJson(jsonDecode(jsonCal));
       informeUpdate();
+      return true;
     }
+    return false;
   }
 
   DayController genDayController(DateTime date) {
@@ -72,7 +75,7 @@ class DataController {
     return tabs;
   }
 
-  static void addListenerUpdate(String uniquKey, void Function() fun) {
+  void addListenerUpdate(String uniquKey, void Function() fun) {
     updateListeners[uniquKey] = fun;
   }
 }

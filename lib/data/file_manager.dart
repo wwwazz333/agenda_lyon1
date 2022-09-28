@@ -44,8 +44,19 @@ class FileManager {
 
       // Read the file
       return jsonDecode(await file.readAsString());
-    } catch (e) {
+    } catch (_) {
       return null;
+    }
+  }
+
+  static Future<bool> delFile(String fileName) async {
+    try {
+      final file = await _localFile(fileName);
+
+      file.delete();
+      return true;
+    } catch (_) {
+      return false;
     }
   }
 }

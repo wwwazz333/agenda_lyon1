@@ -54,19 +54,20 @@ class EventTimeLine extends StatelessWidget {
         startHour: firstHour,
       ));
     }
-
-    toStack.add(Positioned(
-        left: 0,
-        top: oneHoureH * (DateTime.now().hour - firstHour) +
-            oneHoureH / 60 * DateTime.now().minute,
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: 3,
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(5)),
-            color: Colors.red,
-          ),
-        )));
+    if (_dayController.isCurrDate()) {
+      toStack.add(Positioned(
+          left: 0,
+          top: oneHoureH * (DateTime.now().hour - firstHour) +
+              oneHoureH / 60 * DateTime.now().minute,
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: 3,
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(5)),
+              color: Colors.red,
+            ),
+          )));
+    }
 
     return toStack;
   }

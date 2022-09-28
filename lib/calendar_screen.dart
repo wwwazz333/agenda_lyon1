@@ -27,7 +27,7 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
       _controller.goToGoodPage(next);
     });
 
-    DataController.addListenerUpdate(
+    DataController().addListenerUpdate(
         "updateCalendarScreenView",
         () => setState(
               () {},
@@ -35,26 +35,38 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
 
     return Scaffold(
       body: SafeArea(
-          child: Column(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TabCalendar(startingDate: _controller.startingDate),
-          Expanded(
-            child: PageView.builder(
-              controller: _controller.pageController,
-              itemCount: null,
-              onPageChanged: (newPage) {
-                ref.read(selectedDate.notifier).state =
-                    _controller.getDateOfIndex(newPage);
-              },
-              itemBuilder: (context, index) {
-                return _controller.genCardEvent(index);
-              },
-            ),
-          )
-        ],
-      )),
+        child: FutureBuilder(
+          future: DataController().loadCalendrier(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TabCalendar(startingDate: _controller.startingDate),
+                  Expanded(
+                    child: PageView.builder(
+                      controller: _controller.pageController,
+                      itemCount: null,
+                      onPageChanged: (newPage) {
+                        ref.read(selectedDate.notifier).state =
+                            _controller.getDateOfIndex(newPage);
+                      },
+                      itemBuilder: (context, index) {
+                        return _controller.genCardEvent(index);
+                      },
+                    ),
+                  )
+                ],
+              );
+            } else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ),
+      ),
       floatingActionButton: const FloatingNavButton(),
     );
   }

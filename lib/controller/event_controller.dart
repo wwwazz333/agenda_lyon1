@@ -1,3 +1,4 @@
+import 'package:agenda_lyon1/model/date.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../model/event_calendrier.dart';
@@ -66,5 +67,12 @@ class DayController {
       "fin": ev.heureFin,
       "controller": EventController(ev),
     };
+  }
+
+  bool isCurrDate() {
+    if (_eventOfDay.isNotEmpty) {
+      return _eventOfDay[0].date.isSameDay(DateTime.now());
+    }
+    return false;
   }
 }

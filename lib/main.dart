@@ -1,6 +1,10 @@
+import 'dart:io';
+
+import 'package:agenda_lyon1/data/file_manager.dart';
 import 'package:agenda_lyon1/my_settings_screen.dart';
 import 'package:agenda_lyon1/providers.dart';
 import 'package:agenda_lyon1/settings.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'calendar_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,8 +18,11 @@ Future<void> main() async {
   final container = ProviderContainer();
   loadCriticalSettings(container);
 
-  // démarrage app
+  FileManager.delFile(FileManager.calendrierFile).catchError((e) {
+    print(e);
+  });
 
+  // démarrage app
   runApp(UncontrolledProviderScope(
     container: container,
     child: const MyApp(),
@@ -45,6 +52,7 @@ class MyApp extends ConsumerWidget {
         '/settings': ((context) => const MySettingsScreen()),
         '/settings_url': ((context) => const SettingsScreenURL()),
       },
+      // ref.watch(themeApp)
       theme: ref.watch(themeApp),
       home: const CalendarScreen(),
     );
