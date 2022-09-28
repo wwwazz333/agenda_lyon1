@@ -34,9 +34,17 @@ class Header extends ConsumerWidget {
                   ref.read(selectedDate.notifier).state =
                       d.add(const Duration(hours: 1));
                 },
-                child: Text(
-                  monthFormatter.format(dateValue).capitalize(),
-                  style: const TextStyle(fontSize: 32),
+                child: Row(
+                  children: [
+                    Text(
+                      monthFormatter.format(dateValue).capitalize(),
+                      style: const TextStyle(fontSize: 32),
+                    ),
+                    const SizedBox(
+                      width: 12,
+                    ),
+                    const Icon(Icons.edit),
+                  ],
                 ))),
         Padding(
           padding: const EdgeInsets.all(5),
@@ -44,7 +52,10 @@ class Header extends ConsumerWidget {
             onTap: () {
               ref.read(selectedDate.notifier).state = DateTime.now();
             },
-            child: const Icon(Icons.today),
+            child: const Icon(
+              Icons.today,
+              size: 32,
+            ),
           ),
         ),
       ],

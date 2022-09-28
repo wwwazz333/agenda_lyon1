@@ -105,7 +105,9 @@ class CardEventList extends CardEvent {
 
   @override
   Widget build(BuildContext context) {
-    const boldStyle = TextStyle(fontWeight: FontWeight.bold);
+    const boldStyle =
+        TextStyle(fontWeight: FontWeight.bold, color: Colors.white);
+    const white = TextStyle(color: Colors.white);
     const boxH = BoxConstraints(minHeight: 60);
     return GestureDetector(
       onTap: () => _controller.onTap(context),
@@ -114,18 +116,30 @@ class CardEventList extends CardEvent {
         child: Container(
           constraints: boxH,
           child: Padding(
-              padding: const EdgeInsets.all(3.0),
+              padding: const EdgeInsets.all(4.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
                     constraints: boxH,
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [Text(_debut), Text(_fin)],
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          _debut,
+                          style: white,
+                        ),
+                        Text(
+                          _fin,
+                          style: white,
+                        )
+                      ],
                     ),
                   ),
-                  Text(_title),
+                  Text(
+                    _title,
+                    style: white,
+                  ),
                   Text(
                     _subTitle,
                     style: boldStyle,
