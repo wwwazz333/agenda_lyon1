@@ -11,7 +11,8 @@ class EventTimeLine extends EventDisplay {
   static const fontSize = 20.0;
   static const textStyle = TextStyle(fontSize: fontSize);
 
-  final maxWidthNumber = 25.0;
+  //previously 25.0
+  final maxWidthNumber = 0.0;
 
   int get nbrOfHour {
     return lastHour - firstHour;
@@ -124,8 +125,8 @@ class BackgroundPainter extends CustomPainter {
       canvas.drawLine(Offset(0, heightOfOneHour * i),
           Offset(size.width, heightOfOneHour * i), paint);
 
-      _genText("${firstHour + i}")
-          .paint(canvas, Offset(0, heightOfOneHour * i));
+      // _genText("${firstHour + i}")
+      //     .paint(canvas, Offset(0, heightOfOneHour * i));
     }
   }
 

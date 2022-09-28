@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import '../../controller/event_controller.dart';
 
 abstract class CardEvent extends StatelessWidget {
+  static const fontColorBold =
+      TextStyle(fontWeight: FontWeight.bold, color: Colors.white);
+  static const fontColor = TextStyle(color: Colors.white);
   final Color _bgColor;
   final String _title;
   final String _subTitle;
@@ -50,7 +53,6 @@ class CardEventTimeLine extends CardEvent {
   @override
   Widget build(BuildContext context) {
     final widthCard = MediaQuery.of(context).size.width - maxWidthNumber;
-    const boldStyle = TextStyle(fontWeight: FontWeight.bold);
     const boxH = BoxConstraints(minHeight: 60);
     return Positioned(
       top:
@@ -71,7 +73,16 @@ class CardEventTimeLine extends CardEvent {
                     children: [
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [Text(_debut), Text(_fin)],
+                        children: [
+                          Text(
+                            _debut,
+                            style: CardEvent.fontColor,
+                          ),
+                          Text(
+                            _fin,
+                            style: CardEvent.fontColor,
+                          )
+                        ],
                       ),
                       Expanded(
                           child: Column(
@@ -82,13 +93,14 @@ class CardEventTimeLine extends CardEvent {
                             child: Center(
                                 child: Text(
                               _title,
+                              style: CardEvent.fontColor,
                             )),
                           ),
                           Expanded(
                               flex: 1,
                               child: Text(
                                 _subTitle,
-                                style: boldStyle,
+                                style: CardEvent.fontColorBold,
                               ))
                         ],
                       ))
@@ -114,9 +126,6 @@ class CardEventList extends CardEvent {
 
   @override
   Widget build(BuildContext context) {
-    const boldStyle =
-        TextStyle(fontWeight: FontWeight.bold, color: Colors.white);
-    const white = TextStyle(color: Colors.white);
     const boxH = BoxConstraints(minHeight: 60);
     return GestureDetector(
       onTap: () => _controller.onTap(context),
@@ -136,22 +145,22 @@ class CardEventList extends CardEvent {
                       children: [
                         Text(
                           _debut,
-                          style: white,
+                          style: CardEvent.fontColor,
                         ),
                         Text(
                           _fin,
-                          style: white,
+                          style: CardEvent.fontColor,
                         )
                       ],
                     ),
                   ),
                   Text(
                     _title,
-                    style: white,
+                    style: CardEvent.fontColor,
                   ),
                   Text(
                     _subTitle,
-                    style: boldStyle,
+                    style: CardEvent.fontColorBold,
                   )
                 ],
               )),
