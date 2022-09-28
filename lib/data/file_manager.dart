@@ -53,7 +53,6 @@ class FileManager {
     try {
       final file = await _localFile(fileName);
       if (await file.exists()) {
-        print("le fichier exist : ${file.path}");
         file.delete();
         return true;
       }

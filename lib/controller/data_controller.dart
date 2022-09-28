@@ -37,9 +37,7 @@ class DataController {
       FileManager.writeObject(
           FileManager.calendrierFile, jsonEncode(calendrier));
       informeUpdate();
-    } catch (_) {
-      print("somthing went wrong when updating calendar");
-    }
+    } catch (_) {}
   }
 
   Future<bool> loadCalendrier() async {
@@ -70,6 +68,11 @@ class DataController {
       tabs.add(day.toString());
     }
     return tabs;
+  }
+
+  void clear() {
+    calendrier = Calendrier([]);
+    FileManager.delFile(FileManager.calendrierFile);
   }
 
   void addListenerUpdate(String uniquKey, void Function() fun) {

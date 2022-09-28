@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:agenda_lyon1/network/file_downolader.dart';
 import 'package:flutter/material.dart';
 import 'package:test/test.dart';

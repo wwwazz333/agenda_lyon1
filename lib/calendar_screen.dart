@@ -13,7 +13,7 @@ class CalendarScreen extends ConsumerStatefulWidget {
   const CalendarScreen({super.key});
 
   @override
-  _CalendarScreen createState() => _CalendarScreen();
+  ConsumerState<CalendarScreen> createState() => _CalendarScreen();
 }
 
 class _CalendarScreen extends ConsumerState<CalendarScreen> {
@@ -29,6 +29,13 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
     ref.listen(selectedDate, (previous, next) {
       _controller.goToGoodPage(next);
     });
+    ref.listen(
+      urlCalendar,
+      (previous, next) {
+        setState(() {});
+        DataController().updateCalendrier(next);
+      },
+    );
 
     DataController().addListenerUpdate(
         "updateCalendarScreenView",

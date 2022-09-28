@@ -1,3 +1,4 @@
+import 'package:agenda_lyon1/controller/data_controller.dart';
 import 'package:agenda_lyon1/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class SettingsScreenURL extends ConsumerStatefulWidget {
   const SettingsScreenURL({super.key});
   @override
-  _SettingsScreenURL createState() => _SettingsScreenURL();
+  ConsumerState<SettingsScreenURL> createState() => _SettingsScreenURL();
 }
 
 class _SettingsScreenURL extends ConsumerState<SettingsScreenURL> {
@@ -13,35 +14,46 @@ class _SettingsScreenURL extends ConsumerState<SettingsScreenURL> {
   Widget build(BuildContext context) {
     final urlController = TextEditingController(text: ref.watch(urlCalendar));
     final urlRoomController = TextEditingController();
+    const fakeUrl =
+        "http://adelb.univ-lyon1.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?resources=xxxxx&projectId=2&calType=ical&firstDate=20xx-xx-xx&lastDate=20xx-xx-xx";
     return Scaffold(
         appBar: AppBar(title: const Text("Settings")),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            TextFormField(
+            TextField(
               controller: urlController,
+              keyboardType: TextInputType.multiline,
+              maxLines: null,
               decoration: const InputDecoration(
                   border: UnderlineInputBorder(),
                   labelText: "URL",
-                  hintText: ".............."),
+                  hintText: fakeUrl),
             ),
-            TextFormField(
+            TextField(
               controller: urlRoomController,
+              keyboardType: TextInputType.multiline,
+              maxLines: null,
               decoration: const InputDecoration(
                   border: UnderlineInputBorder(),
                   labelText: "URL Room",
-                  hintText: ".............."),
+                  hintText: fakeUrl),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                ElevatedButton(onPressed: () {}, child: const Text("Cancel")),
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text("Annuler")),
                 ElevatedButton(
                     onPressed: () {
                       ref.read(urlCalendar.notifier).state = urlController.text;
+                      DataController().clear();
                       Navigator.pop(context);
                     },
-                    child: const Text("OK"))
+                    child: const Text("Confirmer"))
               ],
             )
           ],
