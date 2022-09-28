@@ -6,7 +6,6 @@ import '../common/error/network_error.dart';
 
 class FileDownloader {
   static Future<String> downloadFile(String url) async {
-    FlutterLogs.logInfo("Download", "url", "start download...");
     try {
       final request = await HttpClient().getUrl(Uri.parse(url));
       final HttpClientResponse response = await request.close();

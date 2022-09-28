@@ -9,7 +9,7 @@ import 'event_controller.dart';
 
 class DataController {
   Calendrier calendrier = Calendrier([]);
-  List<void Function()> updateListeners = [];
+  Map<String, void Function()> updateListeners = {};
 
   static DataController? _instance;
 
@@ -25,9 +25,9 @@ class DataController {
     return _instance!;
   }
   void informeUpdate() {
-    for (var fun in updateListeners) {
+    updateListeners.forEach((key, fun) {
       fun();
-    }
+    });
   }
 
   void updateCalendrier(String urlPath) async {
@@ -38,7 +38,9 @@ class DataController {
       FileManager.writeObject(
           FileManager.calendrierFile, jsonEncode(calendrier));
       informeUpdate();
-    } catch (_) {}
+    } catch (_) {
+      print("somthing went wrong when updating calendar");
+    }
   }
 
   void loadCalendrier() async {
@@ -70,9 +72,7 @@ class DataController {
     return tabs;
   }
 
-  void addListenerUpdate(void Function() fun) {
-    if (!updateListeners.contains(fun)) {
-      updateListeners.add(fun);
-    }
+  void addListenerUpdate(String uniquKey, void Function() fun) {
+    updateListeners[uniquKey] = fun;
   }
 }

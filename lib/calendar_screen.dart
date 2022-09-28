@@ -27,9 +27,11 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
       _controller.goToGoodPage(next);
     });
 
-    DataController().addListenerUpdate(() => setState(
-          () {},
-        ));
+    DataController().addListenerUpdate(
+        "updateCalendarScreenView",
+        () => setState(
+              () {},
+            ));
 
     return Scaffold(
       body: SafeArea(
