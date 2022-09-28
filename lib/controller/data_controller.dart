@@ -14,10 +14,9 @@ class DataController {
   static DataController? _instance;
 
   DataController._() {
-    // loadCalendrier();
-    // DataReader.getString("urlCalendar", "").then(
-    //   (value) => updateCalendrier(value),
-    // );
+    DataReader.getString("urlCalendar", "").then(
+      (value) => updateCalendrier(value),
+    );
   }
 
   factory DataController() {
@@ -44,12 +43,10 @@ class DataController {
   }
 
   Future<bool> loadCalendrier() async {
-    await Future.delayed(Duration(seconds: 2));
     final String? jsonCal =
         await FileManager.readObject(FileManager.calendrierFile);
     if (jsonCal != null) {
       calendrier = Calendrier.fromJson(jsonDecode(jsonCal));
-      informeUpdate();
       return true;
     }
     return false;

@@ -52,11 +52,12 @@ class FileManager {
   static Future<bool> delFile(String fileName) async {
     try {
       final file = await _localFile(fileName);
-
-      file.delete();
-      return true;
-    } catch (_) {
-      return false;
-    }
+      if (await file.exists()) {
+        print("le fichier exist : ${file.path}");
+        file.delete();
+        return true;
+      }
+    } catch (_) {}
+    return false;
   }
 }

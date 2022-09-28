@@ -1,9 +1,11 @@
 import 'package:agenda_lyon1/controller/data_controller.dart';
+import 'package:agenda_lyon1/views/custom_widgets/event_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'controller/calendarui_controller.dart';
 import 'providers.dart';
+import 'views/custom_widgets/event_timeline.dart';
 import 'views/custom_widgets/navigator.dart';
 import 'views/my_tab_calendar/tab_calendar.dart';
 
@@ -23,6 +25,7 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final typeCardToDisplay = ref.watch(cardTypeDisplay);
     ref.listen(selectedDate, (previous, next) {
       _controller.goToGoodPage(next);
     });
@@ -53,7 +56,19 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
                             _controller.getDateOfIndex(newPage);
                       },
                       itemBuilder: (context, index) {
-                        return _controller.genCardEvent(index);
+                        return (typeCardToDisplay.cardTimeLineDisplay
+                            ? EventTimeLine(
+                                DataController().genDayController(
+                                    _controller.getDateOfIndex(index)),
+                                firstHour: typeCardToDisplay.firstHourDisplay,
+                                lastHour: typeCardToDisplay.lastHourDisplay,
+                              )
+                            : EventList(
+                                DataController().genDayController(
+                                    _controller.getDateOfIndex(index)),
+                                firstHour: typeCardToDisplay.firstHourDisplay,
+                                lastHour: typeCardToDisplay.lastHourDisplay,
+                              ));
                       },
                     ),
                   )
@@ -61,7 +76,16 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
               );
             } else {
               return Center(
-                child: CircularProgressIndicator(),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      Icon(Icons.calendar_today),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      CircularProgressIndicator(),
+                    ]),
               );
             }
           },

@@ -62,6 +62,19 @@ void loadCriticalSettings(ProviderContainer ref) {
       DataReader.save("language", next.languageCode);
     }
   });
+
+  DataReader.getBool("cardTimeLineDisplay")
+      .then((value) => ref.read(cardTypeDisplay).cardTimeLineDisplay = value);
+  DataReader.getInt("firstHourDisplay", 6)
+      .then((value) => ref.read(cardTypeDisplay).firstHourDisplay = value);
+  DataReader.getInt("lastHourDisplay", 20)
+      .then((value) => ref.read(cardTypeDisplay).lastHourDisplay = value);
+
+  ref.listen(cardTypeDisplay, (previous, next) {
+    DataReader.save("cardTimeLineDisplay", next.cardTimeLineDisplay);
+    DataReader.save("firstHourDisplay", next.firstHourDisplay);
+    DataReader.save("lastHourDisplay", next.lastHourDisplay);
+  });
 }
 
 void loadSettings(WidgetRef ref) {

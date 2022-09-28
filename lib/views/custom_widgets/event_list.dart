@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 
-import '../../controller/event_controller.dart';
 import 'card_event.dart';
+import 'event_display.dart';
 
-class EventList extends StatelessWidget {
-  final DayController _dayController;
-  const EventList(this._dayController, {super.key});
+class EventList extends EventDisplay {
+  const EventList(super.dayController,
+      {required super.firstHour,
+      required super.lastHour,
+      super.oneHoureH,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: _dayController.length,
+        itemCount: dayController.length,
         itemBuilder: (context, index) {
-          final infos = _dayController.infoEvent(index);
+          final infos = dayController.infoEvent(index);
           return CardEventList(
             title: infos["title"],
             subTitle: infos["subTitle"],

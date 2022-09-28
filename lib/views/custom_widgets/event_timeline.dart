@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
-
-import '../../controller/event_controller.dart';
 import 'card_event.dart';
+import 'event_display.dart';
 
-class EventTimeLine extends StatelessWidget {
-  final DayController _dayController;
-  const EventTimeLine(this._dayController,
-      {required this.firstHour,
-      required this.lastHour,
-      this.oneHoureH = 70,
+class EventTimeLine extends EventDisplay {
+  const EventTimeLine(super.dayController,
+      {required super.firstHour,
+      required super.lastHour,
+      super.oneHoureH,
       super.key});
-  final double oneHoureH;
-  final int firstHour;
-  final int lastHour;
   static const fontSize = 20.0;
   static const textStyle = TextStyle(fontSize: fontSize);
 
@@ -24,7 +19,8 @@ class EventTimeLine extends StatelessWidget {
 
   Widget _genBackground(BuildContext context) {
     return CustomPaint(
-      size: Size(MediaQuery.of(context).size.width, nbrOfHour * oneHoureH),
+      size: Size(
+          MediaQuery.of(context).size.width, (nbrOfHour * oneHoureH).abs()),
       painter: BackgroundPainter(
           heightOfOneHour: oneHoureH,
           firstHour: firstHour,
@@ -37,9 +33,9 @@ class EventTimeLine extends StatelessWidget {
     List<Widget> toStack = [];
     toStack.add(_genBackground(context));
 
-    for (int i = 0; i < _dayController.length; i++) {
-      final infos = _dayController.infoEvent(i);
-      final infosOverlapping = _dayController.getOverlapAndPosX(i);
+    for (int i = 0; i < dayController.length; i++) {
+      final infos = dayController.infoEvent(i);
+      final infosOverlapping = dayController.getOverlapAndPosX(i);
 
       toStack.add(CardEventTimeLine(
         title: infos["title"],
@@ -54,7 +50,7 @@ class EventTimeLine extends StatelessWidget {
         startHour: firstHour,
       ));
     }
-    if (_dayController.isCurrDate()) {
+    if (dayController.isCurrDate()) {
       toStack.add(Positioned(
           left: 0,
           top: oneHoureH * (DateTime.now().hour - firstHour) +
