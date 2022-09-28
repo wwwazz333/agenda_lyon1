@@ -47,8 +47,6 @@ dependencies:
   sqflite: ^2.1.0
   settings_ui: ^2.0.2
   timezone: ^0.9.0
-  instant: ^0.4.1
-  numberpicker: ^2.1.1
   flutter_picker: ^2.0.5
   
 
