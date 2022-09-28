@@ -16,23 +16,23 @@ class FloatingNavButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FabCircularMenuState> fabKey = GlobalKey();
-    const primaryColor = Colors.red;
-    const secondaryColor = Colors.white;
+    final primaryColor = Theme.of(context).primaryColor;
+    final secondaryColor = Theme.of(context).bottomAppBarColor;
     const bgColor = Colors.black;
 
     return Builder(
       builder: (context) => FabCircularMenu(
         key: fabKey,
         alignment: Alignment.bottomRight,
-        ringColor: bgColor.withAlpha(25),
+        ringColor: bgColor.withAlpha(60),
         ringDiameter: 300.0,
         ringWidth: 100.0,
         fabSize: 64.0,
         fabElevation: 8.0,
         fabIconBorder: const CircleBorder(),
         fabColor: secondaryColor,
-        fabOpenIcon: const Icon(Icons.menu, color: primaryColor),
-        fabCloseIcon: const Icon(Icons.close, color: primaryColor),
+        fabOpenIcon: Icon(Icons.menu, color: primaryColor),
+        fabCloseIcon: Icon(Icons.close, color: primaryColor),
         fabMargin: const EdgeInsets.all(16.0),
         animationDuration: const Duration(milliseconds: 250),
         animationCurve: Curves.easeInOutCirc,
