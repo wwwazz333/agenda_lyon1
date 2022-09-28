@@ -56,6 +56,7 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
                   TabCalendar(startingDate: _controller.startingDate),
                   Expanded(
                     child: PageView.builder(
+                      physics: CustomPageViewScrollPhysics(),
                       controller: _controller.pageController,
                       itemCount: null,
                       onPageChanged: (newPage) {
@@ -101,4 +102,21 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
       floatingActionButton: const FloatingNavButton(),
     );
   }
+}
+
+class CustomPageViewScrollPhysics extends ScrollPhysics {
+  const CustomPageViewScrollPhysics({ScrollPhysics? parent})
+      : super(parent: parent);
+
+  @override
+  ScrollPhysics applyTo(ScrollPhysics? ancestor) {
+    return CustomPageViewScrollPhysics(parent: buildParent(ancestor));
+  }
+
+  @override
+  SpringDescription get spring => const SpringDescription(
+        mass: 100,
+        stiffness: 100,
+        damping: 1,
+      );
 }
