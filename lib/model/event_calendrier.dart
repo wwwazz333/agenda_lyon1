@@ -1,7 +1,6 @@
 import 'package:agenda_lyon1/model/date.dart';
 import 'package:intl/intl.dart';
 
-
 class EventCalendrier implements Comparable<EventCalendrier> {
   String _nameEvent = "";
   String get summary {
@@ -57,8 +56,8 @@ class EventCalendrier implements Comparable<EventCalendrier> {
       _date = getDateTime(splited[1]);
     } else if (title == "DTEND") {
       var fin = getDateTime(splited[1]);
-      _duree = Duration(hours: date.hour, minutes: date.minute) -
-          Duration(hours: fin.hour, minutes: fin.minute);
+      _duree = Duration(hours: fin.hour, minutes: fin.minute) -
+          Duration(hours: date.hour, minutes: date.minute);
     } else if (title == "SUMMARY") {
       _nameEvent = splited[1];
     } else if (title == "LOCATION") {
