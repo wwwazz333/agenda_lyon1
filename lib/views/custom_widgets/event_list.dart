@@ -22,6 +22,7 @@ class EventList extends EventDisplay {
             debut: infos["debut"],
             fin: infos["fin"],
             controller: infos["controller"],
+            bgColor: infos["color"],
           );
         });
   }

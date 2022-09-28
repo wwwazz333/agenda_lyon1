@@ -1,6 +1,9 @@
+import 'package:agenda_lyon1/common/colors.dart';
+import 'package:agenda_lyon1/data/db_manager.dart';
 import 'package:agenda_lyon1/model/date.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../common/global_data.dart';
 import '../model/event_calendrier.dart';
 import '../model/event_timeline.dart';
 import '../views/dialog/event_dialog.dart';
@@ -60,11 +63,36 @@ class DayController {
 
   Map<String, dynamic> infoEvent(int index) {
     final ev = _eventOfDay[index];
+    Color? bgColor;
+    if (appIsDarkMode) {
+      bgColor = fixedColorsDark[ev.summary];
+      if (bgColor == null) {
+        bgColor = colorsDark[countColor++ % colorsDark.length];
+        DBManager.insertInto("ColorsDark", {
+          "nameEvent": ev.summary,
+          "r": bgColor.red,
+          "g": bgColor.green,
+          "b": bgColor.blue,
+        });
+      }
+    } else {
+      bgColor = fixedColorsLight[ev.summary];
+      if (bgColor == null) {
+        bgColor = colorsLight[countColor++ % colorsLight.length];
+        DBManager.insertInto("ColorsLight", {
+          "nameEvent": ev.summary,
+          "r": bgColor.red,
+          "g": bgColor.green,
+          "b": bgColor.blue,
+        });
+      }
+    }
     return {
       "title": ev.summary,
       "subTitle": ev.salle,
       "debut": ev.heureDebut,
       "fin": ev.heureFin,
+      "color": bgColor,
       "controller": EventController(ev),
     };
   }

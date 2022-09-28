@@ -42,7 +42,6 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
         () => setState(
               () {},
             ));
-
     return Scaffold(
       body: SafeArea(
         child: FutureBuilder(
@@ -56,7 +55,7 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
                   TabCalendar(startingDate: _controller.startingDate),
                   Expanded(
                     child: PageView.builder(
-                      physics: CustomPageViewScrollPhysics(),
+                      physics: const CustomPageViewScrollPhysics(),
                       controller: _controller.pageController,
                       itemCount: null,
                       onPageChanged: (newPage) {

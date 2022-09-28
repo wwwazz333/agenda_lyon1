@@ -49,6 +49,7 @@ class EventTimeLine extends EventDisplay {
         placeForOverlape: infosOverlapping["PosX"],
         maxWidthNumber: maxWidthNumber,
         startHour: firstHour,
+        bgColor: infos["color"],
       ));
     }
     if (dayController.isCurrDate()) {

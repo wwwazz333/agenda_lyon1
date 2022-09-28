@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-
 import '../../controller/event_controller.dart';
 
 abstract class CardEvent extends StatelessWidget {
   static const fontColorBold =
-      TextStyle(fontWeight: FontWeight.bold, color: Colors.white);
-  static const fontColor = TextStyle(color: Colors.white);
+      TextStyle(fontWeight: FontWeight.bold, color: Colors.black);
+  static const fontColor = TextStyle(color: Colors.black);
   final Color _bgColor;
   final String _title;
   final String _subTitle;

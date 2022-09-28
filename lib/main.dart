@@ -6,6 +6,7 @@ import 'calendar_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'common/colors.dart';
 import 'settings_screen_url.dart';
 
 Future<void> main() async {
@@ -13,6 +14,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final container = ProviderContainer();
   loadCriticalSettings(container);
+  await loadColors();
 
   // démarrage app
   runApp(UncontrolledProviderScope(

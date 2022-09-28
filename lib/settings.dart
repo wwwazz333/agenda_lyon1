@@ -1,3 +1,4 @@
+import 'package:agenda_lyon1/common/colors.dart';
 import 'package:agenda_lyon1/data/shared_pref.dart';
 import 'package:agenda_lyon1/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -44,13 +45,17 @@ void loadCriticalSettings(ProviderContainer ref) {
     DataReader.save("urlCalendar", next);
   });
 
-  DataReader.getBool("isDark").then((value) => ref
-      .read(themeApp.notifier)
-      .state = value ? themes["dark"]! : themes["light"]!);
+  DataReader.getBool("isDark").then((value) {
+    ref.read(themeApp.notifier).state =
+        value ? themes["dark"]! : themes["light"]!;
+    appIsDarkMode = value;
+  });
 
   ref.listen(themeApp, (previous, next) {
     if (previous != next) {
       DataReader.save("isDark", next == themes["dark"]);
+      appIsDarkMode = next == themes["dark"];
+      countColor = 0;
     }
   });
 

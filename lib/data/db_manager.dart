@@ -12,21 +12,26 @@ class DBManager {
     return openDatabase(
       join(await getDatabasesPath(), "database.db"),
       onCreate: (db, version) {
-        print("création db");
-        return db.execute(
-          'CREATE TABLE IF NOT EXISTS ColorsBlack(id INTEGER PRIMARY KEY, name TEXT, age INTEGER)',
+        print("création db...................................");
+        db.execute(
+          "CREATE TABLE ColorsLight(nameEvent TEXT PRIMARY KEY, r INTEGER, g INTEGER, b INTEGER)",
+        );
+        db.execute(
+          "CREATE TABLE ColorsDark(nameEvent TEXT PRIMARY KEY, r INTEGER, g INTEGER, b INTEGER)",
         );
       },
-      // version: 1,
+      version: 2,
     );
   }
 
-  static Future<void> insertInto(String nameDB, String name, int age) async {
-    await (await db).insert(nameDB, {'name': name, 'age': age},
-        conflictAlgorithm: ConflictAlgorithm.replace);
+  static Future<void> insertInto(
+      String nameDB, Map<String, Object?> values) async {
+    await (await db)
+        .insert(nameDB, values, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   static Future<List<Map<String, dynamic>>> readDB(String nameDB) async {
-    return await (await db).query(nameDB);
+    final res = await (await db).query(nameDB);
+    return res;
   }
 }
