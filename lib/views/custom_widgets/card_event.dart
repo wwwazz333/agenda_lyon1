@@ -67,22 +67,31 @@ class CardEventTimeLine extends CardEvent {
               constraints: boxH,
               child: Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  child: Row(
                     children: [
-                      Expanded(
-                        flex: 2,
-                        child: Center(
-                            child: Text(
-                          _title,
-                        )),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [Text(_debut), Text(_fin)],
                       ),
                       Expanded(
-                          flex: 1,
-                          child: Text(
-                            _subTitle,
-                            style: boldStyle,
-                          ))
+                          child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: Center(
+                                child: Text(
+                              _title,
+                            )),
+                          ),
+                          Expanded(
+                              flex: 1,
+                              child: Text(
+                                _subTitle,
+                                style: boldStyle,
+                              ))
+                        ],
+                      ))
                     ],
                   )),
             ),
