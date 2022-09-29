@@ -1,3 +1,4 @@
+import 'package:agenda_lyon1/data/db_manager.dart';
 import 'package:agenda_lyon1/my_settings_screen.dart';
 import 'package:agenda_lyon1/providers.dart';
 import 'package:agenda_lyon1/settings.dart';
@@ -6,15 +7,14 @@ import 'calendar_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'common/colors.dart';
 import 'settings_screen_url.dart';
 
 Future<void> main() async {
   // à faire au démarrage de l'app
   WidgetsFlutterBinding.ensureInitialized();
+  DBManager.open();
   final container = ProviderContainer();
   loadCriticalSettings(container);
-  await loadColors();
 
   // démarrage app
   runApp(UncontrolledProviderScope(

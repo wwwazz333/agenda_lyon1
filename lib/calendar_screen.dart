@@ -23,8 +23,11 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
     _controller = CalendarUIController(startingDate: startingDate);
   }
 
+  late final Future loadingFuture;
+
   @override
   void initState() {
+    loadingFuture = DataController().load();
     DataController().addListenerUpdate(
         "updateCalendarScreenView",
         () => setState(
@@ -55,7 +58,7 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
     return Scaffold(
       body: SafeArea(
         child: FutureBuilder(
-          future: DataController().loadCalendrier(),
+          future: loadingFuture,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return Column(

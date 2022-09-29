@@ -1,9 +1,12 @@
 import 'dart:convert';
 
+import 'package:agenda_lyon1/common/global_data.dart';
 import 'package:agenda_lyon1/data/file_manager.dart';
 import 'package:agenda_lyon1/data/shared_pref.dart';
 import 'package:agenda_lyon1/network/file_downolader.dart';
 
+import '../common/colors.dart';
+import '../common/tasks.dart';
 import '../model/calendrier.dart';
 import 'event_controller.dart';
 
@@ -38,6 +41,16 @@ class DataController {
           FileManager.calendrierFile, jsonEncode(calendrier));
       informeUpdate();
     } catch (_) {}
+  }
+
+  Future<bool> load() async {
+    //fixme opimze not await for each
+
+    await loadTasks();
+    await loadColors();
+    await loadCalendrier();
+
+    return true;
   }
 
   Future<bool> loadCalendrier() async {

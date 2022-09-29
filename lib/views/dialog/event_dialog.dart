@@ -1,3 +1,4 @@
+import 'package:agenda_lyon1/common/tasks.dart';
 import 'package:flutter/material.dart';
 
 import '../../model/event_calendrier.dart';
@@ -5,8 +6,6 @@ import '../../model/event_calendrier.dart';
 void showEventDialog(BuildContext context, EventCalendrier ev) {
   final titleStyle = Theme.of(context).textTheme.headline6;
   final infoStyle = Theme.of(context).textTheme.bodyText1;
-
-  final List<String> taches = [];
 
   showDialog(
       context: context,
@@ -84,7 +83,7 @@ void showEventDialog(BuildContext context, EventCalendrier ev) {
                                     final txt = await showStringPicker(
                                         context, "Nouvelle tâche");
                                     if (txt != null) {
-                                      taches.add(txt);
+                                      addTask(ev.uid, txt);
                                       setState(
                                         () {},
                                       );
@@ -97,9 +96,11 @@ void showEventDialog(BuildContext context, EventCalendrier ev) {
                             shrinkWrap: true,
                             physics:
                                 const NeverScrollableScrollPhysics(), // géré par le scrollable parent
-                            itemCount: taches.length,
+                            itemCount: tasks[ev.uid] != null
+                                ? tasks[ev.uid]!.length
+                                : 0,
                             itemBuilder: (context, index) =>
-                                Text(taches[index]),
+                                Text(tasks[ev.uid]![index]),
                           ),
                         ],
                       ),

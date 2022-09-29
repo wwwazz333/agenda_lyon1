@@ -5,10 +5,10 @@ class DBManager {
   static Future<Database>? _db;
 
   static Future<Database> get db {
-    return _db ??= _open();
+    return _db ??= open();
   }
 
-  static Future<Database> _open() async {
+  static Future<Database> open() async {
     return openDatabase(
       join(await getDatabasesPath(), "database.db"),
       onCreate: (db, version) {
@@ -19,8 +19,17 @@ class DBManager {
         db.execute(
           "CREATE TABLE ColorsDark(nameEvent TEXT PRIMARY KEY, r INTEGER, g INTEGER, b INTEGER)",
         );
+        db.execute(
+          "CREATE TABLE Tasks(id INTEGER PRIMARY KEY autoincrement, uid TEXT, task TEXT)",
+        );
       },
-      version: 2,
+      onUpgrade: (db, oldVersion, newVersion) {
+        print("chibrax");
+      },
+      onOpen: (db) {
+        print("opened db");
+      },
+      version: 15,
     );
   }
 
