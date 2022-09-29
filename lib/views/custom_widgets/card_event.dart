@@ -122,7 +122,7 @@ class CardEventList extends CardEvent {
 
   @override
   Widget build(BuildContext context) {
-    const boxH = BoxConstraints(minHeight: 60);
+    const boxH = BoxConstraints(minHeight: 70);
     return GestureDetector(
       onTap: () => _controller.onTap(context),
       child: Card(
