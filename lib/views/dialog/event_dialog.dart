@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../model/event_calendrier.dart';
 
 void showEventDialog(BuildContext context, EventCalendrier ev) {
-  final titleStyle = Theme.of(context).textTheme.headline6;
+  final titleStyle = Theme.of(context).textTheme.headline2;
   final infoStyle = Theme.of(context).textTheme.bodyText1;
 
   showDialog(
@@ -12,7 +12,7 @@ void showEventDialog(BuildContext context, EventCalendrier ev) {
       builder: ((context) => AlertDialog(
             title: Text(
               ev.summary,
-              style: titleStyle,
+              style: Theme.of(context).textTheme.headline1,
             ),
             content: SingleChildScrollView(
               physics: const ClampingScrollPhysics(),
@@ -134,7 +134,9 @@ Future<dynamic> showStringPicker(BuildContext context, String title) async {
                   onPressed: () {
                     Navigator.pop(context, controller.text);
                   },
-                  child: const Text("OK"))
+                  child: const Text(
+                    "OK",
+                  )),
             ],
           )));
 }
