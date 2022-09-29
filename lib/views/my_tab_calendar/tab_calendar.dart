@@ -146,8 +146,8 @@ class TabCalendar extends ConsumerWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
       ),
-      height: 85,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Header(startingDate: _controller.startingDate),
           Expanded(

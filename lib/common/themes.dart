@@ -18,9 +18,9 @@ final themes = {
       appBarTheme: _parentTheme.appBarTheme,
       elevatedButtonTheme: _parentTheme.elevatedButtonTheme,
       textTheme: const TextTheme(
-          bodyText1: TextStyle(color: Colors.black),
-          bodyText2:
-              TextStyle(fontWeight: FontWeight.bold, color: Colors.black))),
+          bodyText1: TextStyle(color: Colors.black, fontSize: 16),
+          bodyText2: TextStyle(
+              fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16))),
   "dark": ThemeData(
       brightness: Brightness.dark,
       primaryColor: _parentTheme.primaryColor,
@@ -29,7 +29,7 @@ final themes = {
       elevatedButtonTheme: _parentTheme.elevatedButtonTheme,
       backgroundColor: Colors.black,
       textTheme: const TextTheme(
-          bodyText1: TextStyle(color: Colors.white),
-          bodyText2:
-              TextStyle(fontWeight: FontWeight.bold, color: Colors.white))),
+          bodyText1: TextStyle(color: Colors.white, fontSize: 16),
+          bodyText2: TextStyle(
+              fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16))),
 };
