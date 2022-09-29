@@ -147,25 +147,26 @@ class TabCalendar extends ConsumerWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        // mainAxisSize: MainAxisSize.min,
         children: [
           Header(startingDate: _controller.startingDate),
-          Expanded(
-              child: PageView.builder(
-                  controller: _controller.pageController,
-                  itemCount: null,
-                  onPageChanged: (value) {
-                    ref.read(selectedDate.notifier).state = ref
-                        .read(selectedDate)
-                        .add(Duration(
-                            days:
-                                (7 * _controller.getDirectionOfScroll(value))));
-                  },
-                  itemBuilder: ((context, index) {
-                    return WeekView(
-                        dayNames: _controller.dayNames(dayFormatter),
-                        dayNumbers: _controller.genDateOfPage(index));
-                  })))
+          SizedBox(
+            height: 50,
+            child: PageView.builder(
+                controller: _controller.pageController,
+                itemCount: null,
+                onPageChanged: (value) {
+                  ref.read(selectedDate.notifier).state = ref
+                      .read(selectedDate)
+                      .add(Duration(
+                          days: (7 * _controller.getDirectionOfScroll(value))));
+                },
+                itemBuilder: ((context, index) {
+                  return WeekView(
+                      dayNames: _controller.dayNames(dayFormatter),
+                      dayNumbers: _controller.genDateOfPage(index));
+                })),
+          )
         ],
       ),
     );
