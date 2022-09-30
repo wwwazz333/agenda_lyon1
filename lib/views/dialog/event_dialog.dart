@@ -1,5 +1,6 @@
 import 'package:agenda_lyon1/common/tasks.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../model/event_calendrier.dart';
 
@@ -49,7 +50,7 @@ Future<bool> showEventDialog(BuildContext context, EventCalendrier ev) async {
                           style: titleStyle,
                         )),
                     Text(
-                      "${ev.date}",
+                      DateFormat.Hm().format(ev.date),
                       style: infoStyle,
                     ),
                     Align(
@@ -58,7 +59,8 @@ Future<bool> showEventDialog(BuildContext context, EventCalendrier ev) async {
                           "Durée",
                           style: titleStyle,
                         )),
-                    Text("${ev.duree.inHours}:${ev.duree.inMinutes % 60}"),
+                    Text(
+                        "${ev.duree.inHours}:${(ev.duree.inMinutes % 60).toString().padLeft(2, '0')}"),
                     Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
