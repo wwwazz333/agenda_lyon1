@@ -105,23 +105,31 @@ Future<bool> showEventDialog(BuildContext context, EventCalendrier ev) async {
                             itemCount: tasks[ev.uid] != null
                                 ? tasks[ev.uid]!.length
                                 : 0,
-                            itemBuilder: (context, index) => InkWell(
-                              onLongPress: () async {
-                                final res = await showConfirmDel(
-                                    context, tasks[ev.uid]![index]) as bool?;
-                                if (res == true) {
-                                  hasToUpdate = true;
 
-                                  setState(
-                                    () {
-                                      removeTask(ev.uid, index);
+                            itemBuilder: (context, index) => Padding(
+                                padding: const EdgeInsets.all(1),
+                                child: Material(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Theme.of(context).colorScheme.primary,
+                                  child: InkWell(
+                                    onLongPress: () async {
+                                      final res = await showConfirmDel(
+                                              context, tasks[ev.uid]![index])
+                                          as bool?;
+                                      if (res == true) {
+                                        hasToUpdate = true;
+
+                                        setState(
+                                          () {
+                                            removeTask(ev.uid, index);
+                                          },
+                                        );
+                                      }
                                     },
-                                  );
-                                }
-                              },
-                              child: Text(tasks[ev.uid]![index]),
-                            ),
-                          ),
+                                    child: TaskWidget(tasks[ev.uid]![index]),
+                                  ),
+                                )),
+                          )
                         ],
                       ),
                     )
@@ -139,6 +147,22 @@ Future<bool> showEventDialog(BuildContext context, EventCalendrier ev) async {
           )));
 
   return hasToUpdate;
+}
+
+class TaskWidget extends StatelessWidget {
+  final String txt;
+  const TaskWidget(this.txt, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(6),
+      child: Text(
+        txt,
+        style: Theme.of(context).textTheme.headline3,
+      ),
+    );
+  }
 }
 
 Future<dynamic> showStringPicker(BuildContext context, String title) {
