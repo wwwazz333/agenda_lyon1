@@ -170,8 +170,12 @@ Future<dynamic> showStringPicker(BuildContext context, String title) {
   return showDialog(
       context: context,
       builder: ((context) => AlertDialog(
-            title: Text(title),
+            title: Text(
+              title,
+              style: Theme.of(context).textTheme.headline1,
+            ),
             content: TextField(
+              style: Theme.of(context).textTheme.bodyText1,
               autofocus: true,
               controller: controller,
             ),
@@ -191,8 +195,14 @@ Future<dynamic> showConfirmDel(BuildContext context, String task) {
   return showDialog(
       context: context,
       builder: ((context) => AlertDialog(
-            title: const Text("Supprimer la tâche ?"),
-            content: Text(task),
+            title: Text(
+              "Supprimer la tâche ?",
+              style: Theme.of(context).textTheme.headline1,
+            ),
+            content: Text(
+              task,
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
             actions: [
               TextButton(
                   onPressed: () {
