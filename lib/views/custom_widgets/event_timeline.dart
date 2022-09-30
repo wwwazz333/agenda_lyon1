@@ -50,6 +50,7 @@ class EventTimeLine extends EventDisplay {
         maxWidthNumber: maxWidthNumber,
         startHour: firstHour,
         bgColor: infos["color"],
+        nbrTask: infos["nbrTask"],
       ));
     }
     if (dayController.isCurrDate()) {

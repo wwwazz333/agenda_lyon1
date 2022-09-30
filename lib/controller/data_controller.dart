@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:agenda_lyon1/common/global_data.dart';
 import 'package:agenda_lyon1/data/file_manager.dart';
 import 'package:agenda_lyon1/data/shared_pref.dart';
 import 'package:agenda_lyon1/network/file_downolader.dart';

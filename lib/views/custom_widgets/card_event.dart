@@ -7,6 +7,7 @@ abstract class CardEvent extends StatelessWidget {
   final String _subTitle;
   final String _debut;
   final String _fin;
+  final int _nbrTask;
   final EventController _controller;
   const CardEvent(
       {required title,
@@ -14,6 +15,7 @@ abstract class CardEvent extends StatelessWidget {
       required debut,
       required fin,
       required controller,
+      required nbrTask,
       bgColor = Colors.blueGrey,
       super.key})
       : _title = title,
@@ -21,7 +23,8 @@ abstract class CardEvent extends StatelessWidget {
         _debut = debut,
         _fin = fin,
         _bgColor = bgColor,
-        _controller = controller;
+        _controller = controller,
+        _nbrTask = nbrTask;
 }
 
 class CardEventTimeLine extends CardEvent {
@@ -36,6 +39,7 @@ class CardEventTimeLine extends CardEvent {
       super.debut,
       super.fin,
       super.controller,
+      required super.nbrTask,
       required onHoureH,
       super.bgColor,
       this.nbrOverlap = 1,
@@ -57,54 +61,74 @@ class CardEventTimeLine extends CardEvent {
       child: GestureDetector(
         onTap: () => _controller.onTap(context),
         child: SizedBox(
-          width: widthCard / nbrOverlap,
-          height: _controller.getHeight(oneHourH: _oneHoureH),
-          child: Card(
-            color: _bgColor,
-            child: Container(
-              constraints: boxH,
-              child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            _debut,
+            width: widthCard / nbrOverlap,
+            height: _controller.getHeight(oneHourH: _oneHoureH),
+            child: Stack(
+              children: [
+                Card(
+                  color: _bgColor,
+                  child: Container(
+                    constraints: boxH,
+                    child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  _debut,
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                ),
+                                Text(
+                                  _fin,
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                )
+                              ],
+                            ),
+                            Expanded(
+                                child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: Center(
+                                      child: Text(
+                                    _title,
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
+                                  )),
+                                ),
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      _subTitle,
+                                      style:
+                                          Theme.of(context).textTheme.bodyText2,
+                                    ))
+                              ],
+                            ))
+                          ],
+                        )),
+                  ),
+                ),
+                (_nbrTask != 0)
+                    ? Positioned(
+                        top: 0,
+                        right: 5,
+                        child: Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColor,
+                              shape: BoxShape.circle),
+                          child: Text(
+                            _nbrTask.toString(),
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
-                          Text(
-                            _fin,
-                            style: Theme.of(context).textTheme.bodyText1,
-                          )
-                        ],
-                      ),
-                      Expanded(
-                          child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Center(
-                                child: Text(
-                              _title,
-                              style: Theme.of(context).textTheme.bodyText1,
-                            )),
-                          ),
-                          Expanded(
-                              flex: 1,
-                              child: Text(
-                                _subTitle,
-                                style: Theme.of(context).textTheme.bodyText2,
-                              ))
-                        ],
-                      ))
-                    ],
-                  )),
-            ),
-          ),
-        ),
+                        ))
+                    : const SizedBox(),
+              ],
+            )),
       ),
     );
   }
@@ -114,6 +138,7 @@ class CardEventList extends CardEvent {
   const CardEventList(
       {super.title,
       super.subTitle,
+      required super.nbrTask,
       super.debut,
       super.fin,
       super.bgColor,
@@ -124,44 +149,61 @@ class CardEventList extends CardEvent {
   Widget build(BuildContext context) {
     const boxH = BoxConstraints(minHeight: 70);
     return GestureDetector(
-      onTap: () => _controller.onTap(context),
-      child: Card(
-        color: _bgColor,
-        child: Container(
-          constraints: boxH,
-          child: Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    constraints: boxH,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text(
-                          _debut,
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                        Text(
-                          _fin,
-                          style: Theme.of(context).textTheme.bodyText1,
-                        )
-                      ],
-                    ),
-                  ),
-                  Text(
-                    _title,
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                  Text(
-                    _subTitle,
-                    style: Theme.of(context).textTheme.bodyText2,
-                  )
-                ],
-              )),
-        ),
-      ),
-    );
+        onTap: () => _controller.onTap(context),
+        child: Stack(
+          children: [
+            Card(
+                color: _bgColor,
+                child: Container(
+                  constraints: boxH,
+                  child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            constraints: boxH,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text(
+                                  _debut,
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                ),
+                                Text(
+                                  _fin,
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                )
+                              ],
+                            ),
+                          ),
+                          Text(
+                            _title,
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                          Text(
+                            _subTitle,
+                            style: Theme.of(context).textTheme.bodyText2,
+                          )
+                        ],
+                      )),
+                )),
+            (_nbrTask != 0)
+                ? Positioned(
+                    top: 0,
+                    right: 5,
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          shape: BoxShape.circle),
+                      child: Text(
+                        _nbrTask.toString(),
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                    ))
+                : const SizedBox(),
+          ],
+        ));
   }
 }
