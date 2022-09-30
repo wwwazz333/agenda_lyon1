@@ -14,7 +14,7 @@ extension Date on DateTime {
   }
 
   DateTime toLocaleFrance() {
-    return toUtc().add(Duration(minutes: _getTimeZone(this)));
+    return add(Duration(minutes: _getTimeZone(this)));
   }
 }
 
