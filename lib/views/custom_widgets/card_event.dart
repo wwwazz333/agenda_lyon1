@@ -1,72 +1,48 @@
 import 'package:flutter/material.dart';
 import '../../controller/event_controller.dart';
 
-abstract class CardEvent extends StatelessWidget {
-  final Color _bgColor;
-  final String _title;
-  final String _subTitle;
-  final String _debut;
-  final String _fin;
-  final int _nbrTask;
-  final EventController _controller;
+abstract class CardEvent extends StatefulWidget {
+  final Color bgColor;
+  final String title;
+  final String subTitle;
+  final String debut;
+  final String fin;
+  final int Function() nbrTask;
+  final EventController controller;
   const CardEvent(
-      {required title,
-      required subTitle,
-      required debut,
-      required fin,
-      required controller,
-      required nbrTask,
-      bgColor = Colors.blueGrey,
-      super.key})
-      : _title = title,
-        _subTitle = subTitle,
-        _debut = debut,
-        _fin = fin,
-        _bgColor = bgColor,
-        _controller = controller,
-        _nbrTask = nbrTask;
+      {required this.title,
+      required this.subTitle,
+      required this.debut,
+      required this.fin,
+      required this.controller,
+      required this.nbrTask,
+      this.bgColor = Colors.blueGrey,
+      super.key});
 }
 
-class CardEventTimeLine extends CardEvent {
-  final int nbrOverlap;
-  final int placeForOverlape;
-  final double _oneHoureH;
-  final int _startHour;
-  final double maxWidthNumber;
-  const CardEventTimeLine(
-      {super.title,
-      super.subTitle,
-      super.debut,
-      super.fin,
-      super.controller,
-      required super.nbrTask,
-      required onHoureH,
-      super.bgColor,
-      this.nbrOverlap = 1,
-      this.placeForOverlape = 0,
-      startHour = 5,
-      this.maxWidthNumber = 30,
-      super.key})
-      : _startHour = startHour,
-        _oneHoureH = onHoureH;
-
+class _CardEventTimeLine extends State<CardEventTimeLine> {
   @override
   Widget build(BuildContext context) {
-    final widthCard = MediaQuery.of(context).size.width - maxWidthNumber;
+    final widthCard = MediaQuery.of(context).size.width - widget.maxWidthNumber;
     const boxH = BoxConstraints(minHeight: 60);
     return Positioned(
-      top:
-          _controller.getPositionY(startHour: _startHour, oneHourH: _oneHoureH),
-      left: maxWidthNumber + widthCard / nbrOverlap * placeForOverlape,
+      top: widget.controller.getPositionY(
+          startHour: widget.startHour, oneHourH: widget.oneHoureH),
+      left: widget.maxWidthNumber +
+          widthCard / widget.nbrOverlap * widget.placeForOverlape,
       child: GestureDetector(
-        onTap: () => _controller.onTap(context),
+        onTap: () => widget.controller.onTap(context).then((value) => setState(
+              () {
+                print("coucou");
+              },
+            )),
         child: SizedBox(
-            width: widthCard / nbrOverlap,
-            height: _controller.getHeight(oneHourH: _oneHoureH),
+            width: widthCard / widget.nbrOverlap,
+            height: widget.controller.getHeight(oneHourH: widget.oneHoureH),
             child: Stack(
               children: [
                 Card(
-                  color: _bgColor,
+                  color: widget.bgColor,
                   child: Container(
                     constraints: boxH,
                     child: Padding(
@@ -77,11 +53,11 @@ class CardEventTimeLine extends CardEvent {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  _debut,
+                                  widget.debut,
                                   style: Theme.of(context).textTheme.bodyText1,
                                 ),
                                 Text(
-                                  _fin,
+                                  widget.fin,
                                   style: Theme.of(context).textTheme.bodyText1,
                                 )
                               ],
@@ -94,7 +70,7 @@ class CardEventTimeLine extends CardEvent {
                                   flex: 2,
                                   child: Center(
                                       child: Text(
-                                    _title,
+                                    widget.title,
                                     style:
                                         Theme.of(context).textTheme.bodyText1,
                                   )),
@@ -102,7 +78,7 @@ class CardEventTimeLine extends CardEvent {
                                 Expanded(
                                     flex: 1,
                                     child: Text(
-                                      _subTitle,
+                                      widget.subTitle,
                                       style:
                                           Theme.of(context).textTheme.bodyText2,
                                     ))
@@ -112,7 +88,7 @@ class CardEventTimeLine extends CardEvent {
                         )),
                   ),
                 ),
-                (_nbrTask != 0)
+                (widget.nbrTask() != 0)
                     ? Positioned(
                         top: 0,
                         right: 5,
@@ -122,7 +98,7 @@ class CardEventTimeLine extends CardEvent {
                               color: Theme.of(context).primaryColor,
                               shape: BoxShape.circle),
                           child: Text(
-                            _nbrTask.toString(),
+                            widget.nbrTask().toString(),
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                         ))
@@ -134,26 +110,45 @@ class CardEventTimeLine extends CardEvent {
   }
 }
 
-class CardEventList extends CardEvent {
-  const CardEventList(
-      {super.title,
-      super.subTitle,
+class CardEventTimeLine extends CardEvent {
+  final int nbrOverlap;
+  final int placeForOverlape;
+  final double oneHoureH;
+  final int startHour;
+  final double maxWidthNumber;
+  const CardEventTimeLine(
+      {required super.title,
+      required super.subTitle,
+      required super.debut,
+      required super.fin,
+      required super.controller,
       required super.nbrTask,
-      super.debut,
-      super.fin,
+      required this.oneHoureH,
       super.bgColor,
-      super.controller,
+      this.nbrOverlap = 1,
+      this.placeForOverlape = 0,
+      this.startHour = 5,
+      this.maxWidthNumber = 30,
       super.key});
 
+  @override
+  State<StatefulWidget> createState() {
+    return _CardEventTimeLine();
+  }
+}
+
+class _CardEventList extends State<CardEventList> {
   @override
   Widget build(BuildContext context) {
     const boxH = BoxConstraints(minHeight: 70);
     return GestureDetector(
-        onTap: () => _controller.onTap(context),
+        onTap: () => widget.controller.onTap(context).then((value) => setState(
+              () {},
+            )),
         child: Stack(
           children: [
             Card(
-                color: _bgColor,
+                color: widget.bgColor,
                 child: Container(
                   constraints: boxH,
                   child: Padding(
@@ -167,28 +162,28 @@ class CardEventList extends CardEvent {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Text(
-                                  _debut,
+                                  widget.debut,
                                   style: Theme.of(context).textTheme.bodyText1,
                                 ),
                                 Text(
-                                  _fin,
+                                  widget.fin,
                                   style: Theme.of(context).textTheme.bodyText1,
                                 )
                               ],
                             ),
                           ),
                           Text(
-                            _title,
+                            widget.title,
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                           Text(
-                            _subTitle,
+                            widget.subTitle,
                             style: Theme.of(context).textTheme.bodyText2,
                           )
                         ],
                       )),
                 )),
-            (_nbrTask != 0)
+            (widget.nbrTask() != 0)
                 ? Positioned(
                     top: 0,
                     right: 5,
@@ -198,12 +193,29 @@ class CardEventList extends CardEvent {
                           color: Theme.of(context).primaryColor,
                           shape: BoxShape.circle),
                       child: Text(
-                        _nbrTask.toString(),
+                        widget.nbrTask().toString(),
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
                     ))
                 : const SizedBox(),
           ],
         ));
+  }
+}
+
+class CardEventList extends CardEvent {
+  const CardEventList(
+      {required super.title,
+      required super.subTitle,
+      required super.nbrTask,
+      required super.debut,
+      required super.fin,
+      super.bgColor,
+      required super.controller,
+      super.key});
+
+  @override
+  State<StatefulWidget> createState() {
+    return _CardEventList();
   }
 }

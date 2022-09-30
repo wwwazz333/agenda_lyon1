@@ -44,7 +44,7 @@ class EventTimeLine extends EventDisplay {
         debut: infos["debut"],
         fin: infos["fin"],
         controller: infos["controller"],
-        onHoureH: oneHoureH,
+        oneHoureH: oneHoureH,
         nbrOverlap: infosOverlapping["Overlap"],
         placeForOverlape: infosOverlapping["PosX"],
         maxWidthNumber: maxWidthNumber,

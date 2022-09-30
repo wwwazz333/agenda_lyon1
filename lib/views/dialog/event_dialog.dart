@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 
 import '../../model/event_calendrier.dart';
 
-void showEventDialog(BuildContext context, EventCalendrier ev) {
+Future<bool> showEventDialog(BuildContext context, EventCalendrier ev) async {
+  bool hasToUpdate = false;
   final titleStyle = Theme.of(context).textTheme.headline2;
   final infoStyle = Theme.of(context).textTheme.bodyText1;
 
-  showDialog(
+  await showDialog(
       context: context,
       builder: ((context) => AlertDialog(
             title: Text(
@@ -81,11 +82,16 @@ void showEventDialog(BuildContext context, EventCalendrier ev) {
                               IconButton(
                                   onPressed: () async {
                                     final txt = await showStringPicker(
-                                        context, "Nouvelle tâche");
+                                        context, "Nouvelle tâche") as String?;
                                     if (txt != null) {
-                                      addTask(ev.uid, txt);
+                                      hasToUpdate = true;
+
                                       setState(
-                                        () {},
+                                        () {
+                                          if (txt.isNotEmpty) {
+                                            addTask(ev.uid, txt);
+                                          }
+                                        },
                                       );
                                     }
                                   },
@@ -102,11 +108,14 @@ void showEventDialog(BuildContext context, EventCalendrier ev) {
                             itemBuilder: (context, index) => InkWell(
                               onLongPress: () async {
                                 final res = await showConfirmDel(
-                                    context, tasks[ev.uid]![index]) as bool;
+                                    context, tasks[ev.uid]![index]) as bool?;
                                 if (res == true) {
-                                  removeTask(ev.uid, index);
+                                  hasToUpdate = true;
+
                                   setState(
-                                    () {},
+                                    () {
+                                      removeTask(ev.uid, index);
+                                    },
                                   );
                                 }
                               },
@@ -128,6 +137,8 @@ void showEventDialog(BuildContext context, EventCalendrier ev) {
                   child: const Text("OK"))
             ],
           )));
+
+  return hasToUpdate;
 }
 
 Future<dynamic> showStringPicker(BuildContext context, String title) {

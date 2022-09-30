@@ -25,8 +25,8 @@ void addTask(String uid, String task) {
 
 void removeTask(String uid, int index) {
   if (tasks.containsKey(uid)) {
-    tasks[uid]!.removeAt(index);
     DBManager.removeWhere(
         TableTasks, "uid = ? and task = ?", [uid, tasks[uid]![index]]);
+    tasks[uid]!.removeAt(index);
   }
 }

@@ -22,8 +22,8 @@ class EventController {
     return (oneHourH / 60 * _ev.duree.inMinutes).abs();
   }
 
-  void onTap(BuildContext context) {
-    showEventDialog(context, _ev);
+  Future<bool> onTap(BuildContext context) async {
+    return showEventDialog(context, _ev);
   }
 }
 
@@ -95,7 +95,7 @@ class DayController {
       "fin": ev.heureFin,
       "color": bgColor,
       "controller": EventController(ev),
-      "nbrTask": tasks[ev.uid] != null ? tasks[ev.uid]!.length : 0,
+      "nbrTask": () => tasks[ev.uid] != null ? tasks[ev.uid]!.length : 0,
     };
   }
 
