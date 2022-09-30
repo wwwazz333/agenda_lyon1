@@ -20,3 +20,10 @@ void addTask(String uid, String task) {
   tasks[uid]!.add(task);
   DBManager.insertInto("Tasks", {"uid": uid, "task": task});
 }
+
+void removeTask(String uid, int index) {
+  if (!tasks.containsKey(uid)) {
+    tasks[uid]!.removeAt(index);
+  }
+  DBManager.insertInto("Tasks", {"uid": uid, "task": task});
+}

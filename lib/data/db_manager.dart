@@ -39,6 +39,13 @@ class DBManager {
         .insert(nameDB, values, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
+  static Future<void> removeWhere(
+      String nameDB, Map<String, Object?> values) async {
+    await (await db).delete(
+      nameDB,
+    );
+  }
+
   static Future<List<Map<String, dynamic>>> readDB(String nameDB) async {
     final res = await (await db).query(nameDB);
     return res;

@@ -99,8 +99,21 @@ void showEventDialog(BuildContext context, EventCalendrier ev) {
                             itemCount: tasks[ev.uid] != null
                                 ? tasks[ev.uid]!.length
                                 : 0,
-                            itemBuilder: (context, index) =>
-                                Text(tasks[ev.uid]![index]),
+                            itemBuilder: (context, index) => InkWell(
+                              onLongPress: () async {
+                                final res = await showConfirmDel(
+                                    context, tasks[ev.uid]![index]) as bool;
+                                if (res == true) {
+                                  setState(
+                                    () {
+                                      tasks[ev.uid]!.removeAt(index);
+                                      //TODO remove from db
+                                    },
+                                  );
+                                }
+                              },
+                              child: Text(tasks[ev.uid]![index]),
+                            ),
                           ),
                         ],
                       ),
@@ -119,7 +132,7 @@ void showEventDialog(BuildContext context, EventCalendrier ev) {
           )));
 }
 
-Future<dynamic> showStringPicker(BuildContext context, String title) async {
+Future<dynamic> showStringPicker(BuildContext context, String title) {
   TextEditingController controller = TextEditingController();
   return showDialog(
       context: context,
@@ -136,6 +149,31 @@ Future<dynamic> showStringPicker(BuildContext context, String title) async {
                   },
                   child: const Text(
                     "OK",
+                  )),
+            ],
+          )));
+}
+
+Future<dynamic> showConfirmDel(BuildContext context, String task) {
+  return showDialog(
+      context: context,
+      builder: ((context) => AlertDialog(
+            title: const Text("Supprimer la tâche ?"),
+            content: Text(task),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context, false);
+                  },
+                  child: const Text(
+                    "Annuler",
+                  )),
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context, true);
+                  },
+                  child: const Text(
+                    "Confirmer",
                   )),
             ],
           )));
