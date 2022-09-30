@@ -104,11 +104,9 @@ void showEventDialog(BuildContext context, EventCalendrier ev) {
                                 final res = await showConfirmDel(
                                     context, tasks[ev.uid]![index]) as bool;
                                 if (res == true) {
+                                  removeTask(ev.uid, index);
                                   setState(
-                                    () {
-                                      tasks[ev.uid]!.removeAt(index);
-                                      //TODO remove from db
-                                    },
+                                    () {},
                                   );
                                 }
                               },

@@ -40,10 +40,13 @@ class DBManager {
   }
 
   static Future<void> removeWhere(
-      String nameDB, Map<String, Object?> values) async {
-    await (await db).delete(
-      nameDB,
-    );
+      String nameDB, String where, List<Object> whereArgs) async {
+    await (await db).delete(nameDB, where: where, whereArgs: whereArgs);
+  }
+
+  static Future<void> updateWhere(String nameDB, Map<String, Object?> to,
+      String where, List<Object> whereArgs) async {
+    await (await db).update(nameDB, to, where: where, whereArgs: whereArgs);
   }
 
   static Future<List<Map<String, dynamic>>> readDB(String nameDB) async {
