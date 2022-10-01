@@ -1,13 +1,11 @@
-import 'package:agenda_lyon1/data/file_manager.dart';
-import 'package:agenda_lyon1/my_settings_screen.dart';
 import 'package:agenda_lyon1/providers.dart';
 import 'package:agenda_lyon1/settings.dart';
 import 'package:flutter/material.dart';
-import 'calendar_screen.dart';
+import 'views/screen/calendar_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
-import 'settings_screen_url.dart';
+import 'views/screen/settings/settings_screen.dart';
+import 'views/screen/settings/settings_screen_url.dart';
 
 Future<void> main() async {
   // à faire au démarrage de l'app

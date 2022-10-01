@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'card.dart/card_event.dart';
+import 'card.dart/card_tile.dart';
 import 'event_display.dart';
 
 class EventList extends EventDisplay {
@@ -20,7 +19,7 @@ class EventList extends EventDisplay {
           for (String sub in infos["subTitle"]) {
             subTitle += "$sub\n";
           }
-          return CardEventList(
+          return CardEventTile(
             title: infos["title"],
             subTitle: subTitle.trim(),
             debut: infos["debut"],

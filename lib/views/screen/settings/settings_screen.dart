@@ -6,7 +6,7 @@ import 'package:flutter_picker/Picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:settings_ui/settings_ui.dart';
 
-import 'common/themes.dart';
+import '../../../common/themes.dart';
 
 class MySettingsScreen extends ConsumerStatefulWidget {
   const MySettingsScreen({super.key});

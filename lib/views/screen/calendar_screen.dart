@@ -3,11 +3,11 @@ import 'package:agenda_lyon1/views/custom_widgets/event_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'controller/calendarui_controller.dart';
-import 'providers.dart';
-import 'views/custom_widgets/event_timeline.dart';
-import 'views/custom_widgets/navigator.dart';
-import 'views/my_tab_calendar/tab_calendar.dart';
+import '../../controller/calendarui_controller.dart';
+import '../../providers.dart';
+import '../custom_widgets/event_timeline.dart';
+import '../custom_widgets/navigator.dart';
+import '../my_tab_calendar/tab_calendar.dart';
 
 class CalendarScreen extends ConsumerStatefulWidget {
   const CalendarScreen({super.key});
