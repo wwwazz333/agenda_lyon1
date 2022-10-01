@@ -16,17 +16,38 @@ Future<bool> showEventDialog(BuildContext context, EventCalendrier ev) async {
       ? fixedColorsDark[ev.summary]!
       : fixedColorsLight[ev.summary]!;
 
+  Color? goodColorForBackground(Color colorText) {
+    final grayscale = (0.299 * colorText.red) +
+        (0.587 * colorText.green) +
+        (0.114 * colorText.blue);
+
+    Color? newColor;
+    if (grayscale > 128) {
+      //is light
+      if (!appIsDarkMode) {
+        newColor = Colors.black;
+      }
+    } else {
+      //is dark
+      if (appIsDarkMode) {
+        newColor = Colors.white;
+      }
+    }
+    return newColor;
+  }
+
   await showDialog(
       context: context,
       builder: ((context) => AlertDialog(
-            title: Wrap(children: [
-              Text(
-                ev.summary,
-                style: Theme.of(context).textTheme.headline1,
-              ),
-              StatefulBuilder(
-                builder: (BuildContext context, setState) {
-                  return GestureDetector(
+            title: StatefulBuilder(
+              builder: (BuildContext context, setState) {
+                return Container(
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    color: goodColorForBackground(bgColor),
+                  ),
+                  padding: const EdgeInsets.all(5),
+                  child: GestureDetector(
                       onTap: () async {
                         Color? color =
                             await showColorPicker(context, bgColor) as Color?;
@@ -40,23 +61,21 @@ Future<bool> showEventDialog(BuildContext context, EventCalendrier ev) async {
                           );
                         }
                       },
-                      child: SizedBox(
-                        height: 48,
-                        width: 48,
-                        child: Stack(
-                          children: [
-                            Container(
-                              color: bgColor,
-                            ),
-                            const Center(
-                              child: Icon(Icons.edit),
-                            ),
-                          ],
-                        ),
-                      ));
-                },
-              ),
-            ]),
+                      child: RichText(
+                          text: TextSpan(
+                              text: "${ev.summary}\t",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline1!
+                                  .copyWith(
+                                    color: bgColor,
+                                  ),
+                              children: const [
+                            WidgetSpan(child: Icon(Icons.edit))
+                          ]))),
+                );
+              },
+            ),
             content: SingleChildScrollView(
               physics: const ClampingScrollPhysics(),
               child: SizedBox(
