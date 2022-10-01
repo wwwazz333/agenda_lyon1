@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:agenda_lyon1/model/date.dart';
 import 'package:intl/intl.dart';
 
@@ -7,8 +9,8 @@ class EventCalendrier implements Comparable<EventCalendrier> {
     return _nameEvent;
   }
 
-  String _salle = "";
-  String get salle {
+  List<String> _salle = [];
+  List<String> get salle {
     return _salle;
   }
 
@@ -61,7 +63,7 @@ class EventCalendrier implements Comparable<EventCalendrier> {
     } else if (title == "SUMMARY") {
       _nameEvent = splited[1];
     } else if (title == "LOCATION") {
-      _salle = splited[1].replaceAll("\\,", "n");
+      _salle = splited[1].split("\\,");
     } else if (title == "DESCRIPTION") {
       _description = str
           .substring(str.indexOf(":") + 1)
@@ -90,13 +92,15 @@ class EventCalendrier implements Comparable<EventCalendrier> {
     return date.compareTo(other.date);
   }
 
-  EventCalendrier.fromJson(Map<String, dynamic> json) {
-    _date = DateTime.fromMillisecondsSinceEpoch(json["debut"]);
-    _duree = Duration(seconds: json["duree"]);
-    _nameEvent = json["name"];
-    _salle = json["salle"];
-    _description = json["description"];
-    _uid = json["uid"];
+  EventCalendrier.fromJson(Map<String, dynamic> jsonData) {
+    _date = DateTime.fromMillisecondsSinceEpoch(jsonData["debut"]);
+    _duree = Duration(seconds: jsonData["duree"]);
+    _nameEvent = jsonData["name"];
+    _salle = (json.decode(jsonData["salle"]) as List<dynamic>)
+        .map((e) => e.toString())
+        .toList();
+    _description = jsonData["description"];
+    _uid = jsonData["uid"];
   }
 
   Map<String, dynamic> toJson() => {
@@ -105,6 +109,6 @@ class EventCalendrier implements Comparable<EventCalendrier> {
         "description": description,
         "debut": date.millisecondsSinceEpoch,
         "duree": duree.inSeconds,
-        "salle": salle,
+        "salle": json.encode(salle),
       };
 }

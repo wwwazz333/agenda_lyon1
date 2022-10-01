@@ -16,9 +16,13 @@ class EventList extends EventDisplay {
         itemCount: dayController.length,
         itemBuilder: (context, index) {
           final infos = dayController.infoEvent(index);
+          String subTitle = "";
+          for (String sub in infos["subTitle"]) {
+            subTitle += "$sub\n";
+          }
           return CardEventList(
             title: infos["title"],
-            subTitle: infos["subTitle"],
+            subTitle: subTitle.trim(),
             debut: infos["debut"],
             fin: infos["fin"],
             controller: infos["controller"],

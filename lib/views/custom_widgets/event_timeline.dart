@@ -37,10 +37,9 @@ class EventTimeLine extends EventDisplay {
     for (int i = 0; i < dayController.length; i++) {
       final infos = dayController.infoEvent(i);
       final infosOverlapping = dayController.getOverlapAndPosX(i);
-
       toStack.add(CardEventTimeLine(
         title: infos["title"],
-        subTitle: infos["subTitle"],
+        subTitle: (infos["subTitle"] as List<String>).join(", "),
         debut: infos["debut"],
         fin: infos["fin"],
         controller: infos["controller"],

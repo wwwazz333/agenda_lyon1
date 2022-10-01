@@ -40,7 +40,7 @@ Future<bool> showEventDialog(BuildContext context, EventCalendrier ev) async {
                           style: titleStyle,
                         )),
                     Text(
-                      ev.salle,
+                      ev.salle.toString(),
                       style: infoStyle,
                     ),
                     Align(
