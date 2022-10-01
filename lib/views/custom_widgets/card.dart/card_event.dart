@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../controller/event_controller.dart';
+import 'package:flutter/rendering.dart';
+import '../../../controller/event_controller.dart';
 
 abstract class CardEvent extends StatefulWidget {
   final Color bgColor;
@@ -146,41 +147,33 @@ class _CardEventList extends State<CardEventList> {
         child: Stack(
           children: [
             Card(
-                color: widget.bgColor,
-                child: Container(
-                  constraints: boxH,
-                  child: Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            constraints: boxH,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Text(
-                                  widget.debut,
-                                  style: Theme.of(context).textTheme.bodyText1,
-                                ),
-                                Text(
-                                  widget.fin,
-                                  style: Theme.of(context).textTheme.bodyText1,
-                                )
-                              ],
-                            ),
-                          ),
-                          Text(
-                            widget.title,
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
-                          Text(
-                            widget.subTitle,
-                            style: Theme.of(context).textTheme.bodyText2,
-                          )
-                        ],
-                      )),
-                )),
+              color: widget.bgColor,
+              child: ListTile(
+                visualDensity: const VisualDensity(vertical: 4),
+                leading: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(
+                      widget.debut,
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    Text(
+                      widget.fin,
+                      style: Theme.of(context).textTheme.bodyText1,
+                    )
+                  ],
+                ),
+                title: Text(
+                  widget.title,
+                  style: Theme.of(context).textTheme.bodyText1,
+                  softWrap: true,
+                ),
+                trailing: Text(
+                  widget.subTitle,
+                  style: Theme.of(context).textTheme.bodyText2,
+                ),
+              ),
+            ),
             (widget.nbrTask() != 0)
                 ? Positioned(
                     top: 0,

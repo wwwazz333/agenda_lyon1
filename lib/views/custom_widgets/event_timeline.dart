@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'card_event.dart';
+import 'card.dart/card_event.dart';
 import 'event_display.dart';
 
 class EventTimeLine extends EventDisplay {

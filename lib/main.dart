@@ -1,4 +1,4 @@
-import 'package:agenda_lyon1/data/db_manager.dart';
+import 'package:agenda_lyon1/data/file_manager.dart';
 import 'package:agenda_lyon1/my_settings_screen.dart';
 import 'package:agenda_lyon1/providers.dart';
 import 'package:agenda_lyon1/settings.dart';
@@ -24,6 +24,7 @@ class MyApp extends ConsumerWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    FileManager.delFile(FileManager.calendrierFile);
     loadSettings(ref);
     return MaterialApp(
       supportedLocales: const [
