@@ -31,23 +31,30 @@ class DataController {
     });
   }
 
-  void updateCalendrier(String urlPath) async {
+  Future<void> updateCalendrier(String urlPath) async {
     try {
       String content = await FileDownloader.downloadFile(urlPath);
-      calendrier = Calendrier.load(content);
-
-      FileManager.writeObject(
-          FileManager.calendrierFile, jsonEncode(calendrier));
-      informeUpdate();
+      Calendrier temp = Calendrier([]);
+      temp.loadFromString(content).then((value) {
+        FileManager.writeObject(
+            FileManager.calendrierFile, jsonEncode(calendrier));
+        calendrier = temp;
+        informeUpdate();
+      });
     } catch (_) {}
   }
 
+  bool _dataLoaded = false;
   Future<bool> load() async {
-    await Future.wait([
-      loadCalendrier(),
-      loadColors(),
-      loadTasks(),
-    ]);
+    if (!_dataLoaded) {
+      await Future.wait([
+        loadCalendrier(),
+        loadColors(),
+        loadTasks(),
+      ]);
+      _dataLoaded = true;
+    }
+
     return true;
   }
 

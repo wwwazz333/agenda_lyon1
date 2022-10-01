@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter_logs/flutter_logs.dart';
 import '../common/error/file_error.dart';
@@ -42,7 +43,7 @@ class Calendrier {
     }
   }
 
-  void loadFromString(String txtIcs) {
+  Future<void> loadFromString(String txtIcs) async {
     final List<EventCalendrier> tempEvents = [];
     final lines = txtIcs.split(RegExp("\n(?=[A-Z])"));
     var stateCal = _StateLecture.close;
@@ -70,6 +71,8 @@ class Calendrier {
           tempEvents.last.parseLine(line);
         }
       }
+      await Future.delayed(
+          const Duration(microseconds: 1)); //pour évité les freeze
     }
     events = tempEvents;
     if (_events.isEmpty) FlutterLogs.logWarn("Event", "_events", "is empty");
