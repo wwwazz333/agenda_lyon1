@@ -64,36 +64,30 @@ class DayController {
 
   Map<String, dynamic> infoEvent(int index) {
     final ev = _eventOfDay[index];
-    Color? bgColor;
-    if (appIsDarkMode) {
-      bgColor = fixedColorsDark[ev.summary];
-      if (bgColor == null) {
-        bgColor = colorsDark[countColor++ % colorsDark.length];
-        DBManager.insertInto("ColorsDark", {
-          "nameEvent": ev.summary,
-          "r": bgColor.red,
-          "g": bgColor.green,
-          "b": bgColor.blue,
-        });
+    Color getColor() {
+      Color? bgColor;
+      if (appIsDarkMode) {
+        bgColor = fixedColorsDark[ev.summary];
+        if (bgColor == null) {
+          bgColor = colorsDark[countColor++ % colorsDark.length];
+          addColor(ev.summary, bgColor, appIsDarkMode);
+        }
+      } else {
+        bgColor = fixedColorsLight[ev.summary];
+        if (bgColor == null) {
+          bgColor = colorsLight[countColor++ % colorsLight.length];
+          addColor(ev.summary, bgColor, appIsDarkMode);
+        }
       }
-    } else {
-      bgColor = fixedColorsLight[ev.summary];
-      if (bgColor == null) {
-        bgColor = colorsLight[countColor++ % colorsLight.length];
-        DBManager.insertInto("ColorsLight", {
-          "nameEvent": ev.summary,
-          "r": bgColor.red,
-          "g": bgColor.green,
-          "b": bgColor.blue,
-        });
-      }
+      return bgColor;
     }
+
     return {
       "title": ev.summary,
       "subTitle": ev.salle,
       "debut": ev.heureDebut,
       "fin": ev.heureFin,
-      "color": bgColor,
+      "color": getColor,
       "controller": EventController(ev),
       "nbrTask": () => tasks[ev.uid] != null ? tasks[ev.uid]!.length : 0,
     };

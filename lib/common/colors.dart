@@ -15,6 +15,26 @@ Future<void> loadColors() async {
   }
 }
 
+void addColor(String linkedTitel, Color color, bool isDarkColor) {
+  if (isDarkColor) {
+    fixedColorsDark[linkedTitel] = color;
+    DBManager.insertInto("ColorsDark", {
+      "nameEvent": linkedTitel,
+      "r": color.red,
+      "g": color.green,
+      "b": color.blue,
+    });
+  } else {
+    fixedColorsLight[linkedTitel] = color;
+    DBManager.insertInto("ColorsLight", {
+      "nameEvent": linkedTitel,
+      "r": color.red,
+      "g": color.green,
+      "b": color.blue,
+    });
+  }
+}
+
 const Color redOnePlus = Color.fromARGB(255, 230, 23, 75);
 
 int countColor = 0;

@@ -1,9 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import '../../../controller/event_controller.dart';
 
 abstract class CardEvent extends StatefulWidget {
-  final Color bgColor;
+  final Color Function() bgColor;
   final String title;
   final String subTitle;
   final String debut;
@@ -17,7 +18,7 @@ abstract class CardEvent extends StatefulWidget {
       required this.fin,
       required this.controller,
       required this.nbrTask,
-      this.bgColor = Colors.blueGrey,
+      required this.bgColor,
       super.key});
 }
 
@@ -41,7 +42,7 @@ class _CardEventTimeLine extends State<CardEventTimeLine> {
             child: Stack(
               children: [
                 Card(
-                  color: widget.bgColor,
+                  color: widget.bgColor(),
                   child: Container(
                     constraints: boxH,
                     child: Padding(
@@ -123,7 +124,7 @@ class CardEventTimeLine extends CardEvent {
       required super.controller,
       required super.nbrTask,
       required this.oneHoureH,
-      super.bgColor,
+      required super.bgColor,
       this.nbrOverlap = 1,
       this.placeForOverlape = 0,
       this.startHour = 5,
@@ -142,12 +143,14 @@ class _CardEventList extends State<CardEventList> {
     const boxH = BoxConstraints(minHeight: 70);
     return GestureDetector(
         onTap: () => widget.controller.onTap(context).then((value) => setState(
-              () {},
+              () {
+                log("here pourtant");
+              },
             )),
         child: Stack(
           children: [
             Card(
-              color: widget.bgColor,
+              color: widget.bgColor(),
               child: ListTile(
                 visualDensity: const VisualDensity(vertical: 4),
                 leading: Column(
@@ -201,7 +204,7 @@ class CardEventList extends CardEvent {
       required super.nbrTask,
       required super.debut,
       required super.fin,
-      super.bgColor,
+      required super.bgColor,
       required super.controller,
       super.key});
 

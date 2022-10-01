@@ -24,7 +24,6 @@ class MyApp extends ConsumerWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    FileManager.delFile(FileManager.calendrierFile);
     loadSettings(ref);
     return MaterialApp(
       supportedLocales: const [

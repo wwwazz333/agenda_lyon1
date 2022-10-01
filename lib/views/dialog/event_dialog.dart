@@ -1,5 +1,8 @@
+import 'package:agenda_lyon1/common/colors.dart';
+import 'package:agenda_lyon1/common/global_data.dart';
 import 'package:agenda_lyon1/common/tasks.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:intl/intl.dart';
 
 import '../../model/event_calendrier.dart';
@@ -9,13 +12,51 @@ Future<bool> showEventDialog(BuildContext context, EventCalendrier ev) async {
   final titleStyle = Theme.of(context).textTheme.headline2;
   final infoStyle = Theme.of(context).textTheme.bodyText1;
 
+  var bgColor = (appIsDarkMode)
+      ? fixedColorsDark[ev.summary]!
+      : fixedColorsLight[ev.summary]!;
+
   await showDialog(
       context: context,
       builder: ((context) => AlertDialog(
-            title: Text(
-              ev.summary,
-              style: Theme.of(context).textTheme.headline1,
-            ),
+            title: Wrap(children: [
+              Text(
+                ev.summary,
+                style: Theme.of(context).textTheme.headline1,
+              ),
+              StatefulBuilder(
+                builder: (BuildContext context, setState) {
+                  return GestureDetector(
+                      onTap: () async {
+                        Color? color =
+                            await showColorPicker(context, bgColor) as Color?;
+                        if (color != null && color != bgColor) {
+                          setState(
+                            () {
+                              bgColor = color;
+                              addColor(ev.summary, color, appIsDarkMode);
+                              hasToUpdate = true;
+                            },
+                          );
+                        }
+                      },
+                      child: SizedBox(
+                        height: 48,
+                        width: 48,
+                        child: Stack(
+                          children: [
+                            Container(
+                              color: bgColor,
+                            ),
+                            const Center(
+                              child: Icon(Icons.edit),
+                            ),
+                          ],
+                        ),
+                      ));
+                },
+              ),
+            ]),
             content: SingleChildScrollView(
               physics: const ClampingScrollPhysics(),
               child: SizedBox(
@@ -167,11 +208,36 @@ class TaskWidget extends StatelessWidget {
   }
 }
 
+Future<dynamic> showColorPicker(BuildContext context, Color defaultColor) {
+  return showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Pick a color!'),
+      content: SingleChildScrollView(
+        child: ColorPicker(
+          pickerColor: defaultColor,
+          onColorChanged: (Color color) {
+            defaultColor = color;
+          },
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: const Text('Confirmer'),
+          onPressed: () {
+            Navigator.pop(context, defaultColor);
+          },
+        ),
+      ],
+    ),
+  );
+}
+
 Future<dynamic> showStringPicker(BuildContext context, String title) {
   TextEditingController controller = TextEditingController();
   return showDialog(
       context: context,
-      builder: ((context) => AlertDialog(
+      builder: (context) => AlertDialog(
             title: Text(
               title,
               style: Theme.of(context).textTheme.headline1,
@@ -190,13 +256,13 @@ Future<dynamic> showStringPicker(BuildContext context, String title) {
                     "OK",
                   )),
             ],
-          )));
+          ));
 }
 
 Future<dynamic> showConfirmDel(BuildContext context, String task) {
   return showDialog(
       context: context,
-      builder: ((context) => AlertDialog(
+      builder: (context) => AlertDialog(
             title: Text(
               "Supprimer la tâche ?",
               style: Theme.of(context).textTheme.headline1,
@@ -221,5 +287,5 @@ Future<dynamic> showConfirmDel(BuildContext context, String task) {
                     "Confirmer",
                   )),
             ],
-          )));
+          ));
 }
