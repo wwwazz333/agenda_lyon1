@@ -1,7 +1,6 @@
 import 'package:agenda_lyon1/common/colors.dart';
 import 'package:agenda_lyon1/data/shared_pref.dart';
 import 'package:agenda_lyon1/providers.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'common/global_data.dart';
@@ -41,25 +40,30 @@ class SettingsApp {
   }
 }
 
+bool _criticalSettingsLoaded = false;
 Future<bool> loadCriticalSettings(WidgetRef ref) async {
-  await Future.wait([
-    DBManager.open(),
-    DataReader.getString("urlCalendar", "")
-        .then((value) => ref.read(urlCalendar.notifier).state = value),
-    DataReader.getBool("isDark").then((value) {
-      ref.read(themeApp.notifier).state =
-          value ? themes["dark"]! : themes["light"]!;
-      appIsDarkMode = value;
-    }),
-    DataReader.getString("language", languages.values.first.languageCode).then(
-        (value) => ref.read(languageApp.notifier).state = languages[value]!),
-    DataReader.getBool("cardTimeLineDisplay")
-        .then((value) => ref.read(cardTypeDisplay).cardTimeLineDisplay = value),
-    DataReader.getInt("firstHourDisplay", 6)
-        .then((value) => ref.read(cardTypeDisplay).firstHourDisplay = value),
-    DataReader.getInt("lastHourDisplay", 20)
-        .then((value) => ref.read(cardTypeDisplay).lastHourDisplay = value),
-  ]);
+  if (!_criticalSettingsLoaded) {
+    await Future.wait([
+      DBManager.open(),
+      DataReader.getString("urlCalendar", "")
+          .then((value) => ref.read(urlCalendar.notifier).state = value),
+      DataReader.getBool("isDark").then((value) {
+        ref.read(themeApp.notifier).state =
+            value ? themes["dark"]! : themes["light"]!;
+        appIsDarkMode = value;
+      }),
+      DataReader.getString("language", languages.values.first.languageCode)
+          .then((value) =>
+              ref.read(languageApp.notifier).state = languages[value]!),
+      DataReader.getBool("cardTimeLineDisplay").then(
+          (value) => ref.read(cardTypeDisplay).cardTimeLineDisplay = value),
+      DataReader.getInt("firstHourDisplay", 6)
+          .then((value) => ref.read(cardTypeDisplay).firstHourDisplay = value),
+      DataReader.getInt("lastHourDisplay", 20)
+          .then((value) => ref.read(cardTypeDisplay).lastHourDisplay = value),
+    ]);
+    _criticalSettingsLoaded = true;
+  }
 
   return true;
 }
@@ -90,14 +94,18 @@ void setUpListeners(WidgetRef ref) {
   });
 }
 
+bool _settingsLoaded = false;
 void loadSettings(WidgetRef ref) {
-  setUpListeners(ref);
-  DataReader.getBool("notifEnabled", true)
-      .then((value) => SettingsApp.notifEnabled = value);
+  if (!_settingsLoaded) {
+    setUpListeners(ref);
+    DataReader.getBool("notifEnabled", true)
+        .then((value) => SettingsApp.notifEnabled = value);
 
-  DataReader.getBool("jourFeriesEnabled")
-      .then((value) => SettingsApp.jourFeriesEnabled = value);
+    DataReader.getBool("jourFeriesEnabled")
+        .then((value) => SettingsApp.jourFeriesEnabled = value);
 
-  DataReader.getBool("alamresAvancesEnabled")
-      .then((value) => SettingsApp.alamresAvancesEnabled = value);
+    DataReader.getBool("alamresAvancesEnabled")
+        .then((value) => SettingsApp.alamresAvancesEnabled = value);
+    _settingsLoaded = true;
+  }
 }
