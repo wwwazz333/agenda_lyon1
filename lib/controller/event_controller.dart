@@ -1,6 +1,5 @@
 import 'package:agenda_lyon1/common/colors.dart';
 import 'package:agenda_lyon1/common/tasks.dart';
-import 'package:agenda_lyon1/data/db_manager.dart';
 import 'package:agenda_lyon1/model/date.dart';
 import 'package:flutter/cupertino.dart';
 

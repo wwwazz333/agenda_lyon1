@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter_logs/flutter_logs.dart';
 import '../common/error/file_error.dart';
 import '../data/file_manager.dart';
