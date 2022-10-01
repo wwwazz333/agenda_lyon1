@@ -32,9 +32,7 @@ class _CardEventTimeLine extends State<CardEventTimeLine> {
           widthCard / widget.nbrOverlap * widget.placeForOverlape,
       child: GestureDetector(
         onTap: () => widget.controller.onTap(context).then((value) => setState(
-              () {
-                print("coucou");
-              },
+              () {},
             )),
         child: SizedBox(
             width: widthCard / widget.nbrOverlap,
