@@ -43,11 +43,13 @@ class DataController {
   }
 
   Future<bool> load() async {
-    //fixme opimze not await for each
+    final loadingCalendar = loadCalendrier();
+    final loadingColors = loadColors();
+    final loadingTasks = loadTasks();
 
-    await loadTasks();
-    await loadColors();
-    await loadCalendrier();
+    await loadingCalendar;
+    await loadingColors;
+    await loadingTasks;
 
     return true;
   }

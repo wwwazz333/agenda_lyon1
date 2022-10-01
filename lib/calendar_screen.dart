@@ -60,7 +60,7 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
         child: FutureBuilder(
           future: loadingFuture,
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
+            if (snapshot.hasData && snapshot.data == true) {
               return Column(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
