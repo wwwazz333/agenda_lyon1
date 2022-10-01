@@ -55,7 +55,10 @@ class MyApp extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: const [
-                    Icon(Icons.calendar_today),
+                    Icon(
+                      Icons.calendar_today,
+                      size: 64,
+                    ),
                     SizedBox(
                       height: 16,
                     ),
