@@ -1,10 +1,12 @@
 import 'package:agenda_lyon1/common/colors.dart';
 import 'package:agenda_lyon1/data/shared_pref.dart';
 import 'package:agenda_lyon1/providers.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'common/global_data.dart';
 import 'common/themes.dart';
+import 'data/db_manager.dart';
 
 class SettingsApp {
   static bool _notifEnabled = true;
@@ -39,17 +41,32 @@ class SettingsApp {
   }
 }
 
-void loadCriticalSettings(ProviderContainer ref) {
-  DataReader.getString("urlCalendar", "")
-      .then((value) => ref.read(urlCalendar.notifier).state = value);
+Future<bool> loadCriticalSettings(WidgetRef ref) async {
+  await Future.wait([
+    DBManager.open(),
+    DataReader.getString("urlCalendar", "")
+        .then((value) => ref.read(urlCalendar.notifier).state = value),
+    DataReader.getBool("isDark").then((value) {
+      ref.read(themeApp.notifier).state =
+          value ? themes["dark"]! : themes["light"]!;
+      appIsDarkMode = value;
+    }),
+    DataReader.getString("language", languages.values.first.languageCode).then(
+        (value) => ref.read(languageApp.notifier).state = languages[value]!),
+    DataReader.getBool("cardTimeLineDisplay")
+        .then((value) => ref.read(cardTypeDisplay).cardTimeLineDisplay = value),
+    DataReader.getInt("firstHourDisplay", 6)
+        .then((value) => ref.read(cardTypeDisplay).firstHourDisplay = value),
+    DataReader.getInt("lastHourDisplay", 20)
+        .then((value) => ref.read(cardTypeDisplay).lastHourDisplay = value),
+  ]);
+
+  return true;
+}
+
+void setUpListeners(WidgetRef ref) {
   ref.listen(urlCalendar, (previous, next) {
     DataReader.save("urlCalendar", next);
-  });
-
-  DataReader.getBool("isDark").then((value) {
-    ref.read(themeApp.notifier).state =
-        value ? themes["dark"]! : themes["light"]!;
-    appIsDarkMode = value;
   });
 
   ref.listen(themeApp, (previous, next) {
@@ -60,21 +77,11 @@ void loadCriticalSettings(ProviderContainer ref) {
     }
   });
 
-  DataReader.getString("language", languages.values.first.languageCode).then(
-      (value) => ref.read(languageApp.notifier).state = languages[value]!);
-
   ref.listen(languageApp, (previous, next) {
     if (previous != next) {
       DataReader.save("language", next.languageCode);
     }
   });
-
-  DataReader.getBool("cardTimeLineDisplay")
-      .then((value) => ref.read(cardTypeDisplay).cardTimeLineDisplay = value);
-  DataReader.getInt("firstHourDisplay", 6)
-      .then((value) => ref.read(cardTypeDisplay).firstHourDisplay = value);
-  DataReader.getInt("lastHourDisplay", 20)
-      .then((value) => ref.read(cardTypeDisplay).lastHourDisplay = value);
 
   ref.listen(cardTypeDisplay, (previous, next) {
     DataReader.save("cardTimeLineDisplay", next.cardTimeLineDisplay);
@@ -84,6 +91,7 @@ void loadCriticalSettings(ProviderContainer ref) {
 }
 
 void loadSettings(WidgetRef ref) {
+  setUpListeners(ref);
   DataReader.getBool("notifEnabled", true)
       .then((value) => SettingsApp.notifEnabled = value);
 

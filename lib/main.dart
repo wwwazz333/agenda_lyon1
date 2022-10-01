@@ -11,15 +11,10 @@ import 'settings_screen_url.dart';
 
 Future<void> main() async {
   // à faire au démarrage de l'app
-  WidgetsFlutterBinding.ensureInitialized();
-  DBManager.open();
-  final container = ProviderContainer();
-  loadCriticalSettings(container);
 
   // démarrage app
-  runApp(UncontrolledProviderScope(
-    container: container,
-    child: const MyApp(),
+  runApp(const ProviderScope(
+    child: MyApp(),
   ));
 }
 
@@ -48,7 +43,27 @@ class MyApp extends ConsumerWidget {
       },
       // ref.watch(themeApp)
       theme: ref.watch(themeApp),
-      home: const CalendarScreen(),
+      home: FutureBuilder(
+        future: loadCriticalSettings(ref),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData && snapshot.data == true) {
+            return const CalendarScreen();
+          } else {
+            return Center(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    Icon(Icons.calendar_today),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    CircularProgressIndicator(),
+                  ]),
+            );
+          }
+        },
+      ),
     );
   }
 }
