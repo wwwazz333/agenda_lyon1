@@ -16,12 +16,12 @@ const updateCalendrier = "com.agenda_lyon1.workUpdate.calendrier";
 
 void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
-    switch (task) {
-      case updateCalendrier:
-        log("Task:  here, whit inputData = $inputData");
-        await DataController().update();
-        break;
-    }
+    // switch (task) {
+    //   case updateCalendrier:
+    //     log("Task:  here, whit inputData = $inputData");
+    //     await DataController().update();
+    //     break;
+    // }
     return Future.value(true);
   });
 }
@@ -45,17 +45,9 @@ class MyApp extends ConsumerWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // FileManager.delFile(FileManager.calendrierFile);
-
-    Workmanager().registerOneOffTask(
-      updateCalendrier,
-      updateCalendrier,
-      inputData: <String, dynamic>{
-        'fun': "super",
-      },
-    );
     loadSettings(ref);
     return MaterialApp(
+      showPerformanceOverlay: true,
       supportedLocales: const [
         Locale('fr'),
         Locale('en'),

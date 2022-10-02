@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:isolate';
 
 import 'package:agenda_lyon1/controller/data_controller.dart';
 import 'package:agenda_lyon1/views/custom_widgets/event_list.dart';
@@ -30,6 +31,7 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
   @override
   void initState() {
     loadingFuture = DataController().load();
+    DataController().update();
     DataController().addListenerUpdate(
         "updateCalendarScreenView",
         () => setState(
@@ -37,6 +39,7 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
                 log("Task: update calendar screen");
               },
             ));
+
     super.initState();
   }
 
@@ -46,13 +49,13 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
     ref.listen(selectedDate, (previous, next) {
       _controller.goToGoodPage(next);
     });
-    ref.listen(
-      urlCalendar,
-      (previous, next) {
-        setState(() {});
-        DataController().updateCalendrier(next);
-      },
-    );
+    // ref.listen(
+    //   urlCalendar,
+    //   (previous, next) {
+    //     setState(() {});
+    //     DataController().updateCalendrier(next);
+    //   },
+    // );
     ref.listen(
       themeApp,
       (previous, next) {

@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:isolate';
 
 import 'package:agenda_lyon1/data/file_manager.dart';
 import 'package:agenda_lyon1/data/shared_pref.dart';
 import 'package:agenda_lyon1/network/file_downolader.dart';
+import 'package:flutter/foundation.dart';
 
 import '../common/colors.dart';
 import '../common/tasks.dart';
@@ -17,7 +19,7 @@ class DataController {
   static DataController? _instance;
 
   DataController._() {
-    log("Task: je ne devrais pas passez ici2 fois");
+    log("Task: hash = $hashCode");
   }
 
   factory DataController() {
@@ -32,31 +34,33 @@ class DataController {
   }
 
   Future<void> update() async {
+    final url = await DataReader.getString("urlCalendar", "");
+    final resEncodedData = await compute(updateCalendrier, url);
+    if (resEncodedData != null) {
+      calendrier = Calendrier.fromJson(resEncodedData);
+      informeUpdate();
+    }
+
     log("Task: update Calendar");
-    await DataReader.getString("urlCalendar", "").then(
-      (value) => updateCalendrier(value),
-    );
-    log("Task: end update Calendar");
   }
 
-  Future<void> updateCalendrier(String urlPath) async {
+  static Future<Map<String, dynamic>?> updateCalendrier(String urlPath) async {
     try {
       String content = await FileDownloader.downloadFile(urlPath);
       Calendrier temp = Calendrier([]);
-      temp.loadFromString(content).then((value) {
-        FileManager.writeObject(FileManager.calendrierFile, jsonEncode(temp));
-        calendrier = temp;
-        informeUpdate();
-        log("Task: end");
-      });
+      await temp.loadFromString(content);
+      final encodedData = jsonEncode(temp);
+      FileManager.writeObject(FileManager.calendrierFile, encodedData);
+      return jsonDecode(encodedData);
     } catch (_) {}
+    return null;
   }
 
   bool _dataLoaded = false;
   Future<bool> load() async {
     if (!_dataLoaded) {
       await Future.wait([
-        // loadCalendrier(),
+        loadCalendrier(),
         loadColors(),
         loadTasks(),
       ]);
@@ -69,7 +73,6 @@ class DataController {
   Future<bool> loadCalendrier() async {
     final String? jsonCal =
         await FileManager.readObject(FileManager.calendrierFile);
-
     if (jsonCal != null) {
       calendrier = Calendrier.fromJson(jsonDecode(jsonCal));
       return true;
