@@ -1,3 +1,4 @@
+import 'package:agenda_lyon1/model/date.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
@@ -53,17 +54,17 @@ class TabCalendarUIController {
   }
 
   int getIndexPageOfDate(DateTime date) {
-    return Jiffy(date.add(Duration(days: -startDayWeek - 1)))
-        .diff(Jiffy(firstDate), Units.WEEK)
+    return Jiffy(date.midi().add(Duration(days: -startDayWeek)))
+        .diff(Jiffy(firstDate.midi()), Units.WEEK)
         .toInt();
   }
 
   void goToGoodPage(DateTime newDate) {
     if (_pageController.page != null &&
         _pageController.page == _pageController.page!.toInt().toDouble() &&
-        getIndexPageOfDate(newDate) != _pageController.page) {
+        getIndexPageOfDate(newDate.midi()) != _pageController.page) {
       //si scroll pas la page mais doit changer
-      _pageController.jumpToPage(getIndexPageOfDate(newDate));
+      _pageController.jumpToPage(getIndexPageOfDate(newDate.midi()));
     }
   }
 
@@ -82,7 +83,7 @@ class TabCalendarUIController {
 
   List<DateTime> genDateOfPage(int indexPage) {
     return List.generate(7, (i) {
-      final fir = Jiffy(firstDate).add(hours: 12);
+      final fir = Jiffy(firstDate.midi());
       fir.add(weeks: indexPage, days: i + 2);
       return fir.dateTime;
     });

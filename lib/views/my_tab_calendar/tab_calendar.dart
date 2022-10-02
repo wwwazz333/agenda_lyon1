@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:agenda_lyon1/model/date.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -31,8 +33,7 @@ class Header extends ConsumerWidget {
                             dateValue.add(const Duration(days: 365 * 100)),
                       )) ??
                       dateValue;
-                  ref.read(selectedDate.notifier).state =
-                      d.add(const Duration(hours: 1));
+                  ref.read(selectedDate.notifier).state = d.midi();
                 },
                 child: Row(
                   children: [
@@ -78,6 +79,8 @@ class WeekView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dateValue = ref.watch(selectedDate);
+    log("infos = ${dateValue.midi()}\t${dayNumbers.toString()}");
+    log("bool  = ${(dateValue.midi().isSameDay(dayNumbers[1].midi()))}");
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: List.generate(
@@ -96,11 +99,15 @@ class WeekView extends ConsumerWidget {
                     children: [
                       Text(
                         dayNames[(index + startDay) % 7],
-                        style: (dateValue.isSameDay(dayNumbers[index]))
+                        style: (dateValue
+                                .midi()
+                                .isSameDay(dayNumbers[index].midi()))
                             ? TextStyle(
                                 color: Theme.of(context).primaryColor,
                                 fontWeight: FontWeight.bold)
-                            : (DateTime.now().isSameDay(dayNumbers[index]))
+                            : (DateTime.now()
+                                    .midi()
+                                    .isSameDay(dayNumbers[index].midi()))
                                 ? const TextStyle(
                                     color: Colors.orange,
                                     fontWeight: FontWeight.bold)

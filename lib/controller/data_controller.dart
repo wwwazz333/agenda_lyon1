@@ -38,6 +38,8 @@ class DataController {
     final resEncodedData = await compute(updateCalendrier, url);
     if (resEncodedData != null) {
       calendrier = Calendrier.fromJson(resEncodedData);
+      FileManager.writeObject(
+          FileManager.calendrierFile, jsonEncode(resEncodedData));
       informeUpdate();
     }
 
@@ -49,9 +51,7 @@ class DataController {
       String content = await FileDownloader.downloadFile(urlPath);
       Calendrier temp = Calendrier([]);
       temp.loadFromString(content);
-      final encodedData = jsonEncode(temp);
-      FileManager.writeObject(FileManager.calendrierFile, encodedData);
-      return jsonDecode(encodedData);
+      return jsonDecode(jsonEncode(temp));
     } catch (_) {}
     return null;
   }

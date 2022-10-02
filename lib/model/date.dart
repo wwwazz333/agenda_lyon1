@@ -16,6 +16,10 @@ extension Date on DateTime {
   DateTime toLocaleFrance() {
     return add(Duration(minutes: _getTimeZone(this)));
   }
+
+  DateTime midi() {
+    return add(Duration(hours: 12 - hour));
+  }
 }
 
 int _getTimeZone(DateTime forr) {

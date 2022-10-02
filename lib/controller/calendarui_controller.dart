@@ -1,3 +1,4 @@
+import 'package:agenda_lyon1/model/date.dart';
 import 'package:flutter/material.dart';
 
 import '../common/global_data.dart';
@@ -11,7 +12,7 @@ class CalendarUIController {
   CalendarUIController({DateTime? startingDate})
       : _startingDate = startingDate ?? DateTime.now() {
     _pageController =
-        PageController(initialPage: getIndexOfDate(_startingDate));
+        PageController(initialPage: getIndexOfDate(_startingDate.midi()));
   }
 
   DateTime get startingDate {
@@ -33,7 +34,7 @@ class CalendarUIController {
   void goToGoodPage(DateTime newDate) {
     if (pageController.page! == pageController.page!.toInt().toDouble()) {
       //si scroll pas la page mais que date change
-      pageController.jumpToPage(getIndexOfDate(newDate));
+      pageController.jumpToPage(getIndexOfDate(newDate.midi()));
     }
   }
 

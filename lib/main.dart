@@ -29,6 +29,7 @@ void callbackDispatcher() {
 Future<void> main() async {
   // à faire au démarrage de l'app
   WidgetsFlutterBinding.ensureInitialized();
+  log(DateTime.now().toString());
   Workmanager().initialize(
     callbackDispatcher,
     isInDebugMode: true,
@@ -47,7 +48,6 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     loadSettings(ref);
     return MaterialApp(
-      showPerformanceOverlay: true,
       supportedLocales: const [
         Locale('fr'),
         Locale('en'),
