@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:agenda_lyon1/controller/data_controller.dart';
 import 'package:agenda_lyon1/views/custom_widgets/event_list.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +33,9 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
     DataController().addListenerUpdate(
         "updateCalendarScreenView",
         () => setState(
-              () {},
+              () {
+                log("Task: update calendar screen");
+              },
             ));
     super.initState();
   }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:agenda_lyon1/data/file_manager.dart';
 import 'package:agenda_lyon1/data/shared_pref.dart';
@@ -15,11 +16,7 @@ class DataController {
 
   static DataController? _instance;
 
-  DataController._() {
-    DataReader.getString("urlCalendar", "").then(
-      (value) => updateCalendrier(value),
-    );
-  }
+  DataController._();
 
   factory DataController() {
     _instance ??= DataController._();
@@ -31,13 +28,20 @@ class DataController {
     });
   }
 
+  Future<void> update() async {
+    log("Task: update Calendar");
+    await DataReader.getString("urlCalendar", "").then(
+      (value) => updateCalendrier(value),
+    );
+    log("Task: end update Calendar");
+  }
+
   Future<void> updateCalendrier(String urlPath) async {
     try {
       String content = await FileDownloader.downloadFile(urlPath);
       Calendrier temp = Calendrier([]);
       temp.loadFromString(content).then((value) {
-        FileManager.writeObject(
-            FileManager.calendrierFile, jsonEncode(calendrier));
+        FileManager.writeObject(FileManager.calendrierFile, jsonEncode(temp));
         calendrier = temp;
         informeUpdate();
       });
@@ -48,7 +52,7 @@ class DataController {
   Future<bool> load() async {
     if (!_dataLoaded) {
       await Future.wait([
-        loadCalendrier(),
+        // loadCalendrier(),
         loadColors(),
         loadTasks(),
       ]);
@@ -61,6 +65,7 @@ class DataController {
   Future<bool> loadCalendrier() async {
     final String? jsonCal =
         await FileManager.readObject(FileManager.calendrierFile);
+
     if (jsonCal != null) {
       calendrier = Calendrier.fromJson(jsonDecode(jsonCal));
       return true;

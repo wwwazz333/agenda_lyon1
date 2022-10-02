@@ -10,6 +10,8 @@ enum _StateLecture { close, open, event }
 class Calendrier {
   List<EventCalendrier> _events = [];
 
+  List<EventCalendrier> get events => _events;
+
   set events(List<EventCalendrier> newEvents) {
     _events = newEvents;
     _events.sort();
@@ -69,8 +71,8 @@ class Calendrier {
           tempEvents.last.parseLine(line);
         }
       }
-      await Future.delayed(
-          const Duration(microseconds: 1)); //pour évité les freeze
+      // await Future.delayed(
+      //     const Duration(microseconds: 1)); //pour évité les freeze
     }
     events = tempEvents;
     if (_events.isEmpty) FlutterLogs.logWarn("Event", "_events", "is empty");

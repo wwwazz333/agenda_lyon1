@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -14,7 +12,6 @@ class DBManager {
     return openDatabase(
       join(await getDatabasesPath(), "database.db"),
       onCreate: (db, version) {
-        log("création db...................................");
         db.execute(
           "CREATE TABLE ColorsLight(nameEvent TEXT PRIMARY KEY, r INTEGER, g INTEGER, b INTEGER)",
         );
@@ -24,12 +21,6 @@ class DBManager {
         db.execute(
           "CREATE TABLE Tasks(id INTEGER PRIMARY KEY autoincrement, uid TEXT, task TEXT)",
         );
-      },
-      onUpgrade: (db, oldVersion, newVersion) {
-        log("chibrax");
-      },
-      onOpen: (db) {
-        log("opened db");
       },
       version: 15,
     );
