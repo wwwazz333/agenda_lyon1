@@ -48,7 +48,7 @@ class DataController {
     try {
       String content = await FileDownloader.downloadFile(urlPath);
       Calendrier temp = Calendrier([]);
-      await temp.loadFromString(content);
+      temp.loadFromString(content);
       final encodedData = jsonEncode(temp);
       FileManager.writeObject(FileManager.calendrierFile, encodedData);
       return jsonDecode(encodedData);

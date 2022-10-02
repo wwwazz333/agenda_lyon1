@@ -43,7 +43,7 @@ class Calendrier {
     }
   }
 
-  Future<void> loadFromString(String txtIcs) async {
+  void loadFromString(String txtIcs) {
     final List<EventCalendrier> tempEvents = [];
     final lines = txtIcs.split(RegExp("\n(?=[A-Z])"));
     var stateCal = _StateLecture.close;
