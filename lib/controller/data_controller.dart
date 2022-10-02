@@ -16,13 +16,16 @@ class DataController {
 
   static DataController? _instance;
 
-  DataController._();
+  DataController._() {
+    log("Task: je ne devrais pas passez ici2 fois");
+  }
 
   factory DataController() {
     _instance ??= DataController._();
     return _instance!;
   }
   void informeUpdate() {
+    log("Task: informeUpdate size = ${updateListeners.length} for $hashCode");
     updateListeners.forEach((key, fun) {
       fun();
     });
@@ -44,6 +47,7 @@ class DataController {
         FileManager.writeObject(FileManager.calendrierFile, jsonEncode(temp));
         calendrier = temp;
         informeUpdate();
+        log("Task: end");
       });
     } catch (_) {}
   }
@@ -100,5 +104,6 @@ class DataController {
 
   void addListenerUpdate(String uniquKey, void Function() fun) {
     updateListeners[uniquKey] = fun;
+    log("Task: ajout listener size = ${updateListeners.length} for $hashCode");
   }
 }
