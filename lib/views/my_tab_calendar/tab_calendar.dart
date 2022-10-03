@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:agenda_lyon1/model/date.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

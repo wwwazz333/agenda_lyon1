@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:isolate';
 
 import 'package:agenda_lyon1/data/file_manager.dart';
 import 'package:agenda_lyon1/data/shared_pref.dart';
@@ -50,9 +49,7 @@ class DataController {
   static Future<Calendrier?> updateCalendrier(String urlPath) async {
     try {
       String content = await FileDownloader.downloadFile(urlPath);
-      Calendrier temp = Calendrier([]);
-      temp.loadFromString(content);
-      return temp;
+      return Calendrier([])..loadFromString(content);
     } catch (_) {}
     return null;
   }

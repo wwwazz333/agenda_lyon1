@@ -1,11 +1,9 @@
 import 'dart:developer';
 
-import 'package:agenda_lyon1/data/file_manager.dart';
 import 'package:agenda_lyon1/providers.dart';
 import 'package:agenda_lyon1/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:workmanager/workmanager.dart';
-import 'controller/data_controller.dart';
 import 'views/screen/calendar_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -16,12 +14,11 @@ const updateCalendrier = "com.agenda_lyon1.workUpdate.calendrier";
 
 void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
-    // switch (task) {
-    //   case updateCalendrier:
-    //     log("Task:  here, whit inputData = $inputData");
-    //     await DataController().update();
-    //     break;
-    // }
+    switch (task) {
+      case updateCalendrier:
+        log("Work: here, whit inputData = $inputData");
+        break;
+    }
     return Future.value(true);
   });
 }
