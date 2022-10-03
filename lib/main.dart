@@ -10,12 +10,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'views/screen/settings/settings_screen.dart';
 import 'views/screen/settings/settings_screen_url.dart';
-import 'package:timezone/data/latest.dart' as tz;
 
 Future<void> main() async {
   // à faire au démarrage de l'app
   WidgetsFlutterBinding.ensureInitialized();
-  tz.initializeTimeZones();
   Workmanager().initialize(
     callbackDispatcher,
     isInDebugMode: true,

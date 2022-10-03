@@ -35,8 +35,9 @@ class DataController {
   Future<void> update() async {
     log("start update");
     final url = await DataReader.getString("urlCalendar", "");
+    log("url = $url");
     final resCal = await compute(updateCalendrier, url);
-    log("end update");
+    log("end update res = $resCal");
     if (resCal != null) {
       log("start writing in file");
       calendrier = resCal;
@@ -50,7 +51,9 @@ class DataController {
     try {
       String content = await FileDownloader.downloadFile(urlPath);
       return Calendrier([])..loadFromString(content);
-    } catch (_) {}
+    } catch (e) {
+      log("Error: update Cal error $e");
+    }
     return null;
   }
 

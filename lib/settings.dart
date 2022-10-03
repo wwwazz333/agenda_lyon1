@@ -89,10 +89,13 @@ void setUpListeners(WidgetRef ref) {
     }
   });
 
-  ref.listen(cardTypeDisplay, (previous, next) {
-    DataReader.save("cardTimeLineDisplay", next.cardTimeLineDisplay);
-    DataReader.save("firstHourDisplay", next.firstHourDisplay);
-    DataReader.save("lastHourDisplay", next.lastHourDisplay);
+  final cardTypeToDisplay = ref.read(cardTypeDisplay);
+  cardTypeToDisplay.addListener(() {
+    log("changement pour cardTypeDisplay");
+    DataReader.save(
+        "cardTimeLineDisplay", cardTypeToDisplay.cardTimeLineDisplay);
+    DataReader.save("firstHourDisplay", cardTypeToDisplay.firstHourDisplay);
+    DataReader.save("lastHourDisplay", cardTypeToDisplay.lastHourDisplay);
   });
 }
 

@@ -1,5 +1,6 @@
 import 'event_calendrier.dart';
 import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz;
 
 extension Date on DateTime {
   bool isSameDay(DateTime other) {
@@ -21,7 +22,12 @@ extension Date on DateTime {
   }
 }
 
+bool timeZoneInitilized = false;
 int _getTimeZone(DateTime forr) {
+  if (!timeZoneInitilized) {
+    tz.initializeTimeZones();
+    timeZoneInitilized = true;
+  }
   final locationFrance = tz.getLocation('Europe/Paris');
   return tz.TZDateTime.from(forr, locationFrance).timeZoneOffset.inMinutes;
 }
