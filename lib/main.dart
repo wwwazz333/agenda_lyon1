@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:agenda_lyon1/model/background_work.dart';
 import 'package:agenda_lyon1/providers.dart';
 import 'package:agenda_lyon1/settings.dart';
 import 'package:flutter/material.dart';
@@ -10,23 +11,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'views/screen/settings/settings_screen.dart';
 import 'views/screen/settings/settings_screen_url.dart';
 
-const updateCalendrier = "com.agenda_lyon1.workUpdate.calendrier";
-
-void callbackDispatcher() {
-  Workmanager().executeTask((task, inputData) async {
-    switch (task) {
-      case updateCalendrier:
-        log("Work: here, whit inputData = $inputData");
-        break;
-    }
-    return Future.value(true);
-  });
-}
-
 Future<void> main() async {
   // à faire au démarrage de l'app
   WidgetsFlutterBinding.ensureInitialized();
-  log(DateTime.now().toString());
   Workmanager().initialize(
     callbackDispatcher,
     isInDebugMode: true,

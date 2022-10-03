@@ -1,9 +1,11 @@
 import 'dart:developer';
 
 import 'package:agenda_lyon1/controller/data_controller.dart';
+import 'package:agenda_lyon1/model/background_work.dart';
 import 'package:agenda_lyon1/views/custom_widgets/event_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:workmanager/workmanager.dart';
 
 import '../../controller/calendarui_controller.dart';
 import '../../providers.dart';
@@ -39,7 +41,8 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
                 log("Task: update calendar screen");
               },
             ));
-
+    // Work().testWork();
+    testWork();
     super.initState();
   }
 
