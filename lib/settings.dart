@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:agenda_lyon1/common/colors.dart';
 import 'package:agenda_lyon1/data/shared_pref.dart';
 import 'package:agenda_lyon1/providers.dart';
@@ -64,7 +66,7 @@ Future<bool> loadCriticalSettings(WidgetRef ref) async {
     ]);
     _criticalSettingsLoaded = true;
   }
-
+  log("fin loadCriticalSettings");
   return true;
 }
 
@@ -108,4 +110,5 @@ void loadSettings(WidgetRef ref) {
         .then((value) => SettingsApp.alamresAvancesEnabled = value);
     _settingsLoaded = true;
   }
+  log("fin loadSettings");
 }

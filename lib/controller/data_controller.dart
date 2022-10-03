@@ -66,7 +66,7 @@ class DataController {
       ]);
       _dataLoaded = true;
     }
-
+    log("fin load");
     return true;
   }
 
