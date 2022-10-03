@@ -45,22 +45,6 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
             ));
     // Work().testWork();
     testWork();
-
-    DBManager.insertInto("History", {
-      "name": "Test Déplacement",
-      "oldDate": DateTime.now().millisecondsSinceEpoch,
-      "newDate": DateTime.now().add(Duration(days: 3)).millisecondsSinceEpoch
-    });
-    DBManager.insertInto("History", {
-      "name": "Test supression",
-      "oldDate": DateTime.now().millisecondsSinceEpoch,
-      "newDate": null
-    });
-    DBManager.insertInto("History", {
-      "name": "Test ajout",
-      "oldDate": null,
-      "newDate": DateTime.now().add(Duration(days: 3)).millisecondsSinceEpoch
-    });
     super.initState();
   }
 

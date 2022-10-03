@@ -7,8 +7,9 @@ import 'local_notification_service.dart';
 const updateCalendrier = "com.agenda_lyon1.workUpdate.calendrier";
 
 void testWork() {
-  Workmanager().registerOneOffTask(updateCalendrier, updateCalendrier,
+  Workmanager().registerPeriodicTask(updateCalendrier, updateCalendrier,
       initialDelay: const Duration(minutes: 15),
+      frequency: const Duration(minutes: 15),
       constraints: Constraints(networkType: NetworkType.connected),
       existingWorkPolicy: ExistingWorkPolicy.replace);
 }
@@ -21,7 +22,7 @@ void callbackDispatcher() {
         final notif = LocalNotifService();
         notif.init();
         notif.showNotif(id: 1, title: "Update", body: "Bravo tu a reuçi ");
-        testWork();
+        // testWork();
         break;
     }
     return Future.value(true);
