@@ -2,8 +2,6 @@ import 'dart:developer';
 
 import 'package:agenda_lyon1/controller/data_controller.dart';
 import 'package:agenda_lyon1/controller/background_work.dart';
-import 'package:agenda_lyon1/controller/local_notification_service.dart';
-import 'package:agenda_lyon1/data/db_manager.dart';
 import 'package:agenda_lyon1/views/custom_widgets/event_list.dart';
 import 'package:agenda_lyon1/views/custom_widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
