@@ -40,12 +40,25 @@ Future<void> main() async {
   ));
 }
 
-class MyApp extends ConsumerWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() {
+    return _MyApp();
+  }
+}
+
+class _MyApp extends ConsumerState<MyApp> {
+  late final Future loadingApp;
+  @override
+  void initState() {
+    loadingApp = loadCriticalSettings(ref);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     loadSettings(ref);
     return MaterialApp(
       supportedLocales: const [
@@ -66,7 +79,7 @@ class MyApp extends ConsumerWidget {
       // ref.watch(themeApp)
       theme: ref.watch(themeApp),
       home: FutureBuilder(
-        future: loadCriticalSettings(ref),
+        future: loadingApp,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData && snapshot.data == true) {
             return const CalendarScreen();

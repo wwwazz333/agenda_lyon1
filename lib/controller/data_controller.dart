@@ -34,24 +34,25 @@ class DataController {
   }
 
   Future<void> update() async {
+    log("start update");
     final url = await DataReader.getString("urlCalendar", "");
-    final resEncodedData = await compute(updateCalendrier, url);
-    if (resEncodedData != null) {
-      calendrier = Calendrier.fromJson(resEncodedData);
-      FileManager.writeObject(
-          FileManager.calendrierFile, jsonEncode(resEncodedData));
+    final resCal = await compute(updateCalendrier, url);
+    log("end update");
+    if (resCal != null) {
+      log("start writing in file");
+      calendrier = resCal;
+      FileManager.writeObject(FileManager.calendrierFile, jsonEncode(resCal));
       informeUpdate();
+      log("end writing in file");
     }
-
-    log("Task: update Calendar");
   }
 
-  static Future<Map<String, dynamic>?> updateCalendrier(String urlPath) async {
+  static Future<Calendrier?> updateCalendrier(String urlPath) async {
     try {
       String content = await FileDownloader.downloadFile(urlPath);
       Calendrier temp = Calendrier([]);
       temp.loadFromString(content);
-      return jsonDecode(jsonEncode(temp));
+      return temp;
     } catch (_) {}
     return null;
   }

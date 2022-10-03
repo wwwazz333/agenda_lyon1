@@ -31,7 +31,8 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
   @override
   void initState() {
     loadingFuture = DataController().load();
-    DataController().update();
+    Future.delayed(const Duration(seconds: 2))
+        .then((value) => DataController().update());
     DataController().addListenerUpdate(
         "updateCalendarScreenView",
         () => setState(

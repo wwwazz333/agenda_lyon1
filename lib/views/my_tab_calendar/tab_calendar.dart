@@ -79,8 +79,6 @@ class WeekView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dateValue = ref.watch(selectedDate);
-    log("infos = ${dateValue.midi()}\t${dayNumbers.toString()}");
-    log("bool  = ${(dateValue.midi().isSameDay(dayNumbers[1].midi()))}");
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: List.generate(
