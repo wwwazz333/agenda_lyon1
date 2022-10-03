@@ -1,8 +1,10 @@
 import 'package:agenda_lyon1/controller/background_work.dart';
 import 'package:agenda_lyon1/providers.dart';
 import 'package:agenda_lyon1/settings.dart';
+import 'package:agenda_lyon1/views/screen/historique_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:workmanager/workmanager.dart';
+import 'views/custom_widgets/loading_widget.dart';
 import 'views/screen/calendar_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -59,6 +61,7 @@ class _MyApp extends ConsumerState<MyApp> {
       routes: {
         '/settings': ((context) => const MySettingsScreen()),
         '/settings_url': ((context) => const SettingsScreenURL()),
+        '/history': ((context) => const HistoriqueScreen()),
       },
       // ref.watch(themeApp)
       theme: ref.watch(themeApp),
@@ -68,21 +71,7 @@ class _MyApp extends ConsumerState<MyApp> {
           if (snapshot.hasData && snapshot.data == true) {
             return const CalendarScreen();
           } else {
-            return Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    Icon(
-                      Icons.calendar_today,
-                      size: 64,
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    CircularProgressIndicator(),
-                  ]),
-            );
+            return const LoadingWidget();
           }
         },
       ),

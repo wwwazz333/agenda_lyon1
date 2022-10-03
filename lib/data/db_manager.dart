@@ -21,8 +21,25 @@ class DBManager {
         db.execute(
           "CREATE TABLE Tasks(id INTEGER PRIMARY KEY autoincrement, uid TEXT, task TEXT)",
         );
+        db.execute(
+          "CREATE TABLE History(id INTEGER PRIMARY KEY autoincrement, name TEXT, oldDate INTEGER, newDate INTEGER)",
+        );
       },
-      version: 15,
+      onUpgrade: (db, oldVersion, newVersion) {
+        db.execute(
+          "CREATE TABLE if not exists ColorsLight(nameEvent TEXT PRIMARY KEY, r INTEGER, g INTEGER, b INTEGER)",
+        );
+        db.execute(
+          "CREATE TABLE if not exists ColorsDark(nameEvent TEXT PRIMARY KEY, r INTEGER, g INTEGER, b INTEGER)",
+        );
+        db.execute(
+          "CREATE TABLE if not exists Tasks(id INTEGER PRIMARY KEY autoincrement, uid TEXT, task TEXT)",
+        );
+        db.execute(
+          "CREATE TABLE if not exists History(id INTEGER PRIMARY KEY autoincrement, name TEXT, oldDate INTEGER, newDate INTEGER)",
+        );
+      },
+      version: 20,
     );
   }
 

@@ -3,7 +3,9 @@ import 'dart:developer';
 import 'package:agenda_lyon1/controller/data_controller.dart';
 import 'package:agenda_lyon1/controller/background_work.dart';
 import 'package:agenda_lyon1/controller/local_notification_service.dart';
+import 'package:agenda_lyon1/data/db_manager.dart';
 import 'package:agenda_lyon1/views/custom_widgets/event_list.dart';
+import 'package:agenda_lyon1/views/custom_widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -43,6 +45,22 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
             ));
     // Work().testWork();
     testWork();
+
+    DBManager.insertInto("History", {
+      "name": "Test Déplacement",
+      "oldDate": DateTime.now().millisecondsSinceEpoch,
+      "newDate": DateTime.now().add(Duration(days: 3)).millisecondsSinceEpoch
+    });
+    DBManager.insertInto("History", {
+      "name": "Test supression",
+      "oldDate": DateTime.now().millisecondsSinceEpoch,
+      "newDate": null
+    });
+    DBManager.insertInto("History", {
+      "name": "Test ajout",
+      "oldDate": null,
+      "newDate": DateTime.now().add(Duration(days: 3)).millisecondsSinceEpoch
+    });
     super.initState();
   }
 
@@ -105,21 +123,7 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
                 ],
               );
             } else {
-              return Center(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      Icon(
-                        Icons.calendar_today,
-                        size: 64,
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      CircularProgressIndicator(),
-                    ]),
-              );
+              return const LoadingWidget();
             }
           },
         ),
