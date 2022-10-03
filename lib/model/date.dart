@@ -1,5 +1,4 @@
 import 'event_calendrier.dart';
-import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 extension Date on DateTime {
@@ -23,7 +22,6 @@ extension Date on DateTime {
 }
 
 int _getTimeZone(DateTime forr) {
-  tz.initializeTimeZones();
   final locationFrance = tz.getLocation('Europe/Paris');
   return tz.TZDateTime.from(forr, locationFrance).timeZoneOffset.inMinutes;
 }
