@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 import 'event_calendrier.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
@@ -19,6 +21,11 @@ extension Date on DateTime {
 
   DateTime midi() {
     return add(Duration(hours: 12 - hour));
+  }
+
+  String affichageDateHeure(DateFormat formatter) {
+    final hourFormat = DateFormat.Hm();
+    return "${formatter.format(this)}, ${hourFormat.format(this)}";
   }
 }
 

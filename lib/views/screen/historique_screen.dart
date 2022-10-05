@@ -1,4 +1,6 @@
+import 'package:agenda_lyon1/controller/history_controller.dart';
 import 'package:agenda_lyon1/data/db_manager.dart';
+import 'package:agenda_lyon1/model/date.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -15,27 +17,16 @@ class HistoriqueScreen extends ConsumerStatefulWidget {
 
 class _HistoriqueScreenState extends ConsumerState<HistoriqueScreen>
     with TickerProviderStateMixin {
-  late Future<List<Map<String, dynamic>>> loadingDBHistory;
-  late final AnimationController _controller = AnimationController(
-    duration: const Duration(seconds: 1),
-    vsync: this,
-  );
+  late final HistoryController historyController = HistoryController(this);
 
   @override
   void initState() {
-    loadingDBHistory = DBManager.readDB("History");
-
-    _controller.addStatusListener((status) {
+    historyController.controllerAnimation.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         setState(() {});
       }
     });
     super.initState();
-  }
-
-  String affichageDateHeure(DateTime date, DateFormat formatter) {
-    final hourFormat = DateFormat.Hm();
-    return "${formatter.format(date)}, ${hourFormat.format(date)}";
   }
 
   @override
@@ -51,20 +42,14 @@ class _HistoriqueScreenState extends ConsumerState<HistoriqueScreen>
         actions: [
           IconButton(
               onPressed: () {
-                DBManager.removeWhere("History", "1 = ?", [1]).then(
-                  (value) {
-                    loadingDBHistory = DBManager.readDB("History");
-                    _controller.reset();
-                    _controller.forward();
-                  },
-                );
+                historyController.clearHistory();
               },
               icon: const Icon(Icons.cleaning_services))
         ],
       ),
       body: Stack(children: [
         FutureBuilder(
-          future: loadingDBHistory,
+          future: historyController.loadingDBHistory,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
               final data = (snapshot.data as List<Map<String, dynamic>>);
@@ -79,28 +64,12 @@ class _HistoriqueScreenState extends ConsumerState<HistoriqueScreen>
               } else {
                 return ListView.builder(
                     itemCount: data.length,
-                    itemBuilder: (context, index) {
-                      final oldDate = data[index]["oldDate"];
-                      final newDate = data[index]["newDate"];
-                      return Card(
-                          child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            data[index]["name"],
-                            style: Theme.of(context).textTheme.headline1,
-                          ),
-                          Text(
-                            (oldDate == null)
-                                ? "ajouté aux : ${affichageDateHeure(DateTime.fromMillisecondsSinceEpoch(newDate), formatter)}"
-                                : (newDate == null)
-                                    ? "supprimé du : ${affichageDateHeure(DateTime.fromMillisecondsSinceEpoch(oldDate), formatter)}"
-                                    : "déplacé du : ${affichageDateHeure(DateTime.fromMillisecondsSinceEpoch(oldDate), formatter)}\naux : ${affichageDateHeure(DateTime.fromMillisecondsSinceEpoch(newDate), formatter)}",
-                            style: Theme.of(context).textTheme.bodyText1,
-                          )
-                        ],
-                      ));
-                    });
+                    itemBuilder: (context, index) => ChangementCard(
+                          formatter: formatter,
+                          name: data[index]["name"],
+                          oldDate: data[index]["oldDate"],
+                          newDate: data[index]["newDate"],
+                        ));
               }
             } else {
               return const LoadingWidget();
@@ -123,7 +92,7 @@ class _HistoriqueScreenState extends ConsumerState<HistoriqueScreen>
                             bigLogo, bigLogo),
                         biggest),
                   ).animate(CurvedAnimation(
-                    parent: _controller,
+                    parent: historyController.controllerAnimation,
                     curve: Curves.easeInCirc,
                   )),
                   child: const Icon(
@@ -137,5 +106,39 @@ class _HistoriqueScreenState extends ConsumerState<HistoriqueScreen>
         )
       ]),
     );
+  }
+}
+
+class ChangementCard extends StatelessWidget {
+  final String name;
+  final DateFormat formatter;
+  final int? newDate, oldDate;
+  const ChangementCard(
+      {required this.name,
+      required this.formatter,
+      this.newDate,
+      this.oldDate,
+      super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          name,
+          style: Theme.of(context).textTheme.headline1,
+        ),
+        Text(
+          (oldDate == null)
+              ? "ajouté aux : ${DateTime.fromMillisecondsSinceEpoch(newDate!).affichageDateHeure(formatter)}"
+              : (newDate == null)
+                  ? "supprimé du : ${DateTime.fromMillisecondsSinceEpoch(oldDate!).affichageDateHeure(formatter)}"
+                  : "déplacé du : ${DateTime.fromMillisecondsSinceEpoch(oldDate!).affichageDateHeure(formatter)}\naux : ${DateTime.fromMillisecondsSinceEpoch(newDate!).affichageDateHeure(formatter)}",
+          style: Theme.of(context).textTheme.bodyText1,
+        )
+      ],
+    ));
   }
 }

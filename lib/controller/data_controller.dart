@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:agenda_lyon1/data/db_manager.dart';
 import 'package:agenda_lyon1/data/file_manager.dart';
 import 'package:agenda_lyon1/data/shared_pref.dart';
 import 'package:agenda_lyon1/network/file_downolader.dart';
@@ -36,29 +37,38 @@ class DataController {
     log("start update");
     final url = await DataReader.getString("urlCalendar", "");
     log("url = $url");
-    final resCal =
+    final resUpdate =
         await compute(updateCalendrier, {"url": url, "oldCal": calendrier});
-    log("end update res = $resCal");
-    if (resCal != null) {
+    log("end update res = $resUpdate");
+    if (resUpdate != {}) {
       log("start writing in file");
-      calendrier = resCal;
-      FileManager.writeObject(FileManager.calendrierFile, jsonEncode(resCal));
+      calendrier = resUpdate["newCal"];
+      FileManager.writeObject(
+          FileManager.calendrierFile, jsonEncode(resUpdate));
+      for (Changement change in resUpdate["changes"]) {
+        DBManager.insertInto("History", {
+          "name": change.name,
+          "oldDate": change.oldDate,
+          "newDate": change.newDate
+        });
+      }
       informeUpdate();
       log("end writing in file");
     }
   }
 
-  static Future<Calendrier?> updateCalendrier(Map<String, dynamic> data) async {
+  static Future<Map<String, dynamic>> updateCalendrier(
+      Map<String, dynamic> data) async {
     try {
       String content = await FileDownloader.downloadFile(data["url"]);
       final newCal = Calendrier([])..loadFromString(content);
-      (data["oldCal"] as Calendrier);
+      final changes = (data["oldCal"] as Calendrier).getChangementTo(newCal);
 
-      return newCal;
+      return {"newCal": newCal, "changes": changes};
     } catch (e) {
       log("Error: update Cal error $e");
     }
-    return null;
+    return {};
   }
 
   bool _dataLoaded = false;

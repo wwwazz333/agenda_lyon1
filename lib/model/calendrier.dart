@@ -110,22 +110,21 @@ class Calendrier {
         .where((oldEvent) => newCalendrier.events
             .where((newEvent) => oldEvent.uid == newEvent.uid)
             .isEmpty)
-        .map((e) => Changement(
-            e.summary, ChangementType.delete, DateTime.now(), e.date, null)));
+        .map(
+            (e) => Changement(e.summary, ChangementType.delete, e.date, null)));
 
     changements.addAll(newCalendrier.events
         .where((newEvent) =>
             events.where((oldEvent) => oldEvent.uid == newEvent.uid).isEmpty)
-        .map((e) => Changement(
-            e.summary, ChangementType.add, DateTime.now(), null, e.date)));
+        .map((e) => Changement(e.summary, ChangementType.add, null, e.date)));
 
     for (EventCalendrier oldEvent in events) {
       changements.addAll(newCalendrier.events
           .where((newEvent) =>
               oldEvent.uid == newEvent.uid &&
               !oldEvent.date.isAtSameMomentAs(newEvent.date))
-          .map((e) => Changement(e.summary, ChangementType.move, DateTime.now(),
-              oldEvent.date, e.date)));
+          .map((e) => Changement(
+              e.summary, ChangementType.move, oldEvent.date, e.date)));
     }
     final List<Changement> ajout = changements
         .where((element) => element.changementType == ChangementType.add)
@@ -139,8 +138,8 @@ class Calendrier {
       final same = ajout.where((element) => element.name == change.name);
       if (same.isNotEmpty) {
         final adding = same.first;
-        changements.add(Changement(adding.name, ChangementType.move,
-            adding.dateChange, change.oldDate, adding.newDate));
+        changements.add(Changement(
+            adding.name, ChangementType.move, change.oldDate, adding.newDate));
         toRemove.add(adding);
         toRemove.add(change);
       }
@@ -174,14 +173,12 @@ enum ChangementType {
 class Changement {
   String name;
   DateTime? oldDate, newDate;
-  DateTime dateChange;
   ChangementType changementType;
 
-  Changement(this.name, this.changementType, this.dateChange, this.oldDate,
-      this.newDate);
+  Changement(this.name, this.changementType, this.oldDate, this.newDate);
 
   @override
   String toString() {
-    return "$name, $changementType, $dateChange, $oldDate, $newDate";
+    return "$name, $changementType, $oldDate, $newDate";
   }
 }

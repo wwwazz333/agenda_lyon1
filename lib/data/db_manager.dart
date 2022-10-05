@@ -36,10 +36,10 @@ class DBManager {
           "CREATE TABLE if not exists Tasks(id INTEGER PRIMARY KEY autoincrement, uid TEXT, task TEXT)",
         );
         db.execute(
-          "CREATE TABLE if not exists History(id INTEGER PRIMARY KEY autoincrement, name TEXT, oldDate INTEGER, newDate INTEGER)",
+          "CREATE TABLE if not exists History(id INTEGER PRIMARY KEY autoincrement, name TEXT, typeChange TEXT, oldDate INTEGER, newDate INTEGER)",
         );
       },
-      version: 20,
+      version: 1,
     );
   }
 
