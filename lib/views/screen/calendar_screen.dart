@@ -42,7 +42,7 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
                 log("Task: update calendar screen");
               },
             ));
-    testWork();
+    launchPerodicalWork();
     super.initState();
   }
 

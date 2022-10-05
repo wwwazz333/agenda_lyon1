@@ -6,7 +6,7 @@ import 'local_notification_service.dart';
 
 const updateCalendrier = "com.agenda_lyon1.workUpdate.calendrier";
 
-void testWork() {
+void launchPerodicalWork() {
   if (Platform.isAndroid) {
     Workmanager().registerPeriodicTask(updateCalendrier, updateCalendrier,
         initialDelay: const Duration(hours: 1),
@@ -30,7 +30,7 @@ void callbackDispatcher() {
         notif.init();
         notif.showNotif(id: 1, title: "Update", body: "Bravo tu a reuçi ");
         if (Platform.isIOS) {
-          testWork();
+          launchPerodicalWork();
         }
         break;
     }
