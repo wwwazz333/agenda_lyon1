@@ -43,7 +43,7 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
         .then((value) => DataController().update());
     DataController().addListenerUpdate(
         "updateCalendarScreenView",
-        () => setState(
+        (hasChange) => setState(
               () {
                 log("Task: update calendar screen");
               },

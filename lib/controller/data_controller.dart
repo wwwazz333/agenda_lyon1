@@ -14,7 +14,7 @@ import 'event_controller.dart';
 
 class DataController {
   Calendrier calendrier = Calendrier([]);
-  Map<String, void Function()> updateListeners = {};
+  Map<String, void Function(bool)> updateListeners = {};
 
   static DataController? _instance;
 
@@ -26,10 +26,10 @@ class DataController {
     _instance ??= DataController._();
     return _instance!;
   }
-  void informeUpdate() {
+  void informeUpdate(bool hasChange) {
     log("Task: informeUpdate size = ${updateListeners.length} for $hashCode");
     updateListeners.forEach((key, fun) {
-      fun();
+      fun(hasChange);
     });
   }
 
@@ -45,14 +45,18 @@ class DataController {
       calendrier = resUpdate["newCal"];
       FileManager.writeObject(
           FileManager.calendrierFile, jsonEncode(resUpdate));
+
+      bool hasChange = false;
       for (Changement change in resUpdate["changes"]) {
+        hasChange = true;
         DBManager.insertInto("History", {
           "name": change.name,
           "oldDate": change.oldDate,
           "newDate": change.newDate
         });
+        informeUpdate(hasChange);
       }
-      informeUpdate();
+
       log("end writing in file");
     }
   }
@@ -120,7 +124,7 @@ class DataController {
     FileManager.delFile(FileManager.calendrierFile);
   }
 
-  void addListenerUpdate(String uniquKey, void Function() fun) {
+  void addListenerUpdate(String uniquKey, void Function(bool) fun) {
     updateListeners[uniquKey] = fun;
     log("Task: ajout listener size = ${updateListeners.length} for $hashCode");
   }

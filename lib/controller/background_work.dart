@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:agenda_lyon1/controller/data_controller.dart';
 import 'package:workmanager/workmanager.dart';
 import 'dart:io' show Platform;
 import 'local_notification_service.dart';
@@ -25,10 +26,18 @@ void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     switch (task) {
       case updateCalendrier:
-        log("Work: new one here, whit inputData = $inputData");
-        final notif = LocalNotifService();
-        notif.init();
-        notif.showNotif(id: 1, title: "Update", body: "Bravo tu a reuçi ");
+        DataController().addListenerUpdate("sendNotif", (hasChange) {
+          if (hasChange) {
+            final notif = LocalNotifService();
+            notif.init();
+            notif.showNotif(
+                id: 1,
+                title: "Changement EDT",
+                body: "Vous avez des changements dans votre EDT, regardez !");
+          }
+        });
+        await DataController().update();
+
         if (Platform.isIOS) {
           launchPerodicalWork();
         }
