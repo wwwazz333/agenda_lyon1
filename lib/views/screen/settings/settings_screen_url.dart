@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:agenda_lyon1/controller/data_controller.dart';
 import 'package:agenda_lyon1/providers.dart';
 import 'package:flutter/material.dart';
@@ -49,6 +51,7 @@ class _SettingsScreenURL extends ConsumerState<SettingsScreenURL> {
                     child: const Text("Annuler")),
                 ElevatedButton(
                     onPressed: () {
+                      log("Settings: modif url");
                       ref.read(urlCalendar.notifier).state = urlController.text;
                       DataController().clear();
                       Navigator.pop(context);

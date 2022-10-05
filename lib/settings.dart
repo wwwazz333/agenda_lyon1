@@ -73,6 +73,7 @@ Future<bool> loadCriticalSettings(WidgetRef ref) async {
 void setUpListeners(WidgetRef ref) {
   ref.listen(urlCalendar, (previous, next) {
     DataReader.save("urlCalendar", next);
+    log("Settings: urlcal modif sur DataReader");
   });
 
   ref.listen(themeApp, (previous, next) {
@@ -99,19 +100,16 @@ void setUpListeners(WidgetRef ref) {
   });
 }
 
-bool _settingsLoaded = false;
 void loadSettings(WidgetRef ref) {
-  if (!_settingsLoaded) {
-    setUpListeners(ref);
-    DataReader.getBool("notifEnabled", true)
-        .then((value) => SettingsApp.notifEnabled = value);
+  setUpListeners(ref);
+  DataReader.getBool("notifEnabled", true)
+      .then((value) => SettingsApp.notifEnabled = value);
 
-    DataReader.getBool("jourFeriesEnabled")
-        .then((value) => SettingsApp.jourFeriesEnabled = value);
+  DataReader.getBool("jourFeriesEnabled")
+      .then((value) => SettingsApp.jourFeriesEnabled = value);
 
-    DataReader.getBool("alamresAvancesEnabled")
-        .then((value) => SettingsApp.alamresAvancesEnabled = value);
-    _settingsLoaded = true;
-  }
+  DataReader.getBool("alamresAvancesEnabled")
+      .then((value) => SettingsApp.alamresAvancesEnabled = value);
+
   log("fin loadSettings");
 }

@@ -44,6 +44,7 @@ class _MyApp extends ConsumerState<MyApp> {
   @override
   Widget build(BuildContext context) {
     loadSettings(ref);
+
     return MaterialApp(
       supportedLocales: const [
         Locale('fr'),

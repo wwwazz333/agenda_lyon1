@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../controller/calendarui_controller.dart';
 import '../../providers.dart';
+import '../../settings.dart';
 import '../custom_widgets/event_timeline.dart';
 import '../custom_widgets/navigator.dart';
 import '../my_tab_calendar/tab_calendar.dart';
@@ -41,7 +42,6 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
                 log("Task: update calendar screen");
               },
             ));
-    // Work().testWork();
     testWork();
     super.initState();
   }
