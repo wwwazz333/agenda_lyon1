@@ -1,10 +1,13 @@
 import 'dart:developer';
-
+import 'package:rxdart/subjects.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class LocalNotifService {
+  static const notifChangementEvent = 1;
   LocalNotifService();
   final _localNotifService = FlutterLocalNotificationsPlugin();
+
+  final BehaviorSubject<String?> onNotificationClick = BehaviorSubject();
 
   Future<void> init() async {
     const AndroidInitializationSettings initializationSettingsAndroid =
@@ -29,6 +32,9 @@ class LocalNotifService {
 
   void onDidReceiveNotificationResponse(NotificationResponse details) {
     log("id: ${details.id} & payload = ${details.payload}");
+    if (details.id == notifChangementEvent) {
+      onNotificationClick.add(details.payload);
+    }
   }
 
   Future<NotificationDetails> _notificationDetails() async {

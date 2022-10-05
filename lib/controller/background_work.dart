@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:agenda_lyon1/controller/data_controller.dart';
 import 'package:workmanager/workmanager.dart';
 import 'dart:io' show Platform;
@@ -31,7 +29,7 @@ void callbackDispatcher() {
             final notif = LocalNotifService();
             notif.init();
             notif.showNotif(
-                id: 1,
+                id: LocalNotifService.notifChangementEvent,
                 title: "Changement EDT",
                 body: "Vous avez des changements dans votre EDT, regardez !");
           }

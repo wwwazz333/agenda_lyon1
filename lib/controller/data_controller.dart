@@ -40,22 +40,22 @@ class DataController {
     final resUpdate =
         await compute(updateCalendrier, {"url": url, "oldCal": calendrier});
     log("end update res = $resUpdate");
-    if (resUpdate != {}) {
+    if (resUpdate.isNotEmpty) {
       log("start writing in file");
       calendrier = resUpdate["newCal"];
       FileManager.writeObject(
-          FileManager.calendrierFile, jsonEncode(resUpdate));
+          FileManager.calendrierFile, jsonEncode(calendrier));
 
       bool hasChange = false;
       for (Changement change in resUpdate["changes"]) {
         hasChange = true;
         DBManager.insertInto("History", {
           "name": change.name,
-          "oldDate": change.oldDate,
-          "newDate": change.newDate
+          "oldDate": change.oldDate?.millisecondsSinceEpoch ?? 0,
+          "newDate": change.newDate?.millisecondsSinceEpoch ?? 0,
         });
-        informeUpdate(hasChange);
       }
+      informeUpdate(hasChange);
 
       log("end writing in file");
     }

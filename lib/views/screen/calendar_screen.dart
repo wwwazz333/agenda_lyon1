@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../controller/calendarui_controller.dart';
+import '../../controller/local_notification_service.dart';
 import '../../providers.dart';
 import '../custom_widgets/event_timeline.dart';
 import '../custom_widgets/navigator.dart';
@@ -54,6 +55,12 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final notif = LocalNotifService();
+    notif.init();
+    notif.showNotif(
+        id: 1,
+        title: "Changement EDT",
+        body: "Vous avez des changements dans votre EDT, regardez !");
     final typeCardToDisplay = ref.watch(cardTypeDisplay);
     ref.listen(selectedDate, (previous, next) {
       _controller.goToGoodPage(next);
