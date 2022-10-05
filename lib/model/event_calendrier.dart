@@ -111,4 +111,7 @@ class EventCalendrier implements Comparable<EventCalendrier> {
         "duree": duree.inSeconds,
         "salle": json.encode(salle),
       };
+
+  @override
+  String toString() => "$summary, $date";
 }

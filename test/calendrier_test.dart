@@ -1,5 +1,38 @@
+import 'dart:developer';
+
 import 'package:agenda_lyon1/model/calendrier.dart';
+import 'package:agenda_lyon1/model/event_calendrier.dart';
 import 'package:test/test.dart';
+
+final List<EventCalendrier> oldEvents = [
+  EventCalendrier.data(DateTime.utc(2022, 9, 18, 8), const Duration(hours: 5),
+      "A", [""], " ", "qsdfgn"),
+  EventCalendrier.data(DateTime.utc(2022, 9, 18, 9), const Duration(hours: 7),
+      "B", [""], "", "tgu;hj,sbgqd"),
+  EventCalendrier.data(DateTime.utc(2022, 9, 18, 9), const Duration(hours: 5),
+      "C", [""], "", "qsfdqrth"),
+  EventCalendrier.data(DateTime.utc(2022, 9, 18, 11), const Duration(hours: 3),
+      "D", [""], " ", "zrtgzreg"),
+  EventCalendrier.data(DateTime.utc(2022, 9, 18, 14), const Duration(hours: 4),
+      "E", [""], "", "wxcvdxbrths"),
+  EventCalendrier.data(DateTime.utc(2022, 9, 18, 20), const Duration(hours: 2),
+      "F", [""], "", "azaetdycfsqds"),
+];
+
+final List<EventCalendrier> newEvents = [
+  EventCalendrier.data(DateTime.utc(2000, 9, 18, 9), const Duration(hours: 7),
+      "B", [""], "", "tgu;hj,sbgqd"),
+  EventCalendrier.data(DateTime.utc(2022, 9, 18, 9), const Duration(hours: 5),
+      "C", [""], "", "qsfdqrth"),
+  EventCalendrier.data(DateTime.utc(2022, 9, 20, 11), const Duration(hours: 3),
+      "D", [""], " ", "zrtgzreg"),
+  EventCalendrier.data(DateTime.utc(2022, 9, 18, 14), const Duration(hours: 4),
+      "E", [""], "", "wxcvdxbrths"),
+  EventCalendrier.data(DateTime.utc(2022, 10, 18, 13), const Duration(hours: 2),
+      "F", [""], "", "azaetdycqzegzefzfefsqds"),
+  EventCalendrier.data(DateTime.utc(2022, 9, 18, 20), const Duration(hours: 2),
+      "G", [""], "", "azaetdycqsfddwdvwvxfsqds"),
+];
 
 void main() {
   const calStr = """BEGIN:VCALENDAR
@@ -202,9 +235,26 @@ SEQUENCE:-2069386445
 END:VEVENT
 END:VCALENDAR""";
 
+  final cal = Calendrier.load(calStr);
   test("devrais y avoir 16 events", () {
-    final cal = Calendrier.load(calStr);
-
     expect(cal.size, 16);
+  });
+
+  test("détection Changement", () {
+    final oldCal = Calendrier(oldEvents);
+    final newCal = Calendrier(newEvents);
+
+    final changes = oldCal.getChangementTo(newCal);
+    expect(changes.length, 5);
+    expect(changes[0].name, "A");
+    expect(changes[0].changementType, ChangementType.delete);
+    expect(changes[1].name, "G");
+    expect(changes[1].changementType, ChangementType.add);
+    expect(changes[2].name, "B");
+    expect(changes[2].changementType, ChangementType.move);
+    expect(changes[3].name, "D");
+    expect(changes[3].changementType, ChangementType.move);
+    expect(changes[4].name, "F");
+    expect(changes[4].changementType, ChangementType.move);
   });
 }

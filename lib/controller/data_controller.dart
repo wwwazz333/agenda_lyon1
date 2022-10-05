@@ -36,7 +36,8 @@ class DataController {
     log("start update");
     final url = await DataReader.getString("urlCalendar", "");
     log("url = $url");
-    final resCal = await compute(updateCalendrier, url);
+    final resCal =
+        await compute(updateCalendrier, {"url": url, "oldCal": calendrier});
     log("end update res = $resCal");
     if (resCal != null) {
       log("start writing in file");
@@ -47,10 +48,13 @@ class DataController {
     }
   }
 
-  static Future<Calendrier?> updateCalendrier(String urlPath) async {
+  static Future<Calendrier?> updateCalendrier(Map<String, dynamic> data) async {
     try {
-      String content = await FileDownloader.downloadFile(urlPath);
-      return Calendrier([])..loadFromString(content);
+      String content = await FileDownloader.downloadFile(data["url"]);
+      final newCal = Calendrier([])..loadFromString(content);
+      (data["oldCal"] as Calendrier);
+
+      return newCal;
     } catch (e) {
       log("Error: update Cal error $e");
     }

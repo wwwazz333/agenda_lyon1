@@ -103,6 +103,55 @@ class Calendrier {
     return str.length >= begin.length && str.startsWith(begin);
   }
 
+  ///return all the [Changement] between [this] and [newCalendrier]
+  List<Changement> getChangementTo(Calendrier newCalendrier) {
+    List<Changement> changements = [];
+    changements.addAll(events
+        .where((oldEvent) => newCalendrier.events
+            .where((newEvent) => oldEvent.uid == newEvent.uid)
+            .isEmpty)
+        .map((e) => Changement(
+            e.summary, ChangementType.delete, DateTime.now(), e.date, null)));
+
+    changements.addAll(newCalendrier.events
+        .where((newEvent) =>
+            events.where((oldEvent) => oldEvent.uid == newEvent.uid).isEmpty)
+        .map((e) => Changement(
+            e.summary, ChangementType.add, DateTime.now(), null, e.date)));
+
+    for (EventCalendrier oldEvent in events) {
+      changements.addAll(newCalendrier.events
+          .where((newEvent) =>
+              oldEvent.uid == newEvent.uid &&
+              !oldEvent.date.isAtSameMomentAs(newEvent.date))
+          .map((e) => Changement(e.summary, ChangementType.move, DateTime.now(),
+              oldEvent.date, e.date)));
+    }
+    final List<Changement> ajout = changements
+        .where((element) => element.changementType == ChangementType.add)
+        .toList();
+    final List<Changement> suppr = changements
+        .where(
+            (changement) => changement.changementType == ChangementType.delete)
+        .toList();
+    List<Changement> toRemove = [];
+    for (Changement change in suppr) {
+      final same = ajout.where((element) => element.name == change.name);
+      if (same.isNotEmpty) {
+        final adding = same.first;
+        changements.add(Changement(adding.name, ChangementType.move,
+            adding.dateChange, change.oldDate, adding.newDate));
+        toRemove.add(adding);
+        toRemove.add(change);
+      }
+    }
+    for (var element in toRemove) {
+      changements.remove(element);
+    }
+
+    return changements;
+  }
+
   static writeCalendrierFile(String content, String fileName) {
     if (mayBeValideFormat(content)) {
       FileManager.writeString(fileName, content);
@@ -114,4 +163,25 @@ class Calendrier {
   Map<String, dynamic> toJson() => {
         "events": jsonEncode(_events),
       };
+}
+
+enum ChangementType {
+  add,
+  delete,
+  move;
+}
+
+class Changement {
+  String name;
+  DateTime? oldDate, newDate;
+  DateTime dateChange;
+  ChangementType changementType;
+
+  Changement(this.name, this.changementType, this.dateChange, this.oldDate,
+      this.newDate);
+
+  @override
+  String toString() {
+    return "$name, $changementType, $dateChange, $oldDate, $newDate";
+  }
 }
