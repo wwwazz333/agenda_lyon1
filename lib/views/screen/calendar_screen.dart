@@ -9,7 +9,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../controller/calendarui_controller.dart';
 import '../../providers.dart';
-import '../../settings.dart';
 import '../custom_widgets/event_timeline.dart';
 import '../custom_widgets/navigator.dart';
 import '../my_tab_calendar/tab_calendar.dart';
@@ -23,9 +22,16 @@ class CalendarScreen extends ConsumerStatefulWidget {
 
 class _CalendarScreen extends ConsumerState<CalendarScreen> {
   late final CalendarUIController _controller;
+  final GlobalKey _keyTabHeader = GlobalKey();
 
   _CalendarScreen({DateTime? startingDate}) {
     _controller = CalendarUIController(startingDate: startingDate);
+  }
+  Size _getSizeOf(GlobalKey key) {
+    final RenderBox? renderBox =
+        key.currentContext?.findRenderObject() as RenderBox?;
+
+    return renderBox != null ? renderBox.size : const Size(0, 0);
   }
 
   late final Future loadingFuture;
@@ -71,11 +77,18 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
           future: loadingFuture,
           builder: (context, snapshot) {
             if (snapshot.hasData && snapshot.data == true) {
+              final availableHeight = MediaQuery.of(context).size.height -
+                  AppBar().preferredSize.height -
+                  MediaQuery.of(context).padding.top -
+                  MediaQuery.of(context).padding.bottom;
               return Column(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TabCalendar(startingDate: _controller.startingDate),
+                  TabCalendar(
+                    startingDate: _controller.startingDate,
+                    key: _keyTabHeader,
+                  ),
                   Expanded(
                     child: PageView.builder(
                       physics: const CustomPageViewScrollPhysics(),
@@ -92,6 +105,10 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
                                     _controller.getDateOfIndex(index)),
                                 firstHour: typeCardToDisplay.firstHourDisplay,
                                 lastHour: typeCardToDisplay.lastHourDisplay,
+                                oneHoureH: (availableHeight -
+                                        _getSizeOf(_keyTabHeader).height) /
+                                    (typeCardToDisplay.lastHourDisplay -
+                                        typeCardToDisplay.firstHourDisplay),
                               )
                             : EventList(
                                 DataController().genDayController(

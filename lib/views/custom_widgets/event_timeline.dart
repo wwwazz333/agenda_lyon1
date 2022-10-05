@@ -97,26 +97,6 @@ class BackgroundPainter extends CustomPainter {
       required this.heightOfOneHour,
       required this.maxWidthNumber});
 
-  TextPainter _genText(String txt) {
-    const textStyle = TextStyle(
-      color: Colors.black,
-      fontSize: 20,
-    );
-    final textSpan = TextSpan(
-      text: txt,
-      style: textStyle,
-    );
-    final textPainter = TextPainter(
-      text: textSpan,
-      textDirection: TextDirection.ltr,
-    );
-    textPainter.layout(
-      minWidth: 0,
-      maxWidth: maxWidthNumber,
-    );
-    return textPainter;
-  }
-
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint();
@@ -125,9 +105,6 @@ class BackgroundPainter extends CustomPainter {
     for (int i = 0; i < lastHour - firstHour; i++) {
       canvas.drawLine(Offset(0, heightOfOneHour * i),
           Offset(size.width, heightOfOneHour * i), paint);
-
-      // _genText("${firstHour + i}")
-      //     .paint(canvas, Offset(0, heightOfOneHour * i));
     }
   }
 
