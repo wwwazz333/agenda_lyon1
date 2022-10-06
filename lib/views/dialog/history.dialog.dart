@@ -22,8 +22,12 @@ Future<void> showHistoryDialog(
           .map((row) => Changement(
               row["name"],
               getChangementType(row["typeChange"]),
-              DateTime.fromMillisecondsSinceEpoch(row["oldDate"]),
-              DateTime.fromMillisecondsSinceEpoch(row["newDate"])))
+              row["oldDate"] == 0
+                  ? null
+                  : DateTime.fromMillisecondsSinceEpoch(row["oldDate"]),
+              row["newDate"] == 0
+                  ? null
+                  : DateTime.fromMillisecondsSinceEpoch(row["newDate"])))
           .toList();
 
   await showDialog(

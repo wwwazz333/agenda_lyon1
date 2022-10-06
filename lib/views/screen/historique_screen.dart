@@ -70,10 +70,14 @@ class _HistoriqueScreenState extends ConsumerState<HistoriqueScreen>
                         change: Changement(
                             data[index]["name"],
                             getChangementType(data[index]["typeChange"]),
-                            DateTime.fromMillisecondsSinceEpoch(
-                                data[index]["oldDate"]),
-                            DateTime.fromMillisecondsSinceEpoch(
-                                data[index]["newDate"]))));
+                            data[index]["oldDate"] == 0
+                                ? null
+                                : DateTime.fromMillisecondsSinceEpoch(
+                                    data[index]["oldDate"]),
+                            data[index]["newDate"] == 0
+                                ? null
+                                : DateTime.fromMillisecondsSinceEpoch(
+                                    data[index]["newDate"]))));
               }
             } else {
               return const LoadingWidget();

@@ -62,12 +62,7 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
       showHistoryDialog(
           context, SettingsApp.changeIds, ref.watch(languageApp).languageCode);
     }
-    final notif = LocalNotifService();
-    notif.init();
-    notif.showNotif(
-        id: 1,
-        title: "Changement EDT",
-        body: "Vous avez des changements dans votre EDT, regardez !");
+
     final typeCardToDisplay = ref.watch(cardTypeDisplay);
     ref.listen(selectedDate, (previous, next) {
       _controller.goToGoodPage(next);

@@ -74,7 +74,7 @@ Future<bool> loadCriticalSettings(WidgetRef ref) async {
           .then((value) {
         SettingsApp.changeIds =
             (json.decode(value) as List<dynamic>).map((e) => e as int).toList();
-        // DataReader.save(SettingsNames.changeIds, json.encode(defStrList));
+        DataReader.save(SettingsNames.changeIds, json.encode(defStrList));
       })
     ]);
     _criticalSettingsLoaded = true;
