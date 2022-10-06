@@ -12,7 +12,7 @@ class LoadingWidget extends StatelessWidget {
           children: const [
             Icon(
               Icons.calendar_today,
-              size: 64,
+              size: 96,
             ),
             SizedBox(
               height: 16,

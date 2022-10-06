@@ -12,6 +12,15 @@ import 'data/db_manager.dart';
 
 class SettingsNames {
   static const String changeIds = "nbrChange";
+  static const String notifEnabled = "notifEnabled";
+  static const String jourFeriesEnabled = "jourFeriesEnabled";
+  static const String alamresAvancesEnabled = "alamresAvancesEnabled";
+  static const String urlCalendar = "urlCalendar";
+  static const String isDark = "isDark";
+  static const String language = "language";
+  static const String cardTimeLineDisplay = "cardTimeLineDisplay";
+  static const String firstHourDisplay = "firstHourDisplay";
+  static const String lastHourDisplay = "lastHourDisplay";
 }
 
 class SettingsApp {
@@ -40,17 +49,17 @@ class SettingsApp {
 
   static set notifEnabled(bool newVal) {
     _notifEnabled = newVal;
-    DataReader.save("notifEnabled", _notifEnabled);
+    DataReader.save(SettingsNames.notifEnabled, newVal);
   }
 
   static set jourFeriesEnabled(bool newVal) {
     _jourFeriesEnabled = newVal;
-    DataReader.save("jourFeriesEnabled", _notifEnabled);
+    DataReader.save(SettingsNames.jourFeriesEnabled, newVal);
   }
 
   static set alamresAvancesEnabled(bool newVal) {
     _alamresAvancesEnabled = newVal;
-    DataReader.save("alamresAvancesEnabled", _notifEnabled);
+    DataReader.save(SettingsNames.alamresAvancesEnabled, newVal);
   }
 }
 
@@ -60,28 +69,35 @@ Future<bool> loadCriticalSettings(WidgetRef ref) async {
     List<String> defStrList = [];
     await Future.wait([
       DBManager.open(),
-      DataReader.getString("urlCalendar", "")
+      DataReader.getString(SettingsNames.urlCalendar, "")
           .then((value) => ref.read(urlCalendar.notifier).state = value),
-      DataReader.getBool("isDark").then((value) {
+      DataReader.getBool(SettingsNames.isDark).then((value) {
         ref.read(themeApp.notifier).state =
             value ? themes["dark"]! : themes["light"]!;
         appIsDarkMode = value;
       }),
-      DataReader.getString("language", languages.values.first.languageCode)
+      DataReader.getString(
+              SettingsNames.language, languages.values.first.languageCode)
           .then((value) =>
               ref.read(languageApp.notifier).state = languages[value]!),
-      DataReader.getBool("cardTimeLineDisplay").then((value) =>
+      DataReader.getBool(SettingsNames.cardTimeLineDisplay).then((value) =>
           ref.read(cardTypeDisplay).cardTimeLineDisplayNoListener = value),
-      DataReader.getInt("firstHourDisplay", 6).then((value) =>
+      DataReader.getInt(SettingsNames.firstHourDisplay, 6).then((value) =>
           ref.read(cardTypeDisplay).firstHourDisplayNoListener = value),
-      DataReader.getInt("lastHourDisplay", 20).then((value) =>
+      DataReader.getInt(SettingsNames.lastHourDisplay, 20).then((value) =>
           ref.read(cardTypeDisplay).lastHourDisplayNoListener = value),
       DataReader.getString(SettingsNames.changeIds, json.encode(defStrList))
           .then((value) {
         SettingsApp.changeIds =
             (json.decode(value) as List<dynamic>).map((e) => e as int).toList();
         DataReader.save(SettingsNames.changeIds, json.encode(defStrList));
-      })
+      }),
+      DataReader.getBool(SettingsNames.notifEnabled, true)
+          .then((value) => SettingsApp.notifEnabled = value),
+      DataReader.getBool(SettingsNames.jourFeriesEnabled)
+          .then((value) => SettingsApp.jourFeriesEnabled = value),
+      DataReader.getBool(SettingsNames.alamresAvancesEnabled)
+          .then((value) => SettingsApp.alamresAvancesEnabled = value),
     ]);
     _criticalSettingsLoaded = true;
   }
@@ -91,13 +107,13 @@ Future<bool> loadCriticalSettings(WidgetRef ref) async {
 
 void setUpListeners(WidgetRef ref) {
   ref.listen(urlCalendar, (previous, next) {
-    DataReader.save("urlCalendar", next);
+    DataReader.save(SettingsNames.urlCalendar, next);
     log("Listener: urlCalendar");
   });
 
   ref.listen(themeApp, (previous, next) {
     if (previous != next) {
-      DataReader.save("isDark", next == themes["dark"]);
+      DataReader.save(SettingsNames.isDark, next == themes["dark"]);
       appIsDarkMode = next == themes["dark"];
       countColor = 0;
       log("Listener: themeApp");
@@ -106,7 +122,7 @@ void setUpListeners(WidgetRef ref) {
 
   ref.listen(languageApp, (previous, next) {
     if (previous != next) {
-      DataReader.save("language", next.languageCode);
+      DataReader.save(SettingsNames.language, next.languageCode);
     }
     log("Listener: languageApp");
   });
@@ -114,24 +130,18 @@ void setUpListeners(WidgetRef ref) {
   final cardTypeToDisplay = ref.read(cardTypeDisplay);
   cardTypeToDisplay.addListener(() {
     log("changement pour cardTypeDisplay");
+    DataReader.save(SettingsNames.cardTimeLineDisplay,
+        cardTypeToDisplay.cardTimeLineDisplay);
     DataReader.save(
-        "cardTimeLineDisplay", cardTypeToDisplay.cardTimeLineDisplay);
-    DataReader.save("firstHourDisplay", cardTypeToDisplay.firstHourDisplay);
-    DataReader.save("lastHourDisplay", cardTypeToDisplay.lastHourDisplay);
+        SettingsNames.firstHourDisplay, cardTypeToDisplay.firstHourDisplay);
+    DataReader.save(
+        SettingsNames.lastHourDisplay, cardTypeToDisplay.lastHourDisplay);
     log("Listener: cardTypeToDisplay");
   });
 }
 
 void loadSettings(WidgetRef ref) {
   setUpListeners(ref);
-  DataReader.getBool("notifEnabled", true)
-      .then((value) => SettingsApp.notifEnabled = value);
-
-  DataReader.getBool("jourFeriesEnabled")
-      .then((value) => SettingsApp.jourFeriesEnabled = value);
-
-  DataReader.getBool("alamresAvancesEnabled")
-      .then((value) => SettingsApp.alamresAvancesEnabled = value);
 
   log("fin loadSettings");
 }

@@ -40,7 +40,6 @@ class DataController {
     log("url = $url");
     final resUpdate =
         await compute(updateCalendrier, {"url": url, "oldCal": calendrier});
-    log("end update res = $resUpdate");
     if (resUpdate.isNotEmpty) {
       log("start writing in file");
       calendrier = resUpdate["newCal"];

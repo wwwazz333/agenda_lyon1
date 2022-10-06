@@ -1,3 +1,4 @@
+import 'package:agenda_lyon1/common/themes.dart';
 import 'package:agenda_lyon1/controller/background_work.dart';
 import 'package:agenda_lyon1/providers.dart';
 import 'package:agenda_lyon1/settings.dart';
@@ -24,25 +25,12 @@ Future<void> main() async {
   ));
 }
 
-class MyApp extends ConsumerStatefulWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() {
-    return _MyApp();
-  }
-}
-
-class _MyApp extends ConsumerState<MyApp> {
-  late final Future loadingApp;
-  @override
-  void initState() {
-    loadingApp = loadCriticalSettings(ref);
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final Future loadingApp = loadCriticalSettings(ref);
     loadSettings(ref);
 
     return MaterialApp(
@@ -62,7 +50,6 @@ class _MyApp extends ConsumerState<MyApp> {
         '/settings_url': ((context) => const SettingsScreenURL()),
         '/history': ((context) => const HistoriqueScreen()),
       },
-      // ref.watch(themeApp)
       theme: ref.watch(themeApp),
       home: FutureBuilder(
         future: loadingApp,
