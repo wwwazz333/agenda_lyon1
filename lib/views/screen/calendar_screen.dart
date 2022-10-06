@@ -39,6 +39,14 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
 
   late final Future loadingFuture;
 
+  void showDialogHistoryIfNeeded() {
+    if (SettingsApp.changeIds.isNotEmpty) {
+      showHistoryDialog(
+          context, SettingsApp.changeIds, ref.watch(languageApp).languageCode);
+      SettingsApp.changeIds = [];
+    }
+  }
+
   @override
   void initState() {
     loadingFuture = DataController().load();
@@ -46,9 +54,9 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
         .then((value) => DataController().update());
     DataController().addListenerUpdate(
         "updateCalendarScreenView",
-        (changeIds) => setState(
+        (Ids) => setState(
               () {
-                log("Task: update calendar screen");
+                showDialogHistoryIfNeeded();
               },
             ));
     launchPerodicalWork();
@@ -57,12 +65,7 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (SettingsApp.changeIds.isNotEmpty &&
-        SettingsApp.changeIds.length < 100) {
-      showHistoryDialog(
-          context, SettingsApp.changeIds, ref.watch(languageApp).languageCode);
-    }
-
+    showDialogHistoryIfNeeded();
     final typeCardToDisplay = ref.watch(cardTypeDisplay);
     ref.listen(selectedDate, (previous, next) {
       _controller.goToGoodPage(next);

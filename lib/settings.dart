@@ -18,7 +18,13 @@ class SettingsApp {
   static bool _notifEnabled = true;
   static bool _jourFeriesEnabled = false;
   static bool _alamresAvancesEnabled = false;
-  static List<int> changeIds = [];
+  static List<int> _changeIds = [];
+
+  static List<int> get changeIds => _changeIds;
+  static set changeIds(List<int> newVal) {
+    _changeIds = newVal;
+    DataReader.save(SettingsNames.changeIds, json.encode(newVal));
+  }
 
   static bool get notifEnabled {
     return _notifEnabled;

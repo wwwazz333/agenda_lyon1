@@ -50,6 +50,7 @@ class DataController {
       List<Changement> changes = resUpdate["changes"];
       List<int> changeIds = [];
       if (changes.isNotEmpty) {
+        changeIds = [0, 0];
         String where = "";
         List<Object?> whereArgs = [];
         for (Changement change in changes) {
@@ -70,13 +71,11 @@ class DataController {
         }
 
         where = where.substring(0, where.length - 3);
-        changeIds =
-            (await DBManager.getWhere("History", ["id"], where, whereArgs))
-                .map((row) => row["id"] as int)
-                .toList();
-      }
-      DataReader.save(SettingsNames.changeIds, json.encode(changeIds));
 
+        changeIds[1] = (await DBManager.getMaxId()) as int;
+        changeIds[0] = changeIds[1] - changes.length;
+      }
+      SettingsApp.changeIds = changeIds;
       informeUpdate(changeIds);
 
       log("end writing in file");

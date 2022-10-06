@@ -47,6 +47,7 @@ class DBManager {
 
   static Future<List<Map<String, dynamic>>> readDB(String nameDB) async {
     final res = await (await db).query(nameDB);
+
     return res;
   }
 
@@ -55,5 +56,13 @@ class DBManager {
     final res = await (await db)
         .query(nameDB, columns: column, where: where, whereArgs: whereArgs);
     return res;
+  }
+
+  static Future<int?> getMaxId() async {
+    final liste = await (await db).rawQuery("SELECT max(id) from History");
+    if (liste.isNotEmpty) {
+      return liste[0]["max(id)"] as int;
+    }
+    return null;
   }
 }
