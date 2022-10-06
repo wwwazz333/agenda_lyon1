@@ -1,3 +1,4 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 
 import 'colors.dart';
@@ -19,7 +20,7 @@ final _parentTheme = ThemeData(
 );
 
 final themes = {
-  "light": ThemeData.light().copyWith(
+  "light": FlexThemeData.light().copyWith(
       primaryColor: _parentTheme.primaryColor,
       colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.red),
       appBarTheme: _parentTheme.appBarTheme,
@@ -40,7 +41,7 @@ final themes = {
             headline3: TextStyle(
                 color: _parentTheme.colorScheme.onTertiary, fontSize: 14),
           )),
-  "dark": ThemeData.dark().copyWith(
+  "dark": FlexThemeData.dark(darkIsTrueBlack: true).copyWith(
       primaryColor: _parentTheme.primaryColor,
       colorScheme: ColorScheme.fromSwatch(
           primarySwatch: Colors.red, brightness: Brightness.dark),

@@ -18,11 +18,15 @@ class MySettingsScreen extends ConsumerStatefulWidget {
 class _MySettingsScreen extends ConsumerState<MySettingsScreen> {
   @override
   Widget build(BuildContext context) {
+    final theme = ref.watch(themeApp);
     final cardTypeToDisplay = ref.read(cardTypeDisplay);
 
     return Scaffold(
       appBar: AppBar(title: const Text("Settings")),
       body: SettingsList(
+        darkTheme: SettingsThemeData(
+            titleTextColor: theme.primaryColor,
+            settingsListBackground: theme.backgroundColor),
         sections: [
           SettingsSection(
             title: const Text("URL"),
