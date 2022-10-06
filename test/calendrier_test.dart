@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:agenda_lyon1/model/calendrier.dart';
 import 'package:agenda_lyon1/model/event_calendrier.dart';
 import 'package:test/test.dart';

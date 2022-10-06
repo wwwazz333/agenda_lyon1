@@ -96,7 +96,7 @@ class CardEventTimeLine extends CardEvent {
   final double oneHoureH;
   final int startHour;
   final double maxWidthNumber;
-  CardEventTimeLine(
+  const CardEventTimeLine(
       {required super.title,
       required super.subTitle,
       required super.debut,

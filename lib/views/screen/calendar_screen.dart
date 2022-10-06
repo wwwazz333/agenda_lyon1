@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:agenda_lyon1/controller/data_controller.dart';
 import 'package:agenda_lyon1/controller/background_work.dart';
 import 'package:agenda_lyon1/settings.dart';
@@ -10,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../controller/calendarui_controller.dart';
-import '../../controller/local_notification_service.dart';
 import '../../providers.dart';
 import '../custom_widgets/event_timeline.dart';
 import '../custom_widgets/navigator.dart';
@@ -54,7 +51,7 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
         .then((value) => DataController().update());
     DataController().addListenerUpdate(
         "updateCalendarScreenView",
-        (Ids) => setState(
+        (ids) => setState(
               () {
                 showDialogHistoryIfNeeded();
               },

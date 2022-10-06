@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:agenda_lyon1/data/db_manager.dart';
 import 'package:agenda_lyon1/model/calendrier.dart';
 import 'package:agenda_lyon1/views/screen/historique_screen.dart';
@@ -7,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 Future<void> showHistoryDialog(
-    BuildContext context, List<int> Ids, String languageCode) async {
+    BuildContext context, List<int> ids, String languageCode) async {
   final formatter = DateFormat.yMMMMEEEEd(languageCode);
   List<Changement> changes = (await DBManager.getWhere(
-          "History", ["*"], "id >= ? or id <= ?", [Ids[0], Ids[1]]))
+          "History", ["*"], "id >= ? or id <= ?", [ids[0], ids[1]]))
       .map((row) => Changement(
           row["name"],
           getChangementType(row["typeChange"]),
@@ -31,7 +29,7 @@ Future<void> showHistoryDialog(
               width: MediaQuery.of(context).size.width,
               child: ListView.builder(
                 shrinkWrap: true,
-                itemCount: Ids[1] - Ids[0],
+                itemCount: ids[1] - ids[0],
                 itemBuilder: (context, index) => ChangementCard(
                     change: changes[index], formatter: formatter),
               ),

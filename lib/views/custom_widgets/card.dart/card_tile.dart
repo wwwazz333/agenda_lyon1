@@ -75,7 +75,7 @@ class _CardEventTile extends State<CardEventTile> {
 }
 
 class CardEventTile extends CardEvent {
-  CardEventTile(
+  const CardEventTile(
       {required super.title,
       required super.subTitle,
       required super.nbrTask,

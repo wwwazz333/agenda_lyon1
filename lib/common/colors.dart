@@ -1,8 +1,6 @@
 import 'package:agenda_lyon1/data/db_manager.dart';
 import 'package:flutter/material.dart';
 
-import 'global_data.dart';
-
 Future<void> loadColors() async {
   final darks = await DBManager.readDB("ColorsDark");
   for (var row in darks) {

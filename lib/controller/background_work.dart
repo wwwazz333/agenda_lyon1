@@ -1,8 +1,6 @@
 import 'package:agenda_lyon1/controller/data_controller.dart';
-import 'package:agenda_lyon1/data/shared_pref.dart';
 import 'package:workmanager/workmanager.dart';
 import 'dart:io' show Platform;
-import '../settings.dart';
 import 'local_notification_service.dart';
 
 const updateCalendrier = "com.agenda_lyon1.workUpdate.calendrier";

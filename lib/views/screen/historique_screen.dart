@@ -1,5 +1,4 @@
 import 'package:agenda_lyon1/controller/history_controller.dart';
-import 'package:agenda_lyon1/data/db_manager.dart';
 import 'package:agenda_lyon1/model/calendrier.dart';
 import 'package:agenda_lyon1/model/date.dart';
 import 'package:flutter/material.dart';
@@ -34,85 +33,46 @@ class _HistoriqueScreenState extends ConsumerState<HistoriqueScreen>
   Widget build(BuildContext context) {
     final language = ref.watch(languageApp);
     final formatter = DateFormat.yMMMMEEEEd(language.languageCode);
-    const double bigLogo = 200;
-    final size = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("Historique"),
-        actions: [
-          IconButton(
-              onPressed: () {
-                historyController.clearHistory();
-              },
-              icon: const Icon(Icons.cleaning_services))
-        ],
       ),
-      body: Stack(children: [
-        FutureBuilder(
-          future: historyController.loadingDBHistory,
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.hasData) {
-              final data = (snapshot.data as List<Map<String, dynamic>>);
-              if (data.isEmpty) {
-                return Center(
-                  child: Text(
-                    "Aucun changements d'emplois du temps n'a été enregistré.",
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                );
-              } else {
-                return ListView.builder(
-                    itemCount: data.length,
-                    itemBuilder: (context, index) => ChangementCard(
-                        formatter: formatter,
-                        change: Changement(
-                            data[index]["name"],
-                            getChangementType(data[index]["typeChange"]),
-                            data[index]["oldDate"] == 0
-                                ? null
-                                : DateTime.fromMillisecondsSinceEpoch(
-                                    data[index]["oldDate"]),
-                            data[index]["newDate"] == 0
-                                ? null
-                                : DateTime.fromMillisecondsSinceEpoch(
-                                    data[index]["newDate"]))));
-              }
-            } else {
-              return const LoadingWidget();
-            }
-          },
-        ),
-        LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints constraints) {
-            final Size biggest = constraints.biggest;
-            return Stack(
-              children: <Widget>[
-                PositionedTransition(
-                  rect: RelativeRectTween(
-                    begin: RelativeRect.fromSize(
-                        Rect.fromLTWH(size.width / 2 - bigLogo / 2,
-                            size.height - bigLogo / 2, bigLogo, bigLogo),
-                        biggest),
-                    end: RelativeRect.fromSize(
-                        Rect.fromLTWH(size.width / 2 - bigLogo / 2, 0 - bigLogo,
-                            bigLogo, bigLogo),
-                        biggest),
-                  ).animate(CurvedAnimation(
-                    parent: historyController.controllerAnimation,
-                    curve: Curves.easeInCirc,
-                  )),
-                  child: const Icon(
-                    Icons.cleaning_services,
-                    size: bigLogo,
-                  ),
+      body: FutureBuilder(
+        future: historyController.loadingDBHistory,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            final data = (snapshot.data as List<Map<String, dynamic>>);
+            if (data.isEmpty) {
+              return Center(
+                child: Text(
+                  "Aucun changements d'emplois du temps n'a été enregistré.",
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
-              ],
-            );
-          },
-        )
-      ]),
+              );
+            } else {
+              return ListView.builder(
+                  itemCount: data.length,
+                  itemBuilder: (context, index) => ChangementCard(
+                      formatter: formatter,
+                      change: Changement(
+                          data[index]["name"],
+                          getChangementType(data[index]["typeChange"]),
+                          data[index]["oldDate"] == 0
+                              ? null
+                              : DateTime.fromMillisecondsSinceEpoch(
+                                  data[index]["oldDate"]),
+                          data[index]["newDate"] == 0
+                              ? null
+                              : DateTime.fromMillisecondsSinceEpoch(
+                                  data[index]["newDate"]))));
+            }
+          } else {
+            return const LoadingWidget();
+          }
+        },
+      ),
     );
   }
 }
