@@ -20,22 +20,34 @@ class _CardEventTile extends State<CardEventTile> {
                   children: [
                     Text(
                       widget.debut,
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText1!
+                          .copyWith(color: widget.fontColor),
                     ),
                     Text(
                       widget.fin,
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText1!
+                          .copyWith(color: widget.fontColor),
                     )
                   ],
                 ),
                 title: Text(
                   widget.title,
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1!
+                      .copyWith(color: widget.fontColor),
                   softWrap: true,
                 ),
                 trailing: Text(
                   widget.subTitle,
-                  style: Theme.of(context).textTheme.bodyText2,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText2!
+                      .copyWith(color: widget.fontColor),
                 ),
               ),
             ),
@@ -50,7 +62,10 @@ class _CardEventTile extends State<CardEventTile> {
                           shape: BoxShape.circle),
                       child: Text(
                         widget.nbrTask().toString(),
-                        style: Theme.of(context).textTheme.bodyText1,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1!
+                            .copyWith(color: widget.fontColor),
                       ),
                     ))
                 : const SizedBox(),
@@ -60,7 +75,7 @@ class _CardEventTile extends State<CardEventTile> {
 }
 
 class CardEventTile extends CardEvent {
-  const CardEventTile(
+  CardEventTile(
       {required super.title,
       required super.subTitle,
       required super.nbrTask,

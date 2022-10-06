@@ -1,6 +1,8 @@
 import 'package:agenda_lyon1/data/db_manager.dart';
 import 'package:flutter/material.dart';
 
+import 'global_data.dart';
+
 Future<void> loadColors() async {
   final darks = await DBManager.readDB("ColorsDark");
   for (var row in darks) {
@@ -33,6 +35,21 @@ void addColor(String linkedTitel, Color color, bool isDarkColor) {
       "b": color.blue,
     });
   }
+}
+
+Color? goodColorFontOnBackground(Color bgColor) {
+  final grayscale =
+      (0.299 * bgColor.red) + (0.587 * bgColor.green) + (0.114 * bgColor.blue);
+
+  Color? newColor;
+  if (grayscale > 128) {
+    //is light
+    newColor = Colors.black;
+  } else {
+    //is dark
+    newColor = Colors.white;
+  }
+  return newColor;
 }
 
 const Color redOnePlus = Color.fromARGB(255, 230, 23, 75);
