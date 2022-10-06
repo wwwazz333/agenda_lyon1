@@ -34,11 +34,17 @@ class _CardEventTimeLine extends State<CardEventTimeLine> {
                               children: [
                                 Text(
                                   widget.debut,
-                                  style: Theme.of(context).textTheme.bodyText1,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1!
+                                      .copyWith(color: widget.fontColor),
                                 ),
                                 Text(
                                   widget.fin,
-                                  style: Theme.of(context).textTheme.bodyText1,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1!
+                                      .copyWith(color: widget.fontColor),
                                 )
                               ],
                             ),
@@ -51,16 +57,20 @@ class _CardEventTimeLine extends State<CardEventTimeLine> {
                                   child: Center(
                                       child: Text(
                                     widget.title,
-                                    style:
-                                        Theme.of(context).textTheme.bodyText1,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1!
+                                        .copyWith(color: widget.fontColor),
                                   )),
                                 ),
                                 Expanded(
                                     flex: 1,
                                     child: Text(
                                       widget.subTitle,
-                                      style:
-                                          Theme.of(context).textTheme.bodyText2,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText2!
+                                          .copyWith(color: widget.fontColor),
                                     ))
                               ],
                             ))
@@ -79,7 +89,10 @@ class _CardEventTimeLine extends State<CardEventTimeLine> {
                               shape: BoxShape.circle),
                           child: Text(
                             widget.nbrTask().toString(),
-                            style: Theme.of(context).textTheme.bodyText1,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1!
+                                .copyWith(color: widget.fontColor),
                           ),
                         ))
                     : const SizedBox(),

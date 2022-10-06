@@ -1,4 +1,3 @@
-import 'package:agenda_lyon1/common/themes.dart';
 import 'package:agenda_lyon1/controller/background_work.dart';
 import 'package:agenda_lyon1/providers.dart';
 import 'package:agenda_lyon1/settings.dart';
