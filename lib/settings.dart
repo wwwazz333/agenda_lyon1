@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:agenda_lyon1/common/colors.dart';
@@ -9,10 +10,15 @@ import 'common/global_data.dart';
 import 'common/themes.dart';
 import 'data/db_manager.dart';
 
+class SettingsNames {
+  static const String changeIds = "nbrChange";
+}
+
 class SettingsApp {
   static bool _notifEnabled = true;
   static bool _jourFeriesEnabled = false;
   static bool _alamresAvancesEnabled = false;
+  static List<int> changeIds = [];
 
   static bool get notifEnabled {
     return _notifEnabled;
@@ -45,6 +51,7 @@ class SettingsApp {
 bool _criticalSettingsLoaded = false;
 Future<bool> loadCriticalSettings(WidgetRef ref) async {
   if (!_criticalSettingsLoaded) {
+    List<String> defStrList = [];
     await Future.wait([
       DBManager.open(),
       DataReader.getString("urlCalendar", "")
@@ -57,12 +64,18 @@ Future<bool> loadCriticalSettings(WidgetRef ref) async {
       DataReader.getString("language", languages.values.first.languageCode)
           .then((value) =>
               ref.read(languageApp.notifier).state = languages[value]!),
-      DataReader.getBool("cardTimeLineDisplay").then(
-          (value) => ref.read(cardTypeDisplay).cardTimeLineDisplay = value),
-      DataReader.getInt("firstHourDisplay", 6)
-          .then((value) => ref.read(cardTypeDisplay).firstHourDisplay = value),
-      DataReader.getInt("lastHourDisplay", 20)
-          .then((value) => ref.read(cardTypeDisplay).lastHourDisplay = value),
+      DataReader.getBool("cardTimeLineDisplay").then((value) =>
+          ref.read(cardTypeDisplay).cardTimeLineDisplayNoListener = value),
+      DataReader.getInt("firstHourDisplay", 6).then((value) =>
+          ref.read(cardTypeDisplay).firstHourDisplayNoListener = value),
+      DataReader.getInt("lastHourDisplay", 20).then((value) =>
+          ref.read(cardTypeDisplay).lastHourDisplayNoListener = value),
+      DataReader.getString(SettingsNames.changeIds, json.encode(defStrList))
+          .then((value) {
+        SettingsApp.changeIds =
+            (json.decode(value) as List<dynamic>).map((e) => e as int).toList();
+        // DataReader.save(SettingsNames.changeIds, json.encode(defStrList));
+      })
     ]);
     _criticalSettingsLoaded = true;
   }
@@ -73,7 +86,7 @@ Future<bool> loadCriticalSettings(WidgetRef ref) async {
 void setUpListeners(WidgetRef ref) {
   ref.listen(urlCalendar, (previous, next) {
     DataReader.save("urlCalendar", next);
-    log("Settings: urlcal modif sur DataReader");
+    log("Listener: urlCalendar");
   });
 
   ref.listen(themeApp, (previous, next) {
@@ -81,6 +94,7 @@ void setUpListeners(WidgetRef ref) {
       DataReader.save("isDark", next == themes["dark"]);
       appIsDarkMode = next == themes["dark"];
       countColor = 0;
+      log("Listener: themeApp");
     }
   });
 
@@ -88,6 +102,7 @@ void setUpListeners(WidgetRef ref) {
     if (previous != next) {
       DataReader.save("language", next.languageCode);
     }
+    log("Listener: languageApp");
   });
 
   final cardTypeToDisplay = ref.read(cardTypeDisplay);
@@ -97,6 +112,7 @@ void setUpListeners(WidgetRef ref) {
         "cardTimeLineDisplay", cardTypeToDisplay.cardTimeLineDisplay);
     DataReader.save("firstHourDisplay", cardTypeToDisplay.firstHourDisplay);
     DataReader.save("lastHourDisplay", cardTypeToDisplay.lastHourDisplay);
+    log("Listener: cardTypeToDisplay");
   });
 }
 

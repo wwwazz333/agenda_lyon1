@@ -1,5 +1,6 @@
 import 'package:agenda_lyon1/controller/history_controller.dart';
 import 'package:agenda_lyon1/data/db_manager.dart';
+import 'package:agenda_lyon1/model/calendrier.dart';
 import 'package:agenda_lyon1/model/date.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -65,11 +66,14 @@ class _HistoriqueScreenState extends ConsumerState<HistoriqueScreen>
                 return ListView.builder(
                     itemCount: data.length,
                     itemBuilder: (context, index) => ChangementCard(
-                          formatter: formatter,
-                          name: data[index]["name"],
-                          oldDate: data[index]["oldDate"],
-                          newDate: data[index]["newDate"],
-                        ));
+                        formatter: formatter,
+                        change: Changement(
+                            data[index]["name"],
+                            getChangementType(data[index]["typeChange"]),
+                            DateTime.fromMillisecondsSinceEpoch(
+                                data[index]["oldDate"]),
+                            DateTime.fromMillisecondsSinceEpoch(
+                                data[index]["newDate"]))));
               }
             } else {
               return const LoadingWidget();
@@ -110,15 +114,10 @@ class _HistoriqueScreenState extends ConsumerState<HistoriqueScreen>
 }
 
 class ChangementCard extends StatelessWidget {
-  final String name;
+  final Changement change;
   final DateFormat formatter;
-  final int? newDate, oldDate;
   const ChangementCard(
-      {required this.name,
-      required this.formatter,
-      this.newDate,
-      this.oldDate,
-      super.key});
+      {required this.change, required this.formatter, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -127,15 +126,15 @@ class ChangementCard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          name,
+          change.name,
           style: Theme.of(context).textTheme.headline1,
         ),
         Text(
-          (oldDate == null)
-              ? "ajouté aux : ${DateTime.fromMillisecondsSinceEpoch(newDate!).affichageDateHeure(formatter)}"
-              : (newDate == null)
-                  ? "supprimé du : ${DateTime.fromMillisecondsSinceEpoch(oldDate!).affichageDateHeure(formatter)}"
-                  : "déplacé du : ${DateTime.fromMillisecondsSinceEpoch(oldDate!).affichageDateHeure(formatter)}\naux : ${DateTime.fromMillisecondsSinceEpoch(newDate!).affichageDateHeure(formatter)}",
+          (change.oldDate == null)
+              ? "ajouté aux : ${change.newDate!.affichageDateHeure(formatter)}"
+              : (change.newDate == null)
+                  ? "supprimé du : ${change.oldDate!.affichageDateHeure(formatter)}"
+                  : "déplacé du : ${change.oldDate!.affichageDateHeure(formatter)}\naux : ${change.newDate!.affichageDateHeure(formatter)}",
           style: Theme.of(context).textTheme.bodyText1,
         )
       ],

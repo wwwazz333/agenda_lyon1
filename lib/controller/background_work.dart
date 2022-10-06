@@ -1,6 +1,8 @@
 import 'package:agenda_lyon1/controller/data_controller.dart';
+import 'package:agenda_lyon1/data/shared_pref.dart';
 import 'package:workmanager/workmanager.dart';
 import 'dart:io' show Platform;
+import '../settings.dart';
 import 'local_notification_service.dart';
 
 const updateCalendrier = "com.agenda_lyon1.workUpdate.calendrier";
@@ -24,8 +26,8 @@ void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     switch (task) {
       case updateCalendrier:
-        DataController().addListenerUpdate("sendNotif", (hasChange) {
-          if (hasChange) {
+        DataController().addListenerUpdate("sendNotif", (changeIds) {
+          if (changeIds.isNotEmpty) {
             final notif = LocalNotifService();
             notif.init();
             notif.showNotif(

@@ -37,9 +37,17 @@ class CardTypeDisplay extends ChangeNotifier {
     notifyListeners();
   }
 
+  set cardTimeLineDisplayNoListener(bool newVal) {
+    _cardTimeLineDisplay = newVal;
+  }
+
   set firstHourDisplay(int newVal) {
     _firstHourDisplay = newVal;
     notifyListeners();
+  }
+
+  set firstHourDisplayNoListener(int newVal) {
+    _firstHourDisplay = newVal;
   }
 
   set lastHourDisplay(int newVal) {
@@ -47,9 +55,18 @@ class CardTypeDisplay extends ChangeNotifier {
     notifyListeners();
   }
 
+  set lastHourDisplayNoListener(int newVal) {
+    _lastHourDisplay = newVal;
+  }
+
   void setHours(int firstHour, int lastHour) {
     _firstHourDisplay = firstHour;
     _lastHourDisplay = lastHour;
     notifyListeners();
+  }
+
+  void setHoursNoListener(int firstHour, int lastHour) {
+    _firstHourDisplay = firstHour;
+    _lastHourDisplay = lastHour;
   }
 }

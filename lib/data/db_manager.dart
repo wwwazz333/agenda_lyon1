@@ -22,21 +22,7 @@ class DBManager {
           "CREATE TABLE Tasks(id INTEGER PRIMARY KEY autoincrement, uid TEXT, task TEXT)",
         );
         db.execute(
-          "CREATE TABLE History(id INTEGER PRIMARY KEY autoincrement, name TEXT, oldDate INTEGER, newDate INTEGER)",
-        );
-      },
-      onUpgrade: (db, oldVersion, newVersion) {
-        db.execute(
-          "CREATE TABLE if not exists ColorsLight(nameEvent TEXT PRIMARY KEY, r INTEGER, g INTEGER, b INTEGER)",
-        );
-        db.execute(
-          "CREATE TABLE if not exists ColorsDark(nameEvent TEXT PRIMARY KEY, r INTEGER, g INTEGER, b INTEGER)",
-        );
-        db.execute(
-          "CREATE TABLE if not exists Tasks(id INTEGER PRIMARY KEY autoincrement, uid TEXT, task TEXT)",
-        );
-        db.execute(
-          "CREATE TABLE if not exists History(id INTEGER PRIMARY KEY autoincrement, name TEXT, typeChange TEXT, oldDate INTEGER, newDate INTEGER)",
+          "CREATE TABLE History(id INTEGER PRIMARY KEY autoincrement, name TEXT, typeChange TEXT, oldDate INTEGER, newDate INTEGER)",
         );
       },
       version: 1,
@@ -61,6 +47,13 @@ class DBManager {
 
   static Future<List<Map<String, dynamic>>> readDB(String nameDB) async {
     final res = await (await db).query(nameDB);
+    return res;
+  }
+
+  static Future<List<Map<String, dynamic>>> getWhere(String nameDB,
+      List<String> column, String where, List<Object?> whereArgs) async {
+    final res = await (await db)
+        .query(nameDB, columns: column, where: where, whereArgs: whereArgs);
     return res;
   }
 }

@@ -5,6 +5,7 @@ import 'package:agenda_lyon1/data/db_manager.dart';
 import 'package:agenda_lyon1/data/file_manager.dart';
 import 'package:agenda_lyon1/data/shared_pref.dart';
 import 'package:agenda_lyon1/network/file_downolader.dart';
+import 'package:agenda_lyon1/settings.dart';
 import 'package:flutter/foundation.dart';
 
 import '../common/colors.dart';
@@ -14,7 +15,7 @@ import 'event_controller.dart';
 
 class DataController {
   Calendrier calendrier = Calendrier([]);
-  Map<String, void Function(bool)> updateListeners = {};
+  Map<String, void Function(List<int>)> updateListeners = {};
 
   static DataController? _instance;
 
@@ -26,10 +27,10 @@ class DataController {
     _instance ??= DataController._();
     return _instance!;
   }
-  void informeUpdate(bool hasChange) {
+  void informeUpdate(List<int> nbrChange) {
     log("Task: informeUpdate size = ${updateListeners.length} for $hashCode");
     updateListeners.forEach((key, fun) {
-      fun(hasChange);
+      fun(nbrChange);
     });
   }
 
@@ -46,16 +47,37 @@ class DataController {
       FileManager.writeObject(
           FileManager.calendrierFile, jsonEncode(calendrier));
 
-      bool hasChange = false;
-      for (Changement change in resUpdate["changes"]) {
-        hasChange = true;
-        DBManager.insertInto("History", {
-          "name": change.name,
-          "oldDate": change.oldDate?.millisecondsSinceEpoch ?? 0,
-          "newDate": change.newDate?.millisecondsSinceEpoch ?? 0,
-        });
+      List<Changement> changes = resUpdate["changes"];
+      List<int> changeIds = [];
+      if (changes.isNotEmpty) {
+        String where = "";
+        List<Object?> whereArgs = [];
+        for (Changement change in changes) {
+          where +=
+              "(name = ? and oldDate = ? and newDate = ? and typeChange = ?) or ";
+          whereArgs.addAll([
+            change.name,
+            change.oldDate?.millisecondsSinceEpoch ?? 0,
+            change.newDate?.millisecondsSinceEpoch ?? 0,
+            change.changementType.toString()
+          ]);
+          DBManager.insertInto("History", {
+            "name": change.name,
+            "oldDate": change.oldDate?.millisecondsSinceEpoch ?? 0,
+            "newDate": change.newDate?.millisecondsSinceEpoch ?? 0,
+            "typeChange": change.changementType.toString()
+          });
+        }
+
+        where = where.substring(0, where.length - 3);
+        changeIds =
+            (await DBManager.getWhere("History", ["id"], where, whereArgs))
+                .map((row) => row["id"] as int)
+                .toList();
       }
-      informeUpdate(hasChange);
+      DataReader.save(SettingsNames.changeIds, json.encode(changeIds));
+
+      informeUpdate(changeIds);
 
       log("end writing in file");
     }
@@ -124,7 +146,7 @@ class DataController {
     FileManager.delFile(FileManager.calendrierFile);
   }
 
-  void addListenerUpdate(String uniquKey, void Function(bool) fun) {
+  void addListenerUpdate(String uniquKey, void Function(List<int>) fun) {
     updateListeners[uniquKey] = fun;
     log("Task: ajout listener size = ${updateListeners.length} for $hashCode");
   }

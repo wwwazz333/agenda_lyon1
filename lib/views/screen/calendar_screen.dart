@@ -2,8 +2,10 @@ import 'dart:developer';
 
 import 'package:agenda_lyon1/controller/data_controller.dart';
 import 'package:agenda_lyon1/controller/background_work.dart';
+import 'package:agenda_lyon1/settings.dart';
 import 'package:agenda_lyon1/views/custom_widgets/event_list.dart';
 import 'package:agenda_lyon1/views/custom_widgets/loading_widget.dart';
+import 'package:agenda_lyon1/views/dialog/history.dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -44,7 +46,7 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
         .then((value) => DataController().update());
     DataController().addListenerUpdate(
         "updateCalendarScreenView",
-        (hasChange) => setState(
+        (changeIds) => setState(
               () {
                 log("Task: update calendar screen");
               },
@@ -55,6 +57,11 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (SettingsApp.changeIds.isNotEmpty &&
+        SettingsApp.changeIds.length < 100) {
+      showHistoryDialog(
+          context, SettingsApp.changeIds, ref.watch(languageApp).languageCode);
+    }
     final notif = LocalNotifService();
     notif.init();
     notif.showNotif(
