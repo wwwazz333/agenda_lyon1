@@ -86,22 +86,26 @@ class ChangementCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          change.name,
-          style: Theme.of(context).textTheme.headline1,
-        ),
-        Text(
-          (change.oldDate == null)
-              ? "ajouté aux : ${change.newDate!.affichageDateHeure(formatter)}"
-              : (change.newDate == null)
-                  ? "supprimé du : ${change.oldDate!.affichageDateHeure(formatter)}"
-                  : "déplacé du : ${change.oldDate!.affichageDateHeure(formatter)}\naux : ${change.newDate!.affichageDateHeure(formatter)}",
-          style: Theme.of(context).textTheme.bodyText1,
-        )
-      ],
+        child: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            change.name,
+            style: Theme.of(context).textTheme.headline1,
+            textAlign: TextAlign.center,
+          ),
+          Text(
+            (change.oldDate == null)
+                ? "ajouté aux : ${change.newDate!.affichageDateHeure(formatter)}"
+                : (change.newDate == null)
+                    ? "supprimé du : ${change.oldDate!.affichageDateHeure(formatter)}"
+                    : "déplacé du : ${change.oldDate!.affichageDateHeure(formatter)}\naux : ${change.newDate!.affichageDateHeure(formatter)}",
+            style: Theme.of(context).textTheme.bodyText1,
+          )
+        ],
+      ),
     ));
   }
 }

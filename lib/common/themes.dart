@@ -27,6 +27,7 @@ final themes = {
       elevatedButtonTheme: _parentTheme.elevatedButtonTheme,
       textButtonTheme: _parentTheme.textButtonTheme,
       switchTheme: _parentTheme.switchTheme,
+      cardColor: const Color.fromARGB(255, 237, 237, 237),
       textTheme: ThemeData.light().textTheme.copyWith(
             headline1: const TextStyle(
                 fontSize: 26, color: redOnePlus, fontWeight: FontWeight.w700),
@@ -48,6 +49,7 @@ final themes = {
       appBarTheme: _parentTheme.appBarTheme,
       elevatedButtonTheme: _parentTheme.elevatedButtonTheme,
       textButtonTheme: _parentTheme.textButtonTheme,
+      cardColor: const Color.fromARGB(255, 29, 29, 29),
       backgroundColor: Colors.black,
       textTheme: ThemeData.dark().textTheme.copyWith(
             headline1: const TextStyle(
