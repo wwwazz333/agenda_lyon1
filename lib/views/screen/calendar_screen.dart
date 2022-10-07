@@ -77,13 +77,8 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
         DataController().update();
       },
     );
-    // ignore: prefer_interpolation_to_compose_strings
-    log("test : " +
-        Jiffy({"year": 2000, "month": 3, "day": 26, "hour": 12})
-            .diff(Jiffy({"year": 2000, "month": 3, "day": 24, "hour": 12}),
-                Units.DAY, true)
-            .round()
-            .toString());
+    log(Jiffy().startOf(Units.WEEK).dateTime.toIso8601String());
+    log(Jiffy().endOf(Units.WEEK).dateTime.toIso8601String());
     return Scaffold(
       body: SafeArea(
         child: FutureBuilder(

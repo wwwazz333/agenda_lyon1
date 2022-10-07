@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:agenda_lyon1/model/date.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -50,10 +52,11 @@ class TabCalendarUIController {
   // }
 
   int getIndexPageOfDate(DateTime date) {
-    final d = Jiffy(date.midi().add(Duration(days: -1)));
+    final d = Jiffy(date.midi()).endOf(Units.DAY).add(days: -startDayWeek);
     final f = Jiffy(firstDate);
-    final diff = d.diff(f, Units.WEEK).toInt();
-    return diff;
+    final diff = d.diff(f, Units.WEEK);
+    log("diff : $diff");
+    return diff.toInt();
   }
 
   void goToGoodPage(DateTime newDate) {
@@ -61,7 +64,7 @@ class TabCalendarUIController {
         _pageController.page == _pageController.page!.toInt().toDouble() &&
         getIndexPageOfDate(newDate.midi()) != _pageController.page) {
       //si scroll pas la page mais doit changer
-      _pageController.jumpToPage(getIndexPageOfDate(newDate.midi()));
+      _pageController.jumpToPage(getIndexPageOfDate(newDate));
     }
   }
 
