@@ -80,8 +80,9 @@ Future<bool> loadCriticalSettings(WidgetRef ref) async {
               SettingsNames.language, languages.values.first.languageCode)
           .then((value) =>
               ref.read(languageApp.notifier).state = languages[value]!),
-      DataReader.getBool(SettingsNames.cardTimeLineDisplay).then((value) =>
-          ref.read(cardTypeDisplay).cardTimeLineDisplayNoListener = value),
+      DataReader.getBool(SettingsNames.cardTimeLineDisplay, true).then(
+          (value) =>
+              ref.read(cardTypeDisplay).cardTimeLineDisplayNoListener = value),
       DataReader.getInt(SettingsNames.firstHourDisplay, 6).then((value) =>
           ref.read(cardTypeDisplay).firstHourDisplayNoListener = value),
       DataReader.getInt(SettingsNames.lastHourDisplay, 20).then((value) =>
