@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:agenda_lyon1/controller/data_controller.dart';
 import 'package:agenda_lyon1/controller/background_work.dart';
 import 'package:agenda_lyon1/settings.dart';
@@ -74,12 +76,6 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
         DataController().update();
       },
     );
-    ref.listen(
-      themeApp,
-      (previous, next) {
-        setState(() {});
-      },
-    );
     return Scaffold(
       body: SafeArea(
         child: FutureBuilder(
@@ -104,6 +100,7 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
                       controller: _controller.pageController,
                       itemCount: null,
                       onPageChanged: (newPage) {
+                        log("onPageChanged");
                         ref.read(selectedDate.notifier).state =
                             _controller.getDateOfIndex(newPage);
                       },

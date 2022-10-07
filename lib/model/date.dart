@@ -20,7 +20,7 @@ extension Date on DateTime {
   }
 
   DateTime midi() {
-    return add(Duration(hours: 12 - hour));
+    return add(Duration(hours: 12 - hour, minutes: -minute, seconds: -second));
   }
 
   String affichageDateHeure(DateFormat formatter) {

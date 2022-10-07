@@ -9,16 +9,12 @@ class TabCalendarUIController {
   final DateTime startingDate;
   final int startDayWeek;
   late final PageController _pageController;
-  late final DateTime firstDay; //init in controller
   DateFormat? lastFormatter;
-
-  List<String>? _dayNames;
 
   TabCalendarUIController({
     required this.startingDate,
     required this.startDayWeek,
   }) {
-    firstDay = firstDayOfWeek(date: startingDate, startDayWeek: startDayWeek);
     _pageController =
         PageController(initialPage: getIndexPageOfDate(startingDate));
   }
@@ -27,44 +23,19 @@ class TabCalendarUIController {
     return _pageController;
   }
 
-  List<String> dayNames(DateFormat dayFormatter) {
-    if (lastFormatter != null && lastFormatter?.locale != dayFormatter.locale) {
-      _dayNames = null;
-    }
-    _dayNames ??= List.generate(
-      7,
-      (index) {
-        return dayFormatter
-            .format(firstDayOfWeek(date: startingDate, startDayWeek: 0)
-                .add(Duration(days: index)))
-            .capitalize()
-            .substring(0, 3);
-      },
-    );
-    lastFormatter = dayFormatter;
-    return _dayNames!;
-  }
-
-  DateTime firstDayOfWeek({required DateTime date, required int startDayWeek}) {
-    final utcDate = DateTime.utc(date.year, date.month, date.day, 12);
-    if (startDayWeek < 7) {
-      return utcDate.subtract(Duration(days: utcDate.weekday - startDayWeek));
-    }
-    return utcDate.subtract(Duration(days: utcDate.weekday % 7));
-  }
-
   int getIndexPageOfDate(DateTime date) {
-    return Jiffy(date.midi().add(Duration(days: -startDayWeek)))
-        .diff(Jiffy(firstDate.midi()), Units.WEEK)
-        .toInt();
+    final d = Jiffy(date.midi()).endOf(Units.DAY).add(days: -startDayWeek);
+    final f = Jiffy(firstDate);
+    return d.diff(f, Units.WEEK).toInt();
   }
 
   void goToGoodPage(DateTime newDate) {
+    final newIndex = getIndexPageOfDate(newDate);
     if (_pageController.page != null &&
-        _pageController.page == _pageController.page!.toInt().toDouble() &&
-        getIndexPageOfDate(newDate.midi()) != _pageController.page) {
+        _pageController.page == _pageController.page!.floorToDouble() &&
+        newIndex != _pageController.page) {
       //si scroll pas la page mais doit changer
-      _pageController.jumpToPage(getIndexPageOfDate(newDate.midi()));
+      _pageController.jumpToPage(newIndex);
     }
   }
 
@@ -83,8 +54,8 @@ class TabCalendarUIController {
 
   List<DateTime> genDateOfPage(int indexPage) {
     return List.generate(7, (i) {
-      final fir = Jiffy(firstDate.midi());
-      fir.add(weeks: indexPage, days: i + 2);
+      final fir = Jiffy(firstDate);
+      fir.add(weeks: indexPage, days: i + startDayWeek);
       return fir.dateTime;
     });
   }
