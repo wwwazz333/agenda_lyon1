@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:agenda_lyon1/controller/data_controller.dart';
 import 'package:agenda_lyon1/controller/background_work.dart';
 import 'package:agenda_lyon1/settings.dart';
@@ -6,6 +8,7 @@ import 'package:agenda_lyon1/views/custom_widgets/loading_widget.dart';
 import 'package:agenda_lyon1/views/dialog/history_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jiffy/jiffy.dart';
 
 import '../../controller/calendarui_controller.dart';
 import '../../providers.dart';
@@ -74,12 +77,13 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
         DataController().update();
       },
     );
-    ref.listen(
-      themeApp,
-      (previous, next) {
-        setState(() {});
-      },
-    );
+    // ignore: prefer_interpolation_to_compose_strings
+    log("test : " +
+        Jiffy({"year": 2000, "month": 3, "day": 26, "hour": 12})
+            .diff(Jiffy({"year": 2000, "month": 3, "day": 24, "hour": 12}),
+                Units.DAY, true)
+            .round()
+            .toString());
     return Scaffold(
       body: SafeArea(
         child: FutureBuilder(

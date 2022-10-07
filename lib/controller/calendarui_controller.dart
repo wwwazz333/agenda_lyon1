@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:agenda_lyon1/model/date.dart';
 import 'package:flutter/material.dart';
+import 'package:jiffy/jiffy.dart';
 
 import '../common/global_data.dart';
 import '../views/custom_widgets/event_timeline.dart';
@@ -28,12 +31,13 @@ class CalendarUIController {
   }
 
   int getIndexOfDate(DateTime date) {
-    return date.difference(firstDate).inDays;
+    return Jiffy(date).diff(Jiffy(firstDate), Units.DAY, true).round().toInt();
   }
 
   void goToGoodPage(DateTime newDate) {
     if (pageController.page! == pageController.page!.toInt().toDouble()) {
       //si scroll pas la page mais que date change
+      log(getIndexOfDate(newDate.midi()).toString());
       pageController.jumpToPage(getIndexOfDate(newDate.midi()));
     }
   }
