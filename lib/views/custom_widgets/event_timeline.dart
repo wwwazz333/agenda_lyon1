@@ -19,14 +19,8 @@ class EventTimeLine extends EventDisplay {
   }
 
   Widget _genBackground(BuildContext context) {
-    return CustomPaint(
-      size: Size(
-          MediaQuery.of(context).size.width, (nbrOfHour * oneHoureH).abs()),
-      painter: BackgroundPainter(
-          heightOfOneHour: oneHoureH,
-          firstHour: firstHour,
-          lastHour: lastHour,
-          maxWidthNumber: maxWidthNumber),
+    return SizedBox(
+      height: (nbrOfHour * oneHoureH).abs(),
     );
   }
 

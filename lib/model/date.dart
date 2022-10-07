@@ -15,6 +15,12 @@ extension Date on DateTime {
         : (compareTo(ev.date) > 0 && compareTo(ev.date.add(ev.duree)) < 0);
   }
 
+  bool isIn(DateTime start, DateTime end, [bool bornesInclude = true]) {
+    return bornesInclude
+        ? (compareTo(start) >= 0 && compareTo(end) <= 0)
+        : (compareTo(start) > 0 && compareTo(end) < 0);
+  }
+
   DateTime toLocaleFrance() {
     return add(Duration(minutes: _getTimeZone(this)));
   }

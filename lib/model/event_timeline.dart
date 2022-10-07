@@ -15,7 +15,7 @@ class EventTimeLineModel {
     List<List<EventCalendrier>> newGroupedEvent = [[]];
     for (int i = 0; i < _eventList.length; i++) {
       while (i + 1 < _eventList.length &&
-          _eventList[i + 1].date.isDuring(_eventList[i], borneInclude: false)) {
+          _eventList[i + 1].dateOverlap(_eventList[i])) {
         newGroupedEvent.last.add(_eventList[i]);
         i++;
       }

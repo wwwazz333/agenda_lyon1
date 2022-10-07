@@ -34,6 +34,8 @@ class EventCalendrier implements Comparable<EventCalendrier> {
     return _duree;
   }
 
+  DateTime get dateFin => date.add(duree);
+
   String get heureDebut {
     return DateFormat.Hm().format(date);
   }
@@ -85,6 +87,17 @@ class EventCalendrier implements Comparable<EventCalendrier> {
     DateFormat format = DateFormat("yyyy-MM-dd HH:mm"); //20220318090000
     DateTime time = format.parse("$year-$month-$day $hour:$min");
     return time.toLocaleFrance();
+  }
+
+  bool dateOverlap(EventCalendrier ev) {
+    const before = Duration(milliseconds: -1);
+    const after = Duration(milliseconds: 1);
+    return date.isAtSameMomentAs(ev.date) &&
+            dateFin.isAtSameMomentAs(ev.dateFin) ||
+        (date.isIn(ev.date, ev.dateFin.add(before)) ||
+            dateFin.isIn(ev.date.add(after), ev.dateFin) ||
+            ev.date.isIn(date, dateFin.add(before)) ||
+            ev.dateFin.isIn(date.add(after), dateFin));
   }
 
   @override
