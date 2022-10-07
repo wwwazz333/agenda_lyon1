@@ -63,13 +63,8 @@ class Header extends ConsumerWidget {
 }
 
 class WeekView extends ConsumerWidget {
-  const WeekView(
-      {required this.dayNumbers,
-      this.dayNames = const ["D", "L", "M", "M", "J", "V", "S"],
-      this.startDay = 1,
-      super.key});
+  const WeekView({required this.dayNumbers, this.startDay = 1, super.key});
 
-  final List<String> dayNames;
   final List<DateTime> dayNumbers;
 
   final int startDay;
@@ -77,53 +72,51 @@ class WeekView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dateValue = ref.watch(selectedDate);
+    final language = ref.watch(languageApp);
+    final dayFormatter = DateFormat.E(language.languageCode);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: List.generate(
-          7,
-          (index) => Expanded(
-                  child: Padding(
-                padding: const EdgeInsets.all(3),
-                child: InkWell(
-                  splashColor: Colors.grey,
-                  highlightColor: Colors.grey.withAlpha(50),
-                  borderRadius: const BorderRadius.all(Radius.circular(100)),
-                  onTap: () {
-                    ref.read(selectedDate.notifier).state = dayNumbers[index];
-                  },
-                  child: Column(
-                    children: [
-                      Text(
-                        dayNames[(index + startDay) % 7],
-                        style: (dateValue
-                                .midi()
-                                .isSameDay(dayNumbers[index].midi()))
-                            ? TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontWeight: FontWeight.bold)
-                            : (DateTime.now()
-                                    .midi()
-                                    .isSameDay(dayNumbers[index].midi()))
-                                ? const TextStyle(
-                                    color: Colors.orange,
-                                    fontWeight: FontWeight.bold)
-                                : const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(
-                        height: 5.0,
-                      ),
-                      Text(
-                        dayNumbers[index].day.toString(),
-                        style: (dateValue.isSameDay(dayNumbers[index]))
-                            ? TextStyle(color: Theme.of(context).primaryColor)
-                            : (DateTime.now().isSameDay(dayNumbers[index]))
-                                ? const TextStyle(color: Colors.orange)
-                                : null,
-                      )
-                    ],
-                  ),
+      children: List.generate(7, (index) {
+        final dayDate = dayNumbers[(index) % 7].midi();
+        return Expanded(
+            child: Padding(
+          padding: const EdgeInsets.all(3),
+          child: InkWell(
+            splashColor: Colors.grey,
+            highlightColor: Colors.grey.withAlpha(50),
+            borderRadius: const BorderRadius.all(Radius.circular(100)),
+            onTap: () {
+              ref.read(selectedDate.notifier).state = dayDate;
+            },
+            child: Column(
+              children: [
+                Text(
+                  dayFormatter.format(dayDate).capitalize().replaceAll(".", ""),
+                  style: (dateValue.midi().isSameDay(dayDate))
+                      ? TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold)
+                      : (DateTime.now().midi().isSameDay(dayDate))
+                          ? const TextStyle(
+                              color: Colors.orange, fontWeight: FontWeight.bold)
+                          : const TextStyle(fontWeight: FontWeight.bold),
                 ),
-              ))),
+                const SizedBox(
+                  height: 5.0,
+                ),
+                Text(
+                  dayDate.day.toString(),
+                  style: (dateValue.isSameDay(dayDate))
+                      ? TextStyle(color: Theme.of(context).primaryColor)
+                      : (DateTime.now().isSameDay(dayDate))
+                          ? const TextStyle(color: Colors.orange)
+                          : null,
+                )
+              ],
+            ),
+          ),
+        ));
+      }),
     );
   }
 }
@@ -164,9 +157,7 @@ class TabCalendar extends ConsumerWidget {
                           days: (7 * _controller.getDirectionOfScroll(value))));
                 },
                 itemBuilder: ((context, index) {
-                  return WeekView(
-                      dayNames: _controller.dayNames(dayFormatter),
-                      dayNumbers: _controller.genDateOfPage(index));
+                  return WeekView(dayNumbers: _controller.genDateOfPage(index));
                 })),
           )
         ],

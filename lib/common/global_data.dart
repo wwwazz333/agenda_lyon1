@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-final firstDate = DateTime(2000, 1, 1); //must be on 0 time
-const calendarDurationDay = 365 * 2;
+final firstDate = DateTime(1999, 12, 26, 12); //must be on 0 time
 
 bool appIsDarkMode = false;
 

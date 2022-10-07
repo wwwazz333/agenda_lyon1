@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:agenda_lyon1/model/calendrier.dart';
+import 'package:agenda_lyon1/model/date.dart';
 import 'package:agenda_lyon1/model/event_calendrier.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:test/test.dart';
 
 final List<EventCalendrier> oldEvents = [
@@ -254,5 +258,27 @@ END:VCALENDAR""";
     expect(changes[3].changementType, ChangementType.move);
     expect(changes[4].name, "F");
     expect(changes[4].changementType, ChangementType.move);
+  });
+
+  test("calcule week", () {
+    log(Jiffy(DateTime.now().midi().add(Duration(days: -0 + 1)))
+        .date
+        .toString());
+    log(Jiffy(DateTime.now().midi().add(Duration(days: -1 + 1)))
+        .diff(Jiffy(DateTime(2000, 1, 1).midi()), Units.WEEK)
+        .toInt()
+        .toString());
+    log(Jiffy(DateTime.now().midi().add(Duration(days: -1 + 2)))
+        .diff(Jiffy(DateTime(2000, 1, 1).midi()), Units.WEEK)
+        .toInt()
+        .toString());
+    log(Jiffy(DateTime.now().midi().add(Duration(days: -1 + 3)))
+        .diff(Jiffy(DateTime(2000, 1, 1).midi()), Units.WEEK)
+        .toInt()
+        .toString());
+    log(Jiffy(DateTime.now().midi().add(Duration(days: -1 + 4)))
+        .diff(Jiffy(DateTime(2000, 1, 1).midi()), Units.WEEK)
+        .toInt()
+        .toString());
   });
 }
