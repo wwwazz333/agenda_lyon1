@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:agenda_lyon1/model/date.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -25,46 +23,19 @@ class TabCalendarUIController {
     return _pageController;
   }
 
-  // List<String> dayNames(DateFormat dayFormatter) {
-  //   if (lastFormatter != null && lastFormatter?.locale != dayFormatter.locale) {
-  //     _dayNames = null;
-  //   }
-  //   _dayNames ??= List.generate(
-  //     7,
-  //     (index) {
-  //       return dayFormatter
-  //           .format(firstDayOfWeek(date: startingDate, startDayWeek: 0)
-  //               .add(Duration(days: index)))
-  //           .capitalize()
-  //           .substring(0, 3);
-  //     },
-  //   );
-  //   lastFormatter = dayFormatter;
-  //   return _dayNames!;
-  // }
-
-  // DateTime firstDayOfWeek({required DateTime date, required int startDayWeek}) {
-  //   final utcDate = DateTime.utc(date.year, date.month, date.day, 12);
-  //   if (startDayWeek < 7) {
-  //     return utcDate.subtract(Duration(days: utcDate.weekday - startDayWeek));
-  //   }
-  //   return utcDate.subtract(Duration(days: utcDate.weekday % 7));
-  // }
-
   int getIndexPageOfDate(DateTime date) {
     final d = Jiffy(date.midi()).endOf(Units.DAY).add(days: -startDayWeek);
     final f = Jiffy(firstDate);
-    final diff = d.diff(f, Units.WEEK);
-    log("diff : $diff");
-    return diff.toInt();
+    return d.diff(f, Units.WEEK).toInt();
   }
 
   void goToGoodPage(DateTime newDate) {
+    final newIndex = getIndexPageOfDate(newDate);
     if (_pageController.page != null &&
-        _pageController.page == _pageController.page!.toInt().toDouble() &&
-        getIndexPageOfDate(newDate.midi()) != _pageController.page) {
+        _pageController.page == _pageController.page!.floorToDouble() &&
+        newIndex != _pageController.page) {
       //si scroll pas la page mais doit changer
-      _pageController.jumpToPage(getIndexPageOfDate(newDate));
+      _pageController.jumpToPage(newIndex);
     }
   }
 

@@ -8,7 +8,6 @@ import 'package:agenda_lyon1/views/custom_widgets/loading_widget.dart';
 import 'package:agenda_lyon1/views/dialog/history_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:jiffy/jiffy.dart';
 
 import '../../controller/calendarui_controller.dart';
 import '../../providers.dart';
@@ -77,8 +76,6 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
         DataController().update();
       },
     );
-    log(Jiffy().startOf(Units.WEEK).dateTime.toIso8601String());
-    log(Jiffy().endOf(Units.WEEK).dateTime.toIso8601String());
     return Scaffold(
       body: SafeArea(
         child: FutureBuilder(
@@ -103,6 +100,7 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
                       controller: _controller.pageController,
                       itemCount: null,
                       onPageChanged: (newPage) {
+                        log("onPageChanged");
                         ref.read(selectedDate.notifier).state =
                             _controller.getDateOfIndex(newPage);
                       },

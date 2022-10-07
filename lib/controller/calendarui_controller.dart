@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:agenda_lyon1/model/date.dart';
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
@@ -35,9 +33,9 @@ class CalendarUIController {
   }
 
   void goToGoodPage(DateTime newDate) {
-    if (pageController.page! == pageController.page!.toInt().toDouble()) {
+    if (pageController.page! == pageController.page!.floorToDouble() &&
+        newDate != getDateOfIndex(pageController.page!.floor())) {
       //si scroll pas la page mais que date change
-      log(getIndexOfDate(newDate.midi()).toString());
       pageController.jumpToPage(getIndexOfDate(newDate.midi()));
     }
   }
