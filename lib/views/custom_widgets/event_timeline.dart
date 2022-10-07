@@ -40,7 +40,6 @@ class EventTimeLine extends EventDisplay {
         oneHoureH: oneHoureH,
         nbrOverlap: infosOverlapping["Overlap"],
         placeForOverlape: infosOverlapping["PosX"],
-        maxWidthNumber: maxWidthNumber,
         startHour: firstHour,
         bgColor: infos["color"],
         nbrTask: infos["nbrTask"],
@@ -76,34 +75,5 @@ class EventTimeLine extends EventDisplay {
                 ),
               ),
             ));
-  }
-}
-
-class BackgroundPainter extends CustomPainter {
-  final double heightOfOneHour;
-  final int firstHour;
-  final int lastHour;
-  final double maxWidthNumber;
-
-  BackgroundPainter(
-      {required this.firstHour,
-      required this.lastHour,
-      required this.heightOfOneHour,
-      required this.maxWidthNumber});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint();
-    paint.strokeWidth = 1;
-
-    for (int i = 0; i < lastHour - firstHour; i++) {
-      canvas.drawLine(Offset(0, heightOfOneHour * i),
-          Offset(size.width, heightOfOneHour * i), paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
   }
 }

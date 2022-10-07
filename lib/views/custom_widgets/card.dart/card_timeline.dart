@@ -5,13 +5,11 @@ import 'card_event.dart';
 class _CardEventTimeLine extends State<CardEventTimeLine> {
   @override
   Widget build(BuildContext context) {
-    final widthCard = MediaQuery.of(context).size.width - widget.maxWidthNumber;
-    const boxH = BoxConstraints(minHeight: 60);
+    final widthCard = MediaQuery.of(context).size.width;
     return Positioned(
       top: widget.controller.getPositionY(
           startHour: widget.startHour, oneHourH: widget.oneHoureH),
-      left: widget.maxWidthNumber +
-          widthCard / widget.nbrOverlap * widget.placeForOverlape,
+      left: widthCard / widget.nbrOverlap * widget.placeForOverlape,
       child: GestureDetector(
         onTap: () => widget.controller.onTap(context).then((value) => setState(
               () {},
@@ -23,64 +21,65 @@ class _CardEventTimeLine extends State<CardEventTimeLine> {
               children: [
                 Card(
                   color: widget.bgColor(),
-                  child: Container(
-                    constraints: boxH,
-                    child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Row(
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
+                  child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Row(
+                        children: [
+                          Column(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              AutoSizeText(
+                                widget.debut,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .copyWith(color: widget.fontColor),
+                              ),
+                              Expanded(
+                                child: Align(
+                                  alignment: Alignment.bottomCenter,
                                   child: AutoSizeText(
-                                    widget.debut,
+                                    widget.fin,
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyText1!
                                         .copyWith(color: widget.fontColor),
                                   ),
                                 ),
-                                AutoSizeText(
-                                  widget.fin,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyText1!
-                                      .copyWith(color: widget.fontColor),
-                                )
-                              ],
-                            ),
-                            Expanded(
-                                child: Column(
-                              children: [
-                                Expanded(
-                                  flex: 2,
-                                  child: Center(
-                                    child: AutoSizeText(
-                                      widget.title,
-                                      textAlign: TextAlign.center,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1!
-                                          .copyWith(color: widget.fontColor),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
+                              )
+                            ],
+                          ),
+                          Expanded(
+                              child: Column(
+                            children: [
+                              Expanded(
+                                flex: 2,
+                                child: Center(
                                   child: AutoSizeText(
-                                    widget.subTitle,
+                                    widget.title,
                                     textAlign: TextAlign.center,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .bodyText2!
+                                        .bodyText1!
                                         .copyWith(color: widget.fontColor),
                                   ),
-                                )
-                              ],
-                            ))
-                          ],
-                        )),
-                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: AutoSizeText(
+                                  widget.subTitle,
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText2!
+                                      .copyWith(color: widget.fontColor),
+                                ),
+                              )
+                            ],
+                          ))
+                        ],
+                      )),
                 ),
                 (widget.nbrTask() != 0)
                     ? Positioned(
@@ -112,7 +111,6 @@ class CardEventTimeLine extends CardEvent {
   final int placeForOverlape;
   final double oneHoureH;
   final int startHour;
-  final double maxWidthNumber;
   const CardEventTimeLine(
       {required super.title,
       required super.subTitle,
@@ -125,7 +123,6 @@ class CardEventTimeLine extends CardEvent {
       this.nbrOverlap = 1,
       this.placeForOverlape = 0,
       this.startHour = 5,
-      this.maxWidthNumber = 30,
       super.key});
 
   @override
