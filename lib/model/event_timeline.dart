@@ -1,5 +1,3 @@
-import 'package:agenda_lyon1/model/date.dart';
-
 import 'event_calendrier.dart';
 
 class EventTimeLineModel {

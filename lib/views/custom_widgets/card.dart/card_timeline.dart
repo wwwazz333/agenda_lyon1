@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:auto_size_text/auto_size_text.dart';
 import 'card_event.dart';
 
 class _CardEventTimeLine extends State<CardEventTimeLine> {
@@ -32,14 +32,16 @@ class _CardEventTimeLine extends State<CardEventTimeLine> {
                             Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  widget.debut,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyText1!
-                                      .copyWith(color: widget.fontColor),
+                                Expanded(
+                                  child: AutoSizeText(
+                                    widget.debut,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1!
+                                        .copyWith(color: widget.fontColor),
+                                  ),
                                 ),
-                                Text(
+                                AutoSizeText(
                                   widget.fin,
                                   style: Theme.of(context)
                                       .textTheme
@@ -50,28 +52,30 @@ class _CardEventTimeLine extends State<CardEventTimeLine> {
                             ),
                             Expanded(
                                 child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Expanded(
                                   flex: 2,
                                   child: Center(
-                                      child: Text(
-                                    widget.title,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1!
-                                        .copyWith(color: widget.fontColor),
-                                  )),
-                                ),
-                                Expanded(
-                                    flex: 1,
-                                    child: Text(
-                                      widget.subTitle,
+                                    child: AutoSizeText(
+                                      widget.title,
+                                      textAlign: TextAlign.center,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .bodyText2!
+                                          .bodyText1!
                                           .copyWith(color: widget.fontColor),
-                                    ))
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: AutoSizeText(
+                                    widget.subTitle,
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText2!
+                                        .copyWith(color: widget.fontColor),
+                                  ),
+                                )
                               ],
                             ))
                           ],

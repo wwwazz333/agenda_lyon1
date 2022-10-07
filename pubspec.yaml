@@ -53,6 +53,7 @@ dependencies:
   flutter_local_notifications: ^11.0.1
   rxdart: ^0.27.5
   flex_color_scheme: ^6.0.1
+  auto_size_text: ^3.0.0
   
 
 dev_dependencies:
