@@ -16,7 +16,7 @@ final cardTypeDisplay =
     ChangeNotifierProvider<CardTypeDisplay>((ref) => CardTypeDisplay());
 
 class CardTypeDisplay extends ChangeNotifier {
-  bool _cardTimeLineDisplay = false;
+  bool _cardTimeLineDisplay = true;
   int _firstHourDisplay = 8;
   int _lastHourDisplay = 20;
 
