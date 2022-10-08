@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:agenda_lyon1/controller/background_work.dart';
 import 'package:agenda_lyon1/providers.dart';
 import 'package:agenda_lyon1/settings.dart';
 import 'package:agenda_lyon1/views/screen/historique_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:workmanager/workmanager.dart';
+import 'common/themes.dart';
 import 'views/custom_widgets/loading_widget.dart';
 import 'views/screen/calendar_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -29,7 +32,7 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Future loadingApp = loadCriticalSettings(ref);
+    final Future loadingApp = loadCriticalSettings(context, ref);
     loadSettings(ref);
 
     return MaterialApp(
@@ -49,7 +52,9 @@ class MyApp extends ConsumerWidget {
         '/settings_url': ((context) => const SettingsScreenURL()),
         '/history': ((context) => const HistoriqueScreen()),
       },
-      theme: ref.watch(themeApp),
+      theme: themes["light"],
+      darkTheme: themes["dark"],
+      themeMode: ref.watch(themeApp.state).state,
       home: FutureBuilder(
         future: loadingApp,
         builder: (BuildContext context, AsyncSnapshot snapshot) {

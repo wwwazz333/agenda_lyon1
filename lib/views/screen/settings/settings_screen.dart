@@ -6,8 +6,6 @@ import 'package:flutter_picker/Picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:settings_ui/settings_ui.dart';
 
-import '../../../common/themes.dart';
-
 class MySettingsScreen extends ConsumerStatefulWidget {
   const MySettingsScreen({super.key});
 
@@ -18,15 +16,14 @@ class MySettingsScreen extends ConsumerStatefulWidget {
 class _MySettingsScreen extends ConsumerState<MySettingsScreen> {
   @override
   Widget build(BuildContext context) {
-    final theme = ref.watch(themeApp);
     final cardTypeToDisplay = ref.read(cardTypeDisplay);
 
     return Scaffold(
       appBar: AppBar(title: const Text("Settings")),
       body: SettingsList(
         darkTheme: SettingsThemeData(
-            titleTextColor: theme.primaryColor,
-            settingsListBackground: theme.backgroundColor),
+            titleTextColor: Theme.of(context).primaryColor,
+            settingsListBackground: Theme.of(context).backgroundColor),
         sections: [
           SettingsSection(
             title: const Text("URL"),
@@ -72,13 +69,13 @@ class _MySettingsScreen extends ConsumerState<MySettingsScreen> {
               ),
               SettingsTile.switchTile(
                 onToggle: (value) {
-                  if (ref.read(themeApp) == themes["dark"]) {
-                    ref.read(themeApp.notifier).state = themes["light"]!;
+                  if (ref.read(themeApp) == ThemeMode.dark) {
+                    ref.read(themeApp.notifier).state = ThemeMode.light;
                   } else {
-                    ref.read(themeApp.notifier).state = themes["dark"]!;
+                    ref.read(themeApp.notifier).state = ThemeMode.dark;
                   }
                 },
-                initialValue: ref.watch(themeApp) == themes["dark"],
+                initialValue: ref.watch(themeApp) == ThemeMode.dark,
                 leading: const Icon(Icons.dark_mode),
                 title: const Text('Dark mode'),
               ),

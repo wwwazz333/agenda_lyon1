@@ -40,9 +40,6 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
 
   void showDialogHistoryIfNeeded() {
     if (SettingsApp.changeIds.isNotEmpty) {
-      log(SettingsApp.changeIds[0].toString() +
-          " " +
-          SettingsApp.changeIds[1].toString());
       showHistoryDialog(
           context, SettingsApp.changeIds, ref.watch(languageApp).languageCode);
       SettingsApp.changeIds = [];

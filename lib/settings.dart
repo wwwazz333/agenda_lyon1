@@ -4,10 +4,11 @@ import 'dart:developer';
 import 'package:agenda_lyon1/common/colors.dart';
 import 'package:agenda_lyon1/data/shared_pref.dart';
 import 'package:agenda_lyon1/providers.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:path/path.dart';
 
 import 'common/global_data.dart';
-import 'common/themes.dart';
 import 'data/db_manager.dart';
 
 class SettingsNames {
@@ -64,7 +65,7 @@ class SettingsApp {
 }
 
 bool _criticalSettingsLoaded = false;
-Future<bool> loadCriticalSettings(WidgetRef ref) async {
+Future<bool> loadCriticalSettings(BuildContext context, WidgetRef ref) async {
   if (!_criticalSettingsLoaded) {
     List<String> defStrList = [];
     await Future.wait([
@@ -73,7 +74,7 @@ Future<bool> loadCriticalSettings(WidgetRef ref) async {
           .then((value) => ref.read(urlCalendar.notifier).state = value),
       DataReader.getBool(SettingsNames.isDark).then((value) {
         ref.read(themeApp.notifier).state =
-            value ? themes["dark"]! : themes["light"]!;
+            value ? ThemeMode.dark : ThemeMode.light;
         appIsDarkMode = value;
       }),
       DataReader.getString(
@@ -114,8 +115,8 @@ void setUpListeners(WidgetRef ref) {
 
   ref.listen(themeApp, (previous, next) {
     if (previous != next) {
-      DataReader.save(SettingsNames.isDark, next == themes["dark"]);
-      appIsDarkMode = next == themes["dark"];
+      DataReader.save(SettingsNames.isDark, ThemeMode.system);
+      appIsDarkMode = next == ThemeMode.dark;
       countColor = 0;
       log("Listener: themeApp");
     }
