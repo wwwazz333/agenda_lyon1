@@ -43,6 +43,7 @@ class _HistoriqueScreenState extends ConsumerState<HistoriqueScreen>
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             final data = (snapshot.data as List<Map<String, dynamic>>);
+
             if (data.isEmpty) {
               return Center(
                 child: Text(

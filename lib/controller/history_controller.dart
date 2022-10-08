@@ -9,7 +9,7 @@ class HistoryController {
   late Future<List<Map<String, dynamic>>> loadingDBHistory;
 
   HistoryController(TickerProvider tickerProvider) {
-    loadingDBHistory = DBManager.readDB("History");
+    loadingDBHistory = DBManager.readDB("History", orderBy: "id desc");
     _controllerAnimation = AnimationController(
       duration: const Duration(seconds: 1),
       vsync: tickerProvider,

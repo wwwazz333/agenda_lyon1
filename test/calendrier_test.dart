@@ -15,6 +15,8 @@ final List<EventCalendrier> oldEvents = [
       "E", [""], "", "wxcvdxbrths"),
   EventCalendrier.data(DateTime.utc(2022, 9, 18, 20), const Duration(hours: 2),
       "F", [""], "", "azaetdycfsqds"),
+  EventCalendrier.data(DateTime.utc(2022, 9, 18, 20), const Duration(hours: 2),
+      "De", [""], "", "123"),
 ];
 
 final List<EventCalendrier> newEvents = [
@@ -30,6 +32,8 @@ final List<EventCalendrier> newEvents = [
       "F", [""], "", "azaetdycqzegzefzfefsqds"),
   EventCalendrier.data(DateTime.utc(2022, 9, 18, 20), const Duration(hours: 2),
       "G", [""], "", "azaetdycqsfddwdvwvxfsqds"),
+  EventCalendrier.data(DateTime.utc(2022, 9, 18, 10), const Duration(hours: 2),
+      "De", [""], "", "1234"),
 ];
 
 void main() {
@@ -243,7 +247,8 @@ END:VCALENDAR""";
     final newCal = Calendrier(newEvents);
 
     final changes = oldCal.getChangementTo(newCal);
-    expect(changes.length, 5);
+    expect(changes.length, 6);
+
     expect(changes[0].name, "A");
     expect(changes[0].changementType, ChangementType.delete);
     expect(changes[1].name, "G");
@@ -254,5 +259,7 @@ END:VCALENDAR""";
     expect(changes[3].changementType, ChangementType.move);
     expect(changes[4].name, "F");
     expect(changes[4].changementType, ChangementType.move);
+    expect(changes[5].name, "De");
+    expect(changes[5].changementType, ChangementType.move);
   });
 }

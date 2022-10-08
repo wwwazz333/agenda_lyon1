@@ -8,7 +8,8 @@ Future<void> showHistoryDialog(
     BuildContext context, List<int> ids, String languageCode) async {
   final formatter = DateFormat.yMMMMEEEEd(languageCode);
   List<Changement> changes = (await DBManager.getWhere(
-          "History", ["*"], "id >= ? or id <= ?", [ids[0], ids[1]]))
+          "History", ["*"], "id >= ? or id <= ?", [ids[0], ids[1]],
+          orderBy: "id desc"))
       .map((row) => Changement(
           row["name"],
           getChangementType(row["typeChange"]),

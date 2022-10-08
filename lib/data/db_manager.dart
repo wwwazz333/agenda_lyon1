@@ -45,16 +45,18 @@ class DBManager {
     await (await db).update(nameDB, to, where: where, whereArgs: whereArgs);
   }
 
-  static Future<List<Map<String, dynamic>>> readDB(String nameDB) async {
-    final res = await (await db).query(nameDB);
+  static Future<List<Map<String, dynamic>>> readDB(String nameDB,
+      {String? orderBy}) async {
+    final res = await (await db).query(nameDB, orderBy: orderBy);
 
     return res;
   }
 
-  static Future<List<Map<String, dynamic>>> getWhere(String nameDB,
-      List<String> column, String where, List<Object?> whereArgs) async {
-    final res = await (await db)
-        .query(nameDB, columns: column, where: where, whereArgs: whereArgs);
+  static Future<List<Map<String, dynamic>>> getWhere(
+      String nameDB, List<String> column, String where, List<Object?> whereArgs,
+      {String? orderBy}) async {
+    final res = await (await db).query(nameDB,
+        columns: column, where: where, whereArgs: whereArgs, orderBy: orderBy);
     return res;
   }
 
