@@ -19,9 +19,7 @@ class DataController {
 
   static DataController? _instance;
 
-  DataController._() {
-    log("Task: hash = $hashCode");
-  }
+  DataController._();
 
   factory DataController() {
     _instance ??= DataController._();

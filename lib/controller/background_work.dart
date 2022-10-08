@@ -24,6 +24,7 @@ void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     switch (task) {
       case updateCalendrier:
+        await DataController().loadCalendrier();
         DataController().addListenerUpdate("sendNotif", (changeIds) {
           if (changeIds.isNotEmpty) {
             final notif = LocalNotifService();
