@@ -40,6 +40,9 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
 
   void showDialogHistoryIfNeeded() {
     if (SettingsApp.changeIds.isNotEmpty) {
+      log(SettingsApp.changeIds[0].toString() +
+          " " +
+          SettingsApp.changeIds[1].toString());
       showHistoryDialog(
           context, SettingsApp.changeIds, ref.watch(languageApp).languageCode);
       SettingsApp.changeIds = [];
@@ -49,8 +52,8 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
   @override
   void initState() {
     loadingFuture = DataController().load();
-    Future.delayed(const Duration(seconds: 2))
-        .then((value) => DataController().update());
+    loadingFuture.then((value) => Future.delayed(const Duration(seconds: 2))
+        .then((value) => DataController().update()));
     DataController().addListenerUpdate(
         "updateCalendarScreenView",
         (ids) => setState(
