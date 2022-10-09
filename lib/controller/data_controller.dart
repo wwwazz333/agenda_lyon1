@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:agenda_lyon1/data/db_manager.dart';
 import 'package:agenda_lyon1/data/file_manager.dart';
-import 'package:agenda_lyon1/data/shared_pref.dart';
 import 'package:agenda_lyon1/network/file_downolader.dart';
 import 'package:flutter/foundation.dart';
 
@@ -34,7 +33,7 @@ class DataController {
 
   Future<void> update() async {
     log("start update");
-    final url = await DataReader.getString("urlCalendar", "");
+    final url = SettingsApp().urlCalendar;
     log("url = $url");
     final resUpdate =
         await compute(updateCalendrier, {"url": url, "oldCal": calendrier});
