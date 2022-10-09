@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:agenda_lyon1/controller/data_controller.dart';
 import 'package:agenda_lyon1/controller/background_work.dart';
-import 'package:agenda_lyon1/settings.dart';
+import 'package:agenda_lyon1/model/settings.dart';
 import 'package:agenda_lyon1/views/custom_widgets/event_list.dart';
 import 'package:agenda_lyon1/views/custom_widgets/loading_widget.dart';
 import 'package:agenda_lyon1/views/dialog/history_dialog.dart';
@@ -11,6 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../controller/calendarui_controller.dart';
 import '../../providers.dart';
+import '../../SettingsApp.dart';
 import '../custom_widgets/event_timeline.dart';
 import '../custom_widgets/navigator.dart';
 import '../my_tab_calendar/tab_calendar.dart';
@@ -39,10 +40,10 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
   late final Future loadingFuture;
 
   void showDialogHistoryIfNeeded() {
-    if (SettingsApp.changeIds.isNotEmpty) {
-      showHistoryDialog(context, SettingsApp.changeIds,
-          ref.watch(SettingsApp.languageAppProvider).languageCode);
-      SettingsApp.changeIds = [];
+    if (SettingsApp().changeIds.isNotEmpty) {
+      showHistoryDialog(context, SettingsApp().changeIds,
+          ref.watch(SettingsProvider.languageAppProvider).languageCode);
+      SettingsApp().changeIds = [];
     }
   }
 
@@ -65,12 +66,13 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
   @override
   Widget build(BuildContext context) {
     showDialogHistoryIfNeeded();
-    final typeCardToDisplay = ref.watch(SettingsApp.cardTypeDisplayProvider);
+    final typeCardToDisplay =
+        ref.watch(SettingsProvider.cardTypeDisplayProvider);
     ref.listen(selectedDate, (previous, next) {
       _controller.goToGoodPage(next);
     });
     ref.listen(
-      SettingsApp.urlCalendarProvider,
+      SettingsProvider.urlCalendarProvider,
       (previous, next) {
         setState(() {});
         DataController().update();

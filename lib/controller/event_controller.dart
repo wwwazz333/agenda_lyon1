@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 
 import '../model/event_calendrier.dart';
 import '../model/event_timeline.dart';
-import '../settings.dart';
+import '../model/settingsapp.dart';
 import '../views/dialog/event_dialog.dart';
 
 class EventController {
@@ -65,17 +65,17 @@ class DayController {
     final ev = _eventOfDay[index];
     Color getColor() {
       Color? bgColor;
-      if (SettingsApp.appIsDarkMode) {
+      if (SettingsApp().appIsDarkMode) {
         bgColor = fixedColorsDark[ev.summary];
         if (bgColor == null) {
           bgColor = colorsDark[countColor++ % colorsDark.length];
-          addColor(ev.summary, bgColor, SettingsApp.appIsDarkMode);
+          addColor(ev.summary, bgColor, SettingsApp().appIsDarkMode);
         }
       } else {
         bgColor = fixedColorsLight[ev.summary];
         if (bgColor == null) {
           bgColor = colorsLight[countColor++ % colorsLight.length];
-          addColor(ev.summary, bgColor, SettingsApp.appIsDarkMode);
+          addColor(ev.summary, bgColor, SettingsApp().appIsDarkMode);
         }
       }
       return bgColor;

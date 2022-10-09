@@ -1,9 +1,11 @@
 import 'package:agenda_lyon1/common/global_data.dart';
-import 'package:agenda_lyon1/settings.dart';
+import 'package:agenda_lyon1/model/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/Picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:settings_ui/settings_ui.dart';
+
+import '../../../SettingsApp.dart';
 
 class MySettingsScreen extends ConsumerStatefulWidget {
   const MySettingsScreen({super.key});
@@ -15,7 +17,8 @@ class MySettingsScreen extends ConsumerStatefulWidget {
 class _MySettingsScreen extends ConsumerState<MySettingsScreen> {
   @override
   Widget build(BuildContext context) {
-    final cardTypeToDisplay = ref.read(SettingsApp.cardTypeDisplayProvider);
+    final cardTypeToDisplay =
+        ref.read(SettingsProvider.cardTypeDisplayProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text("Settings")),
@@ -41,10 +44,10 @@ class _MySettingsScreen extends ConsumerState<MySettingsScreen> {
               SettingsTile.switchTile(
                 onToggle: (value) {
                   setState(() {
-                    SettingsApp.notifEnabled = value;
+                    SettingsApp().notifEnabled = value;
                   });
                 },
-                initialValue: SettingsApp.notifEnabled,
+                initialValue: SettingsApp().notifEnabled,
                 leading: const Icon(Icons.notifications),
                 title: const Text('Notification'),
               ),
@@ -52,7 +55,7 @@ class _MySettingsScreen extends ConsumerState<MySettingsScreen> {
                 leading: const Icon(Icons.language),
                 title: const Text('Language'),
                 trailing: DropdownButton(
-                  value: ref.watch(SettingsApp.languageAppProvider),
+                  value: ref.watch(SettingsProvider.languageAppProvider),
                   items: List.generate(
                       languages.length,
                       (index) => DropdownMenuItem(
@@ -61,36 +64,37 @@ class _MySettingsScreen extends ConsumerState<MySettingsScreen> {
                           )),
                   onChanged: (value) {
                     if (value != null) {
-                      ref.read(SettingsApp.languageAppProvider.notifier).state =
-                          value;
+                      ref
+                          .read(SettingsProvider.languageAppProvider.notifier)
+                          .state = value;
                     }
                   },
                 ),
               ),
               SettingsTile.switchTile(
                 onToggle: (value) {
-                  if (ref.read(SettingsApp.themeAppProvider) ==
+                  if (ref.read(SettingsProvider.themeAppProvider) ==
                       ThemeMode.dark) {
-                    ref.read(SettingsApp.themeAppProvider.notifier).state =
+                    ref.read(SettingsProvider.themeAppProvider.notifier).state =
                         ThemeMode.light;
                   } else {
-                    ref.read(SettingsApp.themeAppProvider.notifier).state =
+                    ref.read(SettingsProvider.themeAppProvider.notifier).state =
                         ThemeMode.dark;
                   }
                 },
-                initialValue:
-                    ref.watch(SettingsApp.themeAppProvider) == ThemeMode.dark,
+                initialValue: ref.watch(SettingsProvider.themeAppProvider) ==
+                    ThemeMode.dark,
                 leading: const Icon(Icons.dark_mode),
                 title: const Text('Dark mode'),
               ),
               SettingsTile.switchTile(
                 onToggle: (value) {
                   ref
-                      .read(SettingsApp.cardTypeDisplayProvider)
+                      .read(SettingsProvider.cardTypeDisplayProvider)
                       .cardTimeLineDisplay = value;
                 },
                 initialValue: ref
-                    .watch(SettingsApp.cardTypeDisplayProvider)
+                    .watch(SettingsProvider.cardTypeDisplayProvider)
                     .cardTimeLineDisplay,
                 leading: const Icon(Icons.timeline),
                 title: const Text('Affichage Time Line'),

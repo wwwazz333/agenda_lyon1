@@ -4,7 +4,7 @@ import 'package:agenda_lyon1/controller/data_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../settings.dart';
+import '../../../model/settings.dart';
 
 class SettingsScreenURL extends ConsumerStatefulWidget {
   const SettingsScreenURL({super.key});
@@ -15,8 +15,8 @@ class SettingsScreenURL extends ConsumerStatefulWidget {
 class _SettingsScreenURL extends ConsumerState<SettingsScreenURL> {
   @override
   Widget build(BuildContext context) {
-    final urlController =
-        TextEditingController(text: ref.watch(SettingsApp.urlCalendarProvider));
+    final urlController = TextEditingController(
+        text: ref.watch(SettingsProvider.urlCalendarProvider));
     final urlRoomController = TextEditingController();
     const fakeUrl =
         "http://adelb.univ-lyon1.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?resources=xxxxx&projectId=2&calType=ical&firstDate=20xx-xx-xx&lastDate=20xx-xx-xx";
@@ -54,8 +54,9 @@ class _SettingsScreenURL extends ConsumerState<SettingsScreenURL> {
                 ElevatedButton(
                     onPressed: () {
                       log("Settings: modif url");
-                      ref.read(SettingsApp.urlCalendarProvider.notifier).state =
-                          urlController.text;
+                      ref
+                          .read(SettingsProvider.urlCalendarProvider.notifier)
+                          .state = urlController.text;
                       DataController().clear();
                       Navigator.pop(context);
                     },

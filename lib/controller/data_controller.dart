@@ -5,12 +5,12 @@ import 'package:agenda_lyon1/data/db_manager.dart';
 import 'package:agenda_lyon1/data/file_manager.dart';
 import 'package:agenda_lyon1/data/shared_pref.dart';
 import 'package:agenda_lyon1/network/file_downolader.dart';
-import 'package:agenda_lyon1/settings.dart';
 import 'package:flutter/foundation.dart';
 
 import '../common/colors.dart';
 import '../common/tasks.dart';
 import '../model/calendrier.dart';
+import '../model/settingsapp.dart';
 import 'event_controller.dart';
 
 class DataController {
@@ -72,7 +72,7 @@ class DataController {
         changeIds[1] = (await DBManager.getMaxId()) as int;
         changeIds[0] = changeIds[1] - changes.length;
       }
-      SettingsApp.changeIds = changeIds;
+      SettingsApp().changeIds = changeIds;
       informeUpdate(changeIds);
 
       log("end writing in file");

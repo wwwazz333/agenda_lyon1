@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:intl/intl.dart';
 
+import '../../model/settingsapp.dart';
 import '../../model/event_calendrier.dart';
-import '../../settings.dart';
 
 Future<bool> showEventDialog(BuildContext context, EventCalendrier ev) async {
   bool hasToUpdate = false;
   final titleStyle = Theme.of(context).textTheme.headline2;
   final infoStyle = Theme.of(context).textTheme.bodyText1;
 
-  var bgColor = (SettingsApp.appIsDarkMode)
+  var bgColor = (SettingsApp().appIsDarkMode)
       ? fixedColorsDark[ev.summary]!
       : fixedColorsLight[ev.summary]!;
 
@@ -30,7 +30,7 @@ Future<bool> showEventDialog(BuildContext context, EventCalendrier ev) async {
                           () {
                             bgColor = color;
                             addColor(
-                                ev.summary, color, SettingsApp.appIsDarkMode);
+                                ev.summary, color, SettingsApp().appIsDarkMode);
                             hasToUpdate = true;
                           },
                         );
