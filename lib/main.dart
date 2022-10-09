@@ -5,6 +5,7 @@ import 'package:agenda_lyon1/providers.dart';
 import 'package:agenda_lyon1/settings.dart';
 import 'package:agenda_lyon1/views/screen/historique_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:workmanager/workmanager.dart';
 import 'common/themes.dart';
 import 'views/custom_widgets/loading_widget.dart';
@@ -17,6 +18,7 @@ import 'views/screen/settings/settings_screen_url.dart';
 Future<void> main() async {
   // à faire au démarrage de l'app
   WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
   Workmanager().initialize(
     callbackDispatcher,
     isInDebugMode: true,

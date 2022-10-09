@@ -6,7 +6,6 @@ import 'package:agenda_lyon1/data/shared_pref.dart';
 import 'package:agenda_lyon1/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:path/path.dart';
 
 import 'common/global_data.dart';
 import 'data/db_manager.dart';
