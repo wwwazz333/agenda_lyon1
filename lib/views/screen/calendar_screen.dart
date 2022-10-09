@@ -10,8 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../controller/calendarui_controller.dart';
+import '../../model/settingsapp.dart';
 import '../../providers.dart';
-import '../../SettingsApp.dart';
 import '../custom_widgets/event_timeline.dart';
 import '../custom_widgets/navigator.dart';
 import '../my_tab_calendar/tab_calendar.dart';

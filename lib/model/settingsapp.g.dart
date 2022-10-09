@@ -22,7 +22,7 @@ class SettingsAppAdapter extends TypeAdapter<SettingsApp> {
       .._jourFeriesEnabled = fields[2] as bool
       .._alarmesAvancesEnabled = fields[3] as bool
       .._appIsDarkMode = fields[4] as bool
-      .._languageApp = fields[5] as Locale?
+      .._languageApp = fields[5] as String
       .._urlCalendar = fields[6] as String?
       .._themeApp = fields[7] as ThemeMode?
       .._cardTimeLineDisplay = fields[8] as bool

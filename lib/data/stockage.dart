@@ -12,7 +12,7 @@ class Stockage {
 
   late Box settingsAppBox;
   Future<void> init() async {
-    Hive.initFlutter();
+    await Hive.initFlutter();
     Hive.registerAdapter(SettingsAppAdapter());
     settingsAppBox = await Hive.openBox<SettingsApp>("settingsAppBox");
   }

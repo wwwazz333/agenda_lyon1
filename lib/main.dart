@@ -5,7 +5,6 @@ import 'package:agenda_lyon1/views/screen/historique_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:workmanager/workmanager.dart';
 import 'common/themes.dart';
-import 'views/custom_widgets/loading_widget.dart';
 import 'views/screen/calendar_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -20,11 +19,12 @@ Future<void> main() async {
     isInDebugMode: true,
   );
   await Stockage().init();
+  loadCriticalSettings();
+  final container = ProviderContainer();
+  setUpListeners(container);
 
   // démarrage app
-  runApp(const ProviderScope(
-    child: MyApp(),
-  ));
+  runApp(UncontrolledProviderScope(container: container, child: const MyApp()));
 }
 
 class MyApp extends ConsumerWidget {
@@ -32,9 +32,6 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Future loadingApp = loadCriticalSettings(context, ref);
-    loadSettings(ref);
-
     return MaterialApp(
       supportedLocales: const [
         Locale('fr'),
@@ -54,17 +51,8 @@ class MyApp extends ConsumerWidget {
       },
       theme: themes["light"],
       darkTheme: themes["dark"],
-      themeMode: ref.watch(SettingsProvider.themeAppProvider.state).state,
-      home: FutureBuilder(
-        future: loadingApp,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData && snapshot.data == true) {
-            return const CalendarScreen();
-          } else {
-            return const LoadingWidget();
-          }
-        },
-      ),
+      themeMode: ref.watch(SettingsProvider.themeAppProvider),
+      home: const CalendarScreen(),
     );
   }
 }

@@ -28,7 +28,7 @@ class SettingsApp extends HiveObject {
   @HiveField(4)
   bool _appIsDarkMode = false;
   @HiveField(5)
-  Locale? _languageApp;
+  String _languageApp = "fr";
   @HiveField(6)
   String? _urlCalendar;
   @HiveField(7)
@@ -52,7 +52,7 @@ class SettingsApp extends HiveObject {
   bool get alamresAvancesEnabled => _alarmesAvancesEnabled;
 
   bool get appIsDarkMode => _appIsDarkMode;
-  Locale get languageApp => _languageApp ?? languages["fr"]!;
+  Locale get languageApp => languages[_languageApp] ?? languages["fr"]!;
 
   String get urlCalendar => _urlCalendar ?? "";
   ThemeMode get themeApp => _themeApp ?? ThemeMode.light;
@@ -64,58 +64,70 @@ class SettingsApp extends HiveObject {
   ///setters
   set changeIds(List<int> newVal) {
     _changeIds = newVal;
-    DataReader.save(SettingsNames.changeIds, json.encode(newVal));
+    save();
   }
 
   set notifEnabled(bool newVal) {
     _notifEnabled = newVal;
-    DataReader.save(SettingsNames.notifEnabled, newVal);
+    save();
   }
 
   set jourFeriesEnabled(bool newVal) {
     _jourFeriesEnabled = newVal;
-    DataReader.save(SettingsNames.jourFeriesEnabled, newVal);
+    save();
   }
 
   set alamresAvancesEnabled(bool newVal) {
     _alarmesAvancesEnabled = newVal;
-    DataReader.save(SettingsNames.alarmesAvancesEnabled, newVal);
+    save();
   }
 
   set appIsDarkMode(bool newVal) {
     _appIsDarkMode = newVal;
-    DataReader.save(SettingsNames.isDark, newVal);
+    save();
   }
 
   set languageApp(Locale value) {
-    if (value.languageCode != _languageApp?.languageCode) {
-      _languageApp = value;
-      DataReader.save(SettingsNames.language, value.languageCode);
+    if (value.languageCode != _languageApp) {
+      _languageApp = value.languageCode;
+      save();
     }
   }
 
   set urlCalendar(String value) {
     _urlCalendar = value;
-    DataReader.save(SettingsNames.urlCalendar, value);
+    save();
   }
 
   set themeApp(ThemeMode value) {
     _themeApp = value;
-    DataReader.save(SettingsNames.isDark, value == ThemeMode.dark);
+    save();
   }
 
   set cardTimeLineDisplay(bool value) {
     _cardTimeLineDisplay = value;
-    DataReader.save(SettingsNames.cardTimeLineDisplay, value);
+    save();
   }
 
   set firstHourDisplay(int value) {
     _firstHourDisplay = value;
-    DataReader.save(SettingsNames.lastHourDisplay, value);
+    save();
   }
 
   set lastHourDisplay(int value) {
     _lastHourDisplay = value;
-    DataReader.save(SettingsNames.firstHourDisplay, value);
+    save();
+  }
+
+  void copy(SettingsApp other) {
+    if (this == other) return;
+    _changeIds = other._changeIds;
+    _notifEnabled = other._notifEnabled;
+    _jourFeriesEnabled = other._jourFeriesEnabled;
+    _alarmesAvancesEnabled = other._alarmesAvancesEnabled;
+    _appIsDarkMode = other._appIsDarkMode;
+    _languageApp = other._languageApp;
+    _urlCalendar = other._urlCalendar;
+    _themeApp = other._themeApp;
   }
 }

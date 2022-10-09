@@ -9,7 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../common/global_data.dart';
 import '../data/db_manager.dart';
-import '../SettingsApp.dart';
+import 'settingsapp.dart';
 
 class SettingsNames {
   static const String changeIds = "nbrChange";
@@ -38,69 +38,77 @@ class SettingsProvider {
 }
 
 bool _criticalSettingsLoaded = false;
-Future<bool> loadCriticalSettings(BuildContext context, WidgetRef ref) async {
+bool loadCriticalSettings() {
   if (!_criticalSettingsLoaded) {
-    List<String> defStrList = [];
-    await Future.wait([
-      DBManager.open(),
-      DataReader.getString(SettingsNames.urlCalendar, "").then((value) {
-        ref.read(SettingsProvider.urlCalendarProvider.notifier).state = value;
-        SettingsApp().urlCalendar = value;
-      }),
-      DataReader.getBool(SettingsNames.isDark).then((value) {
-        ref.read(SettingsProvider.themeAppProvider.notifier).state =
-            value ? ThemeMode.dark : ThemeMode.light;
-        SettingsApp().appIsDarkMode = value;
-      }),
-      DataReader.getString(
-              SettingsNames.language, languages.values.first.languageCode)
-          .then((value) {
-        ref.read(SettingsProvider.languageAppProvider.notifier).state =
-            languages[value]!;
-        SettingsApp().languageApp = languages[value] ?? languages["fr"]!;
-      }),
-      DataReader.getBool(SettingsNames.cardTimeLineDisplay, true).then((value) {
-        ref
-            .read(SettingsProvider.cardTypeDisplayProvider)
-            .cardTimeLineDisplayNoListener = value;
-      }),
-      DataReader.getInt(SettingsNames.firstHourDisplay, 6).then((value) {
-        ref
-            .read(SettingsProvider.cardTypeDisplayProvider)
-            .firstHourDisplayNoListener = value;
-      }),
-      DataReader.getInt(SettingsNames.lastHourDisplay, 20).then((value) {
-        ref
-            .read(SettingsProvider.cardTypeDisplayProvider)
-            .lastHourDisplayNoListener = value;
-      }),
-      DataReader.getString(SettingsNames.changeIds, json.encode(defStrList))
-          .then((value) {
-        SettingsApp().changeIds =
-            (json.decode(value) as List<dynamic>).map((e) => e as int).toList();
-      }),
-      DataReader.getBool(SettingsNames.notifEnabled, true)
-          .then((value) => SettingsApp().notifEnabled = value),
-      DataReader.getBool(SettingsNames.jourFeriesEnabled)
-          .then((value) => SettingsApp().jourFeriesEnabled = value),
-      DataReader.getBool(SettingsNames.alarmesAvancesEnabled)
-          .then((value) => SettingsApp().alamresAvancesEnabled = value),
-    ]);
+    SettingsApp().copy(
+        Stockage().settingsAppBox.get("default", defaultValue: SettingsApp()));
+
+    // List<String> defStrList = [];
+    // await Future.wait([
+    //   DBManager.open(),
+    //   DataReader.getString(SettingsNames.urlCalendar, "").then((value) {
+    //     ref.read(SettingsProvider.urlCalendarProvider.notifier).state = value;
+    //     SettingsApp().urlCalendar = value;
+    //   }),
+    //   DataReader.getBool(SettingsNames.isDark).then((value) {
+    //     ref.read(SettingsProvider.themeAppProvider.notifier).state =
+    //         value ? ThemeMode.dark : ThemeMode.light;
+    //     SettingsApp().appIsDarkMode = value;
+    //   }),
+    //   DataReader.getString(
+    //           SettingsNames.language, languages.values.first.languageCode)
+    //       .then((value) {
+    //     ref.read(SettingsProvider.languageAppProvider.notifier).state =
+    //         languages[value]!;
+    //     SettingsApp().languageApp = languages[value] ?? languages["fr"]!;
+    //   }),
+    //   DataReader.getBool(SettingsNames.cardTimeLineDisplay, true).then((value) {
+    //     ref
+    //         .read(SettingsProvider.cardTypeDisplayProvider)
+    //         .cardTimeLineDisplayNoListener = value;
+    //   }),
+    //   DataReader.getInt(SettingsNames.firstHourDisplay, 6).then((value) {
+    //     ref
+    //         .read(SettingsProvider.cardTypeDisplayProvider)
+    //         .firstHourDisplayNoListener = value;
+    //   }),
+    //   DataReader.getInt(SettingsNames.lastHourDisplay, 20).then((value) {
+    //     ref
+    //         .read(SettingsProvider.cardTypeDisplayProvider)
+    //         .lastHourDisplayNoListener = value;
+    //   }),
+    //   DataReader.getString(SettingsNames.changeIds, json.encode(defStrList))
+    //       .then((value) {
+    //     SettingsApp().changeIds =
+    //         (json.decode(value) as List<dynamic>).map((e) => e as int).toList();
+    //   }),
+    //   DataReader.getBool(SettingsNames.notifEnabled, true)
+    //       .then((value) => SettingsApp().notifEnabled = value),
+    //   DataReader.getBool(SettingsNames.jourFeriesEnabled)
+    //       .then((value) => SettingsApp().jourFeriesEnabled = value),
+    //   DataReader.getBool(SettingsNames.alarmesAvancesEnabled)
+    //       .then((value) => SettingsApp().alamresAvancesEnabled = value),
+    // ]);
     _criticalSettingsLoaded = true;
   }
   log("fin loadCriticalSettings");
   return true;
 }
 
-void setUpListeners(WidgetRef ref) {
+void setUpListeners(ProviderContainer ref) {
+  ref.read(SettingsProvider.urlCalendarProvider.notifier).state =
+      SettingsApp().urlCalendar;
+  ref.read(SettingsProvider.themeAppProvider.notifier).state =
+      SettingsApp().appIsDarkMode ? ThemeMode.dark : ThemeMode.light;
+  ref.read(SettingsProvider.languageAppProvider.notifier).state =
+      SettingsApp().languageApp;
   ref.listen(SettingsProvider.urlCalendarProvider, (previous, next) {
-    DataReader.save(SettingsNames.urlCalendar, next);
+    SettingsApp().urlCalendar = next;
     log("Listener: urlCalendar");
   });
 
   ref.listen(SettingsProvider.themeAppProvider, (previous, next) {
     if (previous != next) {
-      DataReader.save(SettingsNames.isDark, ThemeMode.system);
       SettingsApp().appIsDarkMode = next == ThemeMode.dark;
       countColor = 0;
       log("Listener: themeApp");
@@ -109,29 +117,17 @@ void setUpListeners(WidgetRef ref) {
 
   ref.listen(SettingsProvider.languageAppProvider, (previous, next) {
     if (previous != next) {
-      DataReader.save(SettingsNames.language, next.languageCode);
+      SettingsApp().languageApp = next;
     }
     log("Listener: languageApp");
   });
-
-  final cardTypeToDisplay = ref.read(SettingsProvider.cardTypeDisplayProvider);
-  cardTypeToDisplay.addListener(() {
-    log("changement pour cardTypeDisplay");
-    DataReader.save(SettingsNames.cardTimeLineDisplay,
-        cardTypeToDisplay.cardTimeLineDisplay);
-    DataReader.save(
-        SettingsNames.firstHourDisplay, cardTypeToDisplay.firstHourDisplay);
-    DataReader.save(
-        SettingsNames.lastHourDisplay, cardTypeToDisplay.lastHourDisplay);
-    log("Listener: cardTypeToDisplay");
-  });
 }
 
-void loadSettings(WidgetRef ref) {
-  setUpListeners(ref);
+// void loadSettings(WidgetRef ref) {
+//   setUpListeners(ref);
 
-  log("fin loadSettings");
-}
+//   log("fin loadSettings");
+// }
 
 class CardTypeDisplay extends ChangeNotifier {
   bool get cardTimeLineDisplay {
