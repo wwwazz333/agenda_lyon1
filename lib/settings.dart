@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'common/global_data.dart';
-import 'controller/card_type_display.dart';
 import 'data/db_manager.dart';
 
 class SettingsNames {
@@ -29,11 +28,13 @@ class SettingsApp {
   static bool _jourFeriesEnabled = false;
   static bool _alarmesAvancesEnabled = false;
   static bool _appIsDarkMode = false;
-  static CardTypeDisplay? _cardTypeDisplay;
   static Locale? _languageApp;
   static String? _urlCalendar;
-
   static ThemeMode? _themeApp;
+
+  static bool _cardTimeLineDisplay = true;
+  static int _firstHourDisplay = 8;
+  static int _lastHourDisplay = 20;
 
   ///providers
   ///TODO: #3 on change must save SettingsApp
@@ -58,10 +59,13 @@ class SettingsApp {
 
   static bool get appIsDarkMode => _appIsDarkMode;
   static Locale get languageApp => _languageApp ?? languages["fr"]!;
-  static CardTypeDisplay get cardTypeDisplay =>
-      _cardTypeDisplay ?? CardTypeDisplay();
+
   static String get urlCalendar => _urlCalendar ?? "";
   static ThemeMode get themeApp => _themeApp ?? ThemeMode.light;
+
+  static bool get cardTimeLineDisplay => _cardTimeLineDisplay;
+  static int get firstHourDisplay => _firstHourDisplay;
+  static int get lastHourDisplay => _lastHourDisplay;
 
   ///setters
   static set changeIds(List<int> newVal) {
@@ -105,6 +109,21 @@ class SettingsApp {
     _themeApp = value;
     DataReader.save(SettingsNames.isDark, value == ThemeMode.dark);
   }
+
+  static set cardTimeLineDisplay(bool value) {
+    _cardTimeLineDisplay = value;
+    DataReader.save(SettingsNames.cardTimeLineDisplay, value);
+  }
+
+  static set firstHourDisplay(int value) {
+    _firstHourDisplay = value;
+    DataReader.save(SettingsNames.lastHourDisplay, value);
+  }
+
+  static set lastHourDisplay(int value) {
+    _lastHourDisplay = value;
+    DataReader.save(SettingsNames.firstHourDisplay, value);
+  }
 }
 
 bool _criticalSettingsLoaded = false;
@@ -133,19 +152,16 @@ Future<bool> loadCriticalSettings(BuildContext context, WidgetRef ref) async {
         ref
             .read(SettingsApp.cardTypeDisplayProvider)
             .cardTimeLineDisplayNoListener = value;
-        SettingsApp.cardTypeDisplay.cardTimeLineDisplay = value;
       }),
       DataReader.getInt(SettingsNames.firstHourDisplay, 6).then((value) {
         ref
             .read(SettingsApp.cardTypeDisplayProvider)
             .firstHourDisplayNoListener = value;
-        SettingsApp.cardTypeDisplay.firstHourDisplay = value;
       }),
       DataReader.getInt(SettingsNames.lastHourDisplay, 20).then((value) {
         ref
             .read(SettingsApp.cardTypeDisplayProvider)
             .lastHourDisplayNoListener = value;
-        SettingsApp.cardTypeDisplay.lastHourDisplay = value;
       }),
       DataReader.getString(SettingsNames.changeIds, json.encode(defStrList))
           .then((value) {
@@ -204,4 +220,55 @@ void loadSettings(WidgetRef ref) {
   setUpListeners(ref);
 
   log("fin loadSettings");
+}
+
+class CardTypeDisplay extends ChangeNotifier {
+  bool get cardTimeLineDisplay {
+    return SettingsApp._cardTimeLineDisplay;
+  }
+
+  int get firstHourDisplay {
+    return SettingsApp.firstHourDisplay;
+  }
+
+  int get lastHourDisplay {
+    return SettingsApp.lastHourDisplay;
+  }
+
+  set cardTimeLineDisplay(bool newVal) {
+    cardTimeLineDisplayNoListener = newVal;
+    notifyListeners();
+  }
+
+  set cardTimeLineDisplayNoListener(bool newVal) {
+    SettingsApp._cardTimeLineDisplay = newVal;
+  }
+
+  set firstHourDisplay(int newVal) {
+    firstHourDisplayNoListener = newVal;
+    notifyListeners();
+  }
+
+  set firstHourDisplayNoListener(int newVal) {
+    SettingsApp.firstHourDisplay = newVal;
+  }
+
+  set lastHourDisplay(int newVal) {
+    lastHourDisplayNoListener = newVal;
+    notifyListeners();
+  }
+
+  set lastHourDisplayNoListener(int newVal) {
+    SettingsApp.lastHourDisplay = newVal;
+  }
+
+  void setHours(int firstHour, int lastHour) {
+    setHoursNoListener(firstHour, lastHour);
+    notifyListeners();
+  }
+
+  void setHoursNoListener(int firstHour, int lastHour) {
+    SettingsApp.firstHourDisplay = firstHour;
+    SettingsApp.lastHourDisplay = lastHour;
+  }
 }
