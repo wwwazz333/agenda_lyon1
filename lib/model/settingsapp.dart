@@ -1,11 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../common/global_data.dart';
-import '../data/shared_pref.dart';
-import 'settings.dart';
 part 'settingsapp.g.dart';
 
 @HiveType(typeId: 0)
