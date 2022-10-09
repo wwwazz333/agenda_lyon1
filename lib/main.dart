@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:agenda_lyon1/controller/background_work.dart';
-import 'package:agenda_lyon1/providers.dart';
 import 'package:agenda_lyon1/settings.dart';
 import 'package:agenda_lyon1/views/screen/historique_screen.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +55,7 @@ class MyApp extends ConsumerWidget {
       },
       theme: themes["light"],
       darkTheme: themes["dark"],
-      themeMode: ref.watch(themeApp.state).state,
+      themeMode: ref.watch(SettingsApp.themeAppProvider.state).state,
       home: FutureBuilder(
         future: loadingApp,
         builder: (BuildContext context, AsyncSnapshot snapshot) {

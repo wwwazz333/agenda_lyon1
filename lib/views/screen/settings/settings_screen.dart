@@ -1,5 +1,4 @@
 import 'package:agenda_lyon1/common/global_data.dart';
-import 'package:agenda_lyon1/providers.dart';
 import 'package:agenda_lyon1/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/Picker.dart';
@@ -16,7 +15,7 @@ class MySettingsScreen extends ConsumerStatefulWidget {
 class _MySettingsScreen extends ConsumerState<MySettingsScreen> {
   @override
   Widget build(BuildContext context) {
-    final cardTypeToDisplay = ref.read(cardTypeDisplay);
+    final cardTypeToDisplay = ref.read(SettingsApp.cardTypeDisplayProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text("Settings")),
@@ -53,7 +52,7 @@ class _MySettingsScreen extends ConsumerState<MySettingsScreen> {
                 leading: const Icon(Icons.language),
                 title: const Text('Language'),
                 trailing: DropdownButton(
-                  value: ref.watch(languageApp),
+                  value: ref.watch(SettingsApp.languageAppProvider),
                   items: List.generate(
                       languages.length,
                       (index) => DropdownMenuItem(
@@ -62,28 +61,37 @@ class _MySettingsScreen extends ConsumerState<MySettingsScreen> {
                           )),
                   onChanged: (value) {
                     if (value != null) {
-                      ref.read(languageApp.notifier).state = value;
+                      ref.read(SettingsApp.languageAppProvider.notifier).state =
+                          value;
                     }
                   },
                 ),
               ),
               SettingsTile.switchTile(
                 onToggle: (value) {
-                  if (ref.read(themeApp) == ThemeMode.dark) {
-                    ref.read(themeApp.notifier).state = ThemeMode.light;
+                  if (ref.read(SettingsApp.themeAppProvider) ==
+                      ThemeMode.dark) {
+                    ref.read(SettingsApp.themeAppProvider.notifier).state =
+                        ThemeMode.light;
                   } else {
-                    ref.read(themeApp.notifier).state = ThemeMode.dark;
+                    ref.read(SettingsApp.themeAppProvider.notifier).state =
+                        ThemeMode.dark;
                   }
                 },
-                initialValue: ref.watch(themeApp) == ThemeMode.dark,
+                initialValue:
+                    ref.watch(SettingsApp.themeAppProvider) == ThemeMode.dark,
                 leading: const Icon(Icons.dark_mode),
                 title: const Text('Dark mode'),
               ),
               SettingsTile.switchTile(
                 onToggle: (value) {
-                  ref.read(cardTypeDisplay).cardTimeLineDisplay = value;
+                  ref
+                      .read(SettingsApp.cardTypeDisplayProvider)
+                      .cardTimeLineDisplay = value;
                 },
-                initialValue: ref.watch(cardTypeDisplay).cardTimeLineDisplay,
+                initialValue: ref
+                    .watch(SettingsApp.cardTypeDisplayProvider)
+                    .cardTimeLineDisplay,
                 leading: const Icon(Icons.timeline),
                 title: const Text('Affichage Time Line'),
               ),

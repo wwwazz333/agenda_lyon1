@@ -40,8 +40,8 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
 
   void showDialogHistoryIfNeeded() {
     if (SettingsApp.changeIds.isNotEmpty) {
-      showHistoryDialog(
-          context, SettingsApp.changeIds, ref.watch(languageApp).languageCode);
+      showHistoryDialog(context, SettingsApp.changeIds,
+          ref.watch(SettingsApp.languageAppProvider).languageCode);
       SettingsApp.changeIds = [];
     }
   }
@@ -65,12 +65,12 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
   @override
   Widget build(BuildContext context) {
     showDialogHistoryIfNeeded();
-    final typeCardToDisplay = ref.watch(cardTypeDisplay);
+    final typeCardToDisplay = ref.watch(SettingsApp.cardTypeDisplayProvider);
     ref.listen(selectedDate, (previous, next) {
       _controller.goToGoodPage(next);
     });
     ref.listen(
-      urlCalendar,
+      SettingsApp.urlCalendarProvider,
       (previous, next) {
         setState(() {});
         DataController().update();

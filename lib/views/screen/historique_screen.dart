@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-import '../../providers.dart';
+import '../../settings.dart';
 import '../custom_widgets/loading_widget.dart';
 
 class HistoriqueScreen extends ConsumerStatefulWidget {
@@ -31,7 +31,7 @@ class _HistoriqueScreenState extends ConsumerState<HistoriqueScreen>
 
   @override
   Widget build(BuildContext context) {
-    final language = ref.watch(languageApp);
+    final language = ref.watch(SettingsApp.languageAppProvider);
     final formatter = DateFormat.yMMMMEEEEd(language.languageCode);
 
     return Scaffold(

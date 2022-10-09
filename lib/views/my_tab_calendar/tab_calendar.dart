@@ -6,13 +6,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../common/global_data.dart';
 import '../../controller/tabcalendarui_controller.dart';
 import '../../providers.dart';
+import '../../settings.dart';
 
 class Header extends ConsumerWidget {
   final DateTime startingDate;
   const Header({required this.startingDate, super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final language = ref.watch(languageApp);
+    final language = ref.watch(SettingsApp.languageAppProvider);
     final monthFormatter = DateFormat.yMMM(language.languageCode);
 
     final dateValue = ref.watch(selectedDate);
@@ -72,7 +73,7 @@ class WeekView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dateValue = ref.watch(selectedDate);
-    final language = ref.watch(languageApp);
+    final language = ref.watch(SettingsApp.languageAppProvider);
     final dayFormatter = DateFormat.E(language.languageCode);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
