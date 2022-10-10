@@ -37,7 +37,8 @@ bool _criticalSettingsLoaded = false;
 bool loadCriticalSettings() {
   if (!_criticalSettingsLoaded) {
     SettingsApp().copy(
-        Stockage().settingsAppBox.get("default", defaultValue: SettingsApp()));
+        Stockage().settingsAppBox.get("default", defaultValue: SettingsApp()) ??
+            SettingsApp());
     _criticalSettingsLoaded = true;
   }
   log("fin loadCriticalSettings");

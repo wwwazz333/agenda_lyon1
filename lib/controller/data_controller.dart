@@ -1,20 +1,21 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:agenda_lyon1/data/db_manager.dart';
 import 'package:agenda_lyon1/data/file_manager.dart';
+import 'package:agenda_lyon1/data/stockage.dart';
 import 'package:agenda_lyon1/network/file_downolader.dart';
 import 'package:flutter/foundation.dart';
 
 import '../common/colors.dart';
 import '../common/tasks.dart';
 import '../model/calendrier.dart';
+import '../model/changements/changement.dart';
 import '../model/settingsapp.dart';
 import 'event_controller.dart';
 
 class DataController {
   Calendrier calendrier = Calendrier([]);
-  Map<String, void Function(List<int>)> updateListeners = {};
+  Map<String, void Function()> updateListeners = {};
 
   static DataController? _instance;
 
@@ -24,10 +25,10 @@ class DataController {
     _instance ??= DataController._();
     return _instance!;
   }
-  void informeUpdate(List<int> nbrChange) {
+  void informeUpdate() {
     log("Task: informeUpdate size = ${updateListeners.length} for $hashCode");
     updateListeners.forEach((key, fun) {
-      fun(nbrChange);
+      fun();
     });
   }
 
@@ -44,44 +45,19 @@ class DataController {
           FileManager.calendrierFile, jsonEncode(calendrier));
 
       List<Changement> changes = resUpdate["changes"];
-      List<int> changeIds = [];
-      if (changes.isNotEmpty) {
-        changeIds = [0, 0];
-        String where = "";
-        List<Object?> whereArgs = [];
-        for (Changement change in changes) {
-          where +=
-              "(name = ? and oldDate = ? and newDate = ? and typeChange = ?) or ";
-          whereArgs.addAll([
-            change.name,
-            change.oldDate?.millisecondsSinceEpoch ?? 0,
-            change.newDate?.millisecondsSinceEpoch ?? 0,
-            change.changementType.toString()
-          ]);
-          DBManager.insertInto("History", {
-            "name": change.name,
-            "oldDate": change.oldDate?.millisecondsSinceEpoch ?? 0,
-            "newDate": change.newDate?.millisecondsSinceEpoch ?? 0,
-            "typeChange": change.changementType.toString()
-          });
-        }
-
-        where = where.substring(0, where.length - 3);
-
-        changeIds[1] = (await DBManager.getMaxId()) as int;
-        changeIds[0] = changeIds[1] - changes.length;
-      }
-      SettingsApp().changeIds = changeIds;
-      informeUpdate(changeIds);
-
-      log("end writing in file");
+      Stockage().changementsBox.addAll(changes);
     }
+    informeUpdate();
+
+    log("end writing in file");
   }
 
   static Future<Map<String, dynamic>> updateCalendrier(
       Map<String, dynamic> data) async {
     try {
+      log("downloading....");
       String content = await FileDownloader.downloadFile(data["url"]);
+      log("end download");
       final newCal = Calendrier([])..loadFromString(content);
       final changes = (data["oldCal"] as Calendrier).getChangementTo(newCal);
 
@@ -141,7 +117,7 @@ class DataController {
     FileManager.delFile(FileManager.calendrierFile);
   }
 
-  void addListenerUpdate(String uniquKey, void Function(List<int>) fun) {
+  void addListenerUpdate(String uniquKey, void Function() fun) {
     updateListeners[uniquKey] = fun;
     log("Task: ajout listener size = ${updateListeners.length} for $hashCode");
   }

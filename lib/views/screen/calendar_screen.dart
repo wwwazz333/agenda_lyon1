@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:agenda_lyon1/controller/data_controller.dart';
 import 'package:agenda_lyon1/controller/background_work.dart';
+import 'package:agenda_lyon1/data/stockage.dart';
 import 'package:agenda_lyon1/model/settings.dart';
 import 'package:agenda_lyon1/views/custom_widgets/event_list.dart';
 import 'package:agenda_lyon1/views/custom_widgets/loading_widget.dart';
@@ -10,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../controller/calendarui_controller.dart';
-import '../../model/settingsapp.dart';
 import '../../providers.dart';
 import '../custom_widgets/event_timeline.dart';
 import '../custom_widgets/navigator.dart';
@@ -40,10 +40,9 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
   late final Future loadingFuture;
 
   void showDialogHistoryIfNeeded() {
-    if (SettingsApp().changeIds.isNotEmpty) {
-      showHistoryDialog(context, SettingsApp().changeIds,
+    if (Stockage().changementHasChange) {
+      showHistoryDialog(context,
           ref.watch(SettingsProvider.languageAppProvider).languageCode);
-      SettingsApp().changeIds = [];
     }
   }
 
@@ -54,7 +53,7 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
         .then((value) => DataController().update()));
     DataController().addListenerUpdate(
         "updateCalendarScreenView",
-        (ids) => setState(
+        () => setState(
               () {
                 showDialogHistoryIfNeeded();
               },

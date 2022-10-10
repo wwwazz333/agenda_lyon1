@@ -1,28 +1,11 @@
-import 'package:flutter/animation.dart';
-import 'package:flutter/material.dart';
-
-import '../data/db_manager.dart';
+import 'package:agenda_lyon1/data/stockage.dart';
+import 'package:agenda_lyon1/model/changements/changement.dart';
 
 class HistoryController {
-  late final AnimationController _controllerAnimation;
-  AnimationController get controllerAnimation => _controllerAnimation;
-  late Future<List<Map<String, dynamic>>> loadingDBHistory;
+  late List<Changement> historique;
 
-  HistoryController(TickerProvider tickerProvider) {
-    loadingDBHistory = DBManager.readDB("History", orderBy: "id desc");
-    _controllerAnimation = AnimationController(
-      duration: const Duration(seconds: 1),
-      vsync: tickerProvider,
-    );
-  }
-
-  void clearHistory() {
-    DBManager.removeWhere("History", "1 = ?", [1]).then(
-      (value) {
-        loadingDBHistory = DBManager.readDB("History");
-        _controllerAnimation.reset();
-        _controllerAnimation.forward();
-      },
-    );
+  HistoryController() {
+    historique = Stockage().changementsBox.values.toList();
+    historique.sort(((a, b) => a.dateChange.compareTo(b.dateChange)));
   }
 }

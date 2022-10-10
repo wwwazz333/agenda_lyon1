@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter_logs/flutter_logs.dart';
 import '../common/error/file_error.dart';
 import '../data/file_manager.dart';
+import 'changements/changement.dart';
+import 'changements/changement_type.dart';
 import 'date.dart';
 import 'event_calendrier.dart';
 
@@ -110,21 +112,22 @@ class Calendrier {
         .where((oldEvent) => newCalendrier.events
             .where((newEvent) => oldEvent.uid == newEvent.uid)
             .isEmpty)
-        .map(
-            (e) => Changement(e.summary, ChangementType.delete, e.date, null)));
+        .map((e) => Changement(e.summary, ChangementType.delete.valueAsString,
+            DateTime.now(), e.date, null)));
 
     changements.addAll(newCalendrier.events
         .where((newEvent) =>
             events.where((oldEvent) => oldEvent.uid == newEvent.uid).isEmpty)
-        .map((e) => Changement(e.summary, ChangementType.add, null, e.date)));
+        .map((e) => Changement(e.summary, ChangementType.add.valueAsString,
+            DateTime.now(), null, e.date)));
 
     for (EventCalendrier oldEvent in events) {
       changements.addAll(newCalendrier.events
           .where((newEvent) =>
               oldEvent.uid == newEvent.uid &&
               !oldEvent.date.isAtSameMomentAs(newEvent.date))
-          .map((e) => Changement(
-              e.summary, ChangementType.move, oldEvent.date, e.date)));
+          .map((e) => Changement(e.summary, ChangementType.move.valueAsString,
+              DateTime.now(), oldEvent.date, e.date)));
     }
     final List<Changement> ajout = changements
         .where((element) => element.changementType == ChangementType.add)
@@ -139,7 +142,11 @@ class Calendrier {
       if (same.isNotEmpty) {
         final adding = same.first;
         changements.add(Changement(
-            adding.name, ChangementType.move, change.oldDate, adding.newDate));
+            adding.name,
+            ChangementType.move.valueAsString,
+            DateTime.now(),
+            change.oldDate,
+            adding.newDate));
         toRemove.add(adding);
         toRemove.add(change);
       }
@@ -162,32 +169,4 @@ class Calendrier {
   Map<String, dynamic> toJson() => {
         "events": jsonEncode(_events),
       };
-}
-
-enum ChangementType {
-  add,
-  delete,
-  move;
-}
-
-class Changement {
-  String name;
-  DateTime? oldDate, newDate;
-  ChangementType changementType;
-
-  Changement(this.name, this.changementType, this.oldDate, this.newDate);
-
-  @override
-  String toString() {
-    return "$name, $changementType, $oldDate, $newDate";
-  }
-}
-
-ChangementType getChangementType(String type) {
-  if (type == ChangementType.add.toString()) {
-    return ChangementType.add;
-  } else if (type == ChangementType.move.toString()) {
-    return ChangementType.move;
-  }
-  return ChangementType.delete;
 }

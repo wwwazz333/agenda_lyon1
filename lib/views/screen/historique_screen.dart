@@ -1,12 +1,11 @@
 import 'package:agenda_lyon1/controller/history_controller.dart';
-import 'package:agenda_lyon1/model/calendrier.dart';
 import 'package:agenda_lyon1/model/date.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../model/changements/changement.dart';
 import '../../model/settings.dart';
-import '../custom_widgets/loading_widget.dart';
 
 class HistoriqueScreen extends ConsumerStatefulWidget {
   const HistoriqueScreen({super.key});
@@ -17,15 +16,10 @@ class HistoriqueScreen extends ConsumerStatefulWidget {
 
 class _HistoriqueScreenState extends ConsumerState<HistoriqueScreen>
     with TickerProviderStateMixin {
-  late final HistoryController historyController = HistoryController(this);
+  late final HistoryController historyController = HistoryController();
 
   @override
   void initState() {
-    historyController.controllerAnimation.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        setState(() {});
-      }
-    });
     super.initState();
   }
 
@@ -38,42 +32,19 @@ class _HistoriqueScreenState extends ConsumerState<HistoriqueScreen>
       appBar: AppBar(
         title: const Text("Historique"),
       ),
-      body: FutureBuilder(
-        future: historyController.loadingDBHistory,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData) {
-            final data = (snapshot.data as List<Map<String, dynamic>>);
-
-            if (data.isEmpty) {
-              return Center(
-                child: Text(
-                  "Aucun changements d'emplois du temps n'a été enregistré.",
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              );
-            } else {
-              return ListView.builder(
-                  itemCount: data.length,
-                  itemBuilder: (context, index) => ChangementCard(
-                      formatter: formatter,
-                      change: Changement(
-                          data[index]["name"],
-                          getChangementType(data[index]["typeChange"]),
-                          data[index]["oldDate"] == 0
-                              ? null
-                              : DateTime.fromMillisecondsSinceEpoch(
-                                  data[index]["oldDate"]),
-                          data[index]["newDate"] == 0
-                              ? null
-                              : DateTime.fromMillisecondsSinceEpoch(
-                                  data[index]["newDate"]))));
-            }
-          } else {
-            return const LoadingWidget();
-          }
-        },
-      ),
+      body: historyController.historique.isNotEmpty
+          ? ListView.builder(
+              itemCount: historyController.historique.length,
+              itemBuilder: (context, index) => ChangementCard(
+                  formatter: formatter,
+                  change: historyController.historique[index]))
+          : Center(
+              child: Text(
+                "Aucun changements d'emplois du temps n'a été enregistré.",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+            ),
     );
   }
 }

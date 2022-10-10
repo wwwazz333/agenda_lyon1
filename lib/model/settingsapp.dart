@@ -14,32 +14,28 @@ class SettingsApp extends HiveObject {
   }
 
   @HiveField(0)
-  List<int> _changeIds = [];
-  @HiveField(1)
   bool _notifEnabled = true;
-  @HiveField(2)
+  @HiveField(1)
   bool _jourFeriesEnabled = false;
-  @HiveField(3)
+  @HiveField(2)
   bool _alarmesAvancesEnabled = false;
-  @HiveField(4)
+  @HiveField(3)
   bool _appIsDarkMode = false;
-  @HiveField(5)
+  @HiveField(4)
   String _languageApp = "fr";
-  @HiveField(6)
+  @HiveField(5)
   String? _urlCalendar;
-  @HiveField(7)
+  @HiveField(6)
   ThemeMode? _themeApp;
 
-  @HiveField(8)
+  @HiveField(7)
   bool _cardTimeLineDisplay = true;
-  @HiveField(9)
+  @HiveField(8)
   int _firstHourDisplay = 8;
-  @HiveField(10)
+  @HiveField(9)
   int _lastHourDisplay = 20;
 
   ///getters
-
-  List<int> get changeIds => _changeIds;
 
   bool get notifEnabled => _notifEnabled;
 
@@ -58,10 +54,6 @@ class SettingsApp extends HiveObject {
   int get lastHourDisplay => _lastHourDisplay;
 
   ///setters
-  set changeIds(List<int> newVal) {
-    _changeIds = newVal;
-    save();
-  }
 
   set notifEnabled(bool newVal) {
     _notifEnabled = newVal;
@@ -117,7 +109,6 @@ class SettingsApp extends HiveObject {
 
   void copy(SettingsApp other) {
     if (this == other) return;
-    _changeIds = other._changeIds;
     _notifEnabled = other._notifEnabled;
     _jourFeriesEnabled = other._jourFeriesEnabled;
     _alarmesAvancesEnabled = other._alarmesAvancesEnabled;
