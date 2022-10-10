@@ -1,4 +1,5 @@
 import 'package:agenda_lyon1/controller/data_controller.dart';
+import 'package:agenda_lyon1/data/stockage.dart';
 import 'package:workmanager/workmanager.dart';
 import 'dart:io' show Platform;
 import 'local_notification_service.dart';
@@ -25,8 +26,8 @@ void callbackDispatcher() {
     switch (task) {
       case updateCalendrier:
         await DataController().loadCalendrier();
-        DataController().addListenerUpdate("sendNotif", (changeIds) {
-          if (changeIds.isNotEmpty) {
+        DataController().addListenerUpdate("sendNotif", () {
+          if (Stockage().changementHasChange) {
             final notif = LocalNotifService();
             notif.init();
             notif.showNotif(

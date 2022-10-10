@@ -1,20 +1,19 @@
-import 'package:agenda_lyon1/common/colors.dart';
-import 'package:agenda_lyon1/common/global_data.dart';
-import 'package:agenda_lyon1/common/tasks.dart';
+import 'package:agenda_lyon1/model/color/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:intl/intl.dart';
 
-import '../../model/event_calendrier.dart';
+import '../../model/settings/settingsapp.dart';
+import '../../model/event/event_calendrier.dart';
+import '../../model/task/tasks_manager.dart';
 
 Future<bool> showEventDialog(BuildContext context, EventCalendrier ev) async {
   bool hasToUpdate = false;
   final titleStyle = Theme.of(context).textTheme.headline2;
   final infoStyle = Theme.of(context).textTheme.bodyText1;
 
-  var bgColor = (appIsDarkMode)
-      ? fixedColorsDark[ev.summary]!
-      : fixedColorsLight[ev.summary]!;
+  var bgColor = ColorsEventsManager()
+      .getColorOrGen(ev.summary, SettingsApp().appIsDarkMode);
 
   await showDialog(
       context: context,
@@ -29,7 +28,8 @@ Future<bool> showEventDialog(BuildContext context, EventCalendrier ev) async {
                         setState(
                           () {
                             bgColor = color;
-                            addColor(ev.summary, color, appIsDarkMode);
+                            ColorsEventsManager().addColor(
+                                ev.summary, color, SettingsApp().appIsDarkMode);
                             hasToUpdate = true;
                           },
                         );
@@ -127,7 +127,7 @@ Future<bool> showEventDialog(BuildContext context, EventCalendrier ev) async {
                                       setState(
                                         () {
                                           if (txt.isNotEmpty) {
-                                            addTask(ev.uid, txt);
+                                            TasksManager().addTask(ev.uid, txt);
                                           }
                                         },
                                       );
@@ -140,9 +140,8 @@ Future<bool> showEventDialog(BuildContext context, EventCalendrier ev) async {
                             shrinkWrap: true,
                             physics:
                                 const NeverScrollableScrollPhysics(), // géré par le scrollable parent
-                            itemCount: tasks[ev.uid] != null
-                                ? tasks[ev.uid]!.length
-                                : 0,
+                            itemCount:
+                                TasksManager().taskOfEvent(ev.uid).length,
 
                             itemBuilder: (context, index) => Padding(
                                 padding: const EdgeInsets.all(1),
@@ -152,19 +151,26 @@ Future<bool> showEventDialog(BuildContext context, EventCalendrier ev) async {
                                   child: InkWell(
                                     onLongPress: () async {
                                       final res = await showConfirmDel(
-                                              context, tasks[ev.uid]![index])
-                                          as bool?;
+                                          context,
+                                          TasksManager()
+                                              .taskOfEvent(ev.uid)
+                                              .get(index)
+                                              .text) as bool?;
                                       if (res == true) {
                                         hasToUpdate = true;
 
                                         setState(
                                           () {
-                                            removeTask(ev.uid, index);
+                                            TasksManager()
+                                                .removeTask(ev.uid, index);
                                           },
                                         );
                                       }
                                     },
-                                    child: TaskWidget(tasks[ev.uid]![index]),
+                                    child: TaskWidget(TasksManager()
+                                        .taskOfEvent(ev.uid)
+                                        .get(index)
+                                        .text),
                                   ),
                                 )),
                           )

@@ -2,7 +2,8 @@ import 'dart:developer';
 
 import 'package:agenda_lyon1/controller/data_controller.dart';
 import 'package:agenda_lyon1/controller/background_work.dart';
-import 'package:agenda_lyon1/settings.dart';
+import 'package:agenda_lyon1/data/stockage.dart';
+import 'package:agenda_lyon1/model/settings/settings.dart';
 import 'package:agenda_lyon1/views/custom_widgets/event_list.dart';
 import 'package:agenda_lyon1/views/custom_widgets/loading_widget.dart';
 import 'package:agenda_lyon1/views/dialog/history_dialog.dart';
@@ -39,10 +40,9 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
   late final Future loadingFuture;
 
   void showDialogHistoryIfNeeded() {
-    if (SettingsApp.changeIds.isNotEmpty) {
-      showHistoryDialog(
-          context, SettingsApp.changeIds, ref.watch(languageApp).languageCode);
-      SettingsApp.changeIds = [];
+    if (Stockage().changementHasChange) {
+      showHistoryDialog(context,
+          ref.watch(SettingsProvider.languageAppProvider).languageCode);
     }
   }
 
@@ -53,7 +53,7 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
         .then((value) => DataController().update()));
     DataController().addListenerUpdate(
         "updateCalendarScreenView",
-        (ids) => setState(
+        () => setState(
               () {
                 showDialogHistoryIfNeeded();
               },
@@ -65,12 +65,13 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
   @override
   Widget build(BuildContext context) {
     showDialogHistoryIfNeeded();
-    final typeCardToDisplay = ref.watch(cardTypeDisplay);
+    final typeCardToDisplay =
+        ref.watch(SettingsProvider.cardTypeDisplayProvider);
     ref.listen(selectedDate, (previous, next) {
       _controller.goToGoodPage(next);
     });
     ref.listen(
-      urlCalendar,
+      SettingsProvider.urlCalendarProvider,
       (previous, next) {
         setState(() {});
         DataController().update();

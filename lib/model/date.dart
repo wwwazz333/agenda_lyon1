@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 
-import 'event_calendrier.dart';
+import 'event/event_calendrier.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
 

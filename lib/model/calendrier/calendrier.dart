@@ -1,13 +1,16 @@
-import 'dart:convert';
 import 'package:flutter_logs/flutter_logs.dart';
-import '../common/error/file_error.dart';
-import '../data/file_manager.dart';
-import 'date.dart';
-import 'event_calendrier.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import '../changements/changement.dart';
+import '../changements/changement_type.dart';
+import '../date.dart';
+import '../event/event_calendrier.dart';
+import 'state_lecture.dart';
 
-enum _StateLecture { close, open, event }
+part 'calendrier.g.dart';
 
+@HiveType(typeId: 3)
 class Calendrier {
+  @HiveField(0)
   List<EventCalendrier> _events = [];
 
   List<EventCalendrier> get events => _events;
@@ -36,25 +39,19 @@ class Calendrier {
   Calendrier.load(String txtIcs) {
     loadFromString(txtIcs);
   }
-  Calendrier.fromJson(Map<String, dynamic> json) {
-    _events = [];
-    for (var jsonObj in jsonDecode(json["events"])) {
-      _events.add(EventCalendrier.fromJson(jsonObj));
-    }
-  }
 
   void loadFromString(String txtIcs) {
     final List<EventCalendrier> tempEvents = [];
     final lines = txtIcs.split(RegExp("\n(?=[A-Z])"));
-    var stateCal = _StateLecture.close;
+    var stateCal = StateLecture.close;
     for (var line in lines) {
       line = line.trim();
 
       if (line == "BEGIN:VCALENDAR") {
-        stateCal = _StateLecture.open;
-      } else if (stateCal == _StateLecture.open) {
+        stateCal = StateLecture.open;
+      } else if (stateCal == StateLecture.open) {
         if (line == "END:VCALENDAR") {
-          stateCal = _StateLecture.close;
+          stateCal = StateLecture.close;
           break;
         } else if (line == "BEGIN:VEVENT") {
           if (tempEvents.isNotEmpty &&
@@ -62,17 +59,15 @@ class Calendrier {
             FlutterLogs.logError("Event", "Calendrier", "date is wrong");
           }
           tempEvents.add(EventCalendrier());
-          stateCal = _StateLecture.event;
+          stateCal = StateLecture.event;
         }
-      } else if (stateCal == _StateLecture.event) {
+      } else if (stateCal == StateLecture.event) {
         if (line == "END:VEVENT") {
-          stateCal = _StateLecture.open;
+          stateCal = StateLecture.open;
         } else {
           tempEvents.last.parseLine(line);
         }
       }
-      // await Future.delayed(
-      //     const Duration(microseconds: 1)); //pour évité les freeze
     }
     events = tempEvents;
     if (_events.isEmpty) FlutterLogs.logWarn("Event", "_events", "is empty");
@@ -110,21 +105,22 @@ class Calendrier {
         .where((oldEvent) => newCalendrier.events
             .where((newEvent) => oldEvent.uid == newEvent.uid)
             .isEmpty)
-        .map(
-            (e) => Changement(e.summary, ChangementType.delete, e.date, null)));
+        .map((e) => Changement(e.summary, ChangementType.delete.valueAsString,
+            DateTime.now(), e.date, null)));
 
     changements.addAll(newCalendrier.events
         .where((newEvent) =>
             events.where((oldEvent) => oldEvent.uid == newEvent.uid).isEmpty)
-        .map((e) => Changement(e.summary, ChangementType.add, null, e.date)));
+        .map((e) => Changement(e.summary, ChangementType.add.valueAsString,
+            DateTime.now(), null, e.date)));
 
     for (EventCalendrier oldEvent in events) {
       changements.addAll(newCalendrier.events
           .where((newEvent) =>
               oldEvent.uid == newEvent.uid &&
               !oldEvent.date.isAtSameMomentAs(newEvent.date))
-          .map((e) => Changement(
-              e.summary, ChangementType.move, oldEvent.date, e.date)));
+          .map((e) => Changement(e.summary, ChangementType.move.valueAsString,
+              DateTime.now(), oldEvent.date, e.date)));
     }
     final List<Changement> ajout = changements
         .where((element) => element.changementType == ChangementType.add)
@@ -139,7 +135,11 @@ class Calendrier {
       if (same.isNotEmpty) {
         final adding = same.first;
         changements.add(Changement(
-            adding.name, ChangementType.move, change.oldDate, adding.newDate));
+            adding.name,
+            ChangementType.move.valueAsString,
+            DateTime.now(),
+            change.oldDate,
+            adding.newDate));
         toRemove.add(adding);
         toRemove.add(change);
       }
@@ -150,44 +150,4 @@ class Calendrier {
 
     return changements;
   }
-
-  static writeCalendrierFile(String content, String fileName) {
-    if (mayBeValideFormat(content)) {
-      FileManager.writeString(fileName, content);
-    } else {
-      throw InvalideFormatException("Le format du calendrier n'est pas valide");
-    }
-  }
-
-  Map<String, dynamic> toJson() => {
-        "events": jsonEncode(_events),
-      };
-}
-
-enum ChangementType {
-  add,
-  delete,
-  move;
-}
-
-class Changement {
-  String name;
-  DateTime? oldDate, newDate;
-  ChangementType changementType;
-
-  Changement(this.name, this.changementType, this.oldDate, this.newDate);
-
-  @override
-  String toString() {
-    return "$name, $changementType, $oldDate, $newDate";
-  }
-}
-
-ChangementType getChangementType(String type) {
-  if (type == ChangementType.add.toString()) {
-    return ChangementType.add;
-  } else if (type == ChangementType.move.toString()) {
-    return ChangementType.move;
-  }
-  return ChangementType.delete;
 }

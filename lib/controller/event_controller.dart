@@ -1,11 +1,11 @@
-import 'package:agenda_lyon1/common/colors.dart';
-import 'package:agenda_lyon1/common/tasks.dart';
+import 'package:agenda_lyon1/model/color/colors.dart';
+import 'package:agenda_lyon1/model/task/tasks_manager.dart';
 import 'package:agenda_lyon1/model/date.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../common/global_data.dart';
-import '../model/event_calendrier.dart';
-import '../model/event_timeline.dart';
+import '../model/event/event_calendrier.dart';
+import '../model/event/event_timeline.dart';
+import '../model/settings/settingsapp.dart';
 import '../views/dialog/event_dialog.dart';
 
 class EventController {
@@ -63,23 +63,8 @@ class DayController {
 
   Map<String, dynamic> infoEvent(int index) {
     final ev = _eventOfDay[index];
-    Color getColor() {
-      Color? bgColor;
-      if (appIsDarkMode) {
-        bgColor = fixedColorsDark[ev.summary];
-        if (bgColor == null) {
-          bgColor = colorsDark[countColor++ % colorsDark.length];
-          addColor(ev.summary, bgColor, appIsDarkMode);
-        }
-      } else {
-        bgColor = fixedColorsLight[ev.summary];
-        if (bgColor == null) {
-          bgColor = colorsLight[countColor++ % colorsLight.length];
-          addColor(ev.summary, bgColor, appIsDarkMode);
-        }
-      }
-      return bgColor;
-    }
+    Color getColor() => ColorsEventsManager()
+        .getColorOrGen(ev.summary, SettingsApp().appIsDarkMode);
 
     return {
       "title": ev.summary,
@@ -88,7 +73,7 @@ class DayController {
       "fin": ev.heureFin,
       "color": getColor,
       "controller": EventController(ev),
-      "nbrTask": () => tasks[ev.uid] != null ? tasks[ev.uid]!.length : 0,
+      "nbrTask": () => TasksManager().taskOfEvent(ev.uid).length,
     };
   }
 
