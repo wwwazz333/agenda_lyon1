@@ -27,13 +27,18 @@ void callbackDispatcher() {
       case updateCalendrier:
         await DataController().loadCalendrier();
         DataController().addListenerUpdate("sendNotif", () {
+          final notif = LocalNotifService();
+          notif.init();
           if (Stockage().changementHasChange) {
-            final notif = LocalNotifService();
-            notif.init();
             notif.showNotif(
                 id: LocalNotifService.notifChangementEvent,
                 title: "Changement EDT",
                 body: "Vous avez des changements dans votre EDT, regardez !");
+          } else {
+            notif.showNotif(
+                id: LocalNotifService.notifChangementEvent,
+                title: "Changement EDT",
+                body: "Aucun changement");
           }
         });
         await DataController().update();
