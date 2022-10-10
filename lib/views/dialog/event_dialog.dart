@@ -1,4 +1,4 @@
-import 'package:agenda_lyon1/common/colors.dart';
+import 'package:agenda_lyon1/model/color/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:intl/intl.dart';
@@ -12,8 +12,8 @@ Future<bool> showEventDialog(BuildContext context, EventCalendrier ev) async {
   final titleStyle = Theme.of(context).textTheme.headline2;
   final infoStyle = Theme.of(context).textTheme.bodyText1;
 
-  var bgColor =
-      ColorsEvents().getColorOrGen(ev.summary, SettingsApp().appIsDarkMode);
+  var bgColor = ColorsEventsManager()
+      .getColorOrGen(ev.summary, SettingsApp().appIsDarkMode);
 
   await showDialog(
       context: context,
@@ -28,7 +28,7 @@ Future<bool> showEventDialog(BuildContext context, EventCalendrier ev) async {
                         setState(
                           () {
                             bgColor = color;
-                            ColorsEvents().addColor(
+                            ColorsEventsManager().addColor(
                                 ev.summary, color, SettingsApp().appIsDarkMode);
                             hasToUpdate = true;
                           },

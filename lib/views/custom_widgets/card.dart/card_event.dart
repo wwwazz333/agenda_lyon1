@@ -1,4 +1,4 @@
-import 'package:agenda_lyon1/common/colors.dart';
+import 'package:agenda_lyon1/model/color/colors.dart';
 import 'package:flutter/material.dart';
 import '../../../controller/event_controller.dart';
 
@@ -20,5 +20,6 @@ abstract class CardEvent extends StatefulWidget {
       required this.bgColor,
       super.key});
 
-  Color? get fontColor => ColorsEvents().goodColorFontOnBackground(bgColor());
+  Color? get fontColor =>
+      ColorsEventsManager().goodColorFontOnBackground(bgColor());
 }

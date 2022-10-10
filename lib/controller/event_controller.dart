@@ -1,4 +1,4 @@
-import 'package:agenda_lyon1/common/colors.dart';
+import 'package:agenda_lyon1/model/color/colors.dart';
 import 'package:agenda_lyon1/model/task/tasks_manager.dart';
 import 'package:agenda_lyon1/model/date.dart';
 import 'package:flutter/cupertino.dart';
@@ -63,8 +63,8 @@ class DayController {
 
   Map<String, dynamic> infoEvent(int index) {
     final ev = _eventOfDay[index];
-    Color getColor() =>
-        ColorsEvents().getColorOrGen(ev.summary, SettingsApp().appIsDarkMode);
+    Color getColor() => ColorsEventsManager()
+        .getColorOrGen(ev.summary, SettingsApp().appIsDarkMode);
 
     return {
       "title": ev.summary,

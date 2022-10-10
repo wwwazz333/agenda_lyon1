@@ -1,18 +1,21 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 
-import 'colors.dart';
+import '../model/color/colors.dart';
 
 final _parentTheme = ThemeData(
-  primaryColor: ColorsEvents.redOnePlus,
-  appBarTheme: const AppBarTheme(backgroundColor: ColorsEvents.redOnePlus),
-  buttonTheme: const ButtonThemeData(buttonColor: ColorsEvents.redOnePlus),
+  primaryColor: ColorsEventsManager.redOnePlus,
+  appBarTheme:
+      const AppBarTheme(backgroundColor: ColorsEventsManager.redOnePlus),
+  buttonTheme:
+      const ButtonThemeData(buttonColor: ColorsEventsManager.redOnePlus),
   elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(ColorsEvents.redOnePlus))),
+          backgroundColor:
+              MaterialStateProperty.all(ColorsEventsManager.redOnePlus))),
   textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
-          textStyle: const TextStyle(color: ColorsEvents.redOnePlus))),
+          textStyle: const TextStyle(color: ColorsEventsManager.redOnePlus))),
   switchTheme:
       SwitchThemeData(overlayColor: MaterialStateProperty.resolveWith((states) {
     return Colors.red;
@@ -31,11 +34,11 @@ final themes = {
       textTheme: ThemeData.light().textTheme.copyWith(
             headline1: const TextStyle(
                 fontSize: 26,
-                color: ColorsEvents.redOnePlus,
+                color: ColorsEventsManager.redOnePlus,
                 fontWeight: FontWeight.w700),
             headline2: const TextStyle(
                 fontSize: 22,
-                color: ColorsEvents.redOnePlus,
+                color: ColorsEventsManager.redOnePlus,
                 fontWeight: FontWeight.w400),
             bodyText1: const TextStyle(
                 color: Colors.black,
@@ -58,11 +61,11 @@ final themes = {
       textTheme: ThemeData.dark().textTheme.copyWith(
             headline1: const TextStyle(
                 fontSize: 26,
-                color: ColorsEvents.redOnePlus,
+                color: ColorsEventsManager.redOnePlus,
                 fontWeight: FontWeight.w700),
             headline2: const TextStyle(
                 fontSize: 22,
-                color: ColorsEvents.redOnePlus,
+                color: ColorsEventsManager.redOnePlus,
                 fontWeight: FontWeight.w400),
             bodyText1: const TextStyle(color: Colors.white, fontSize: 16),
             bodyText2: const TextStyle(

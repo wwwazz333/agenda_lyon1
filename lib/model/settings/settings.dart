@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:agenda_lyon1/common/colors.dart';
+import 'package:agenda_lyon1/model/color/colors.dart';
 import 'package:agenda_lyon1/data/stockage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -61,7 +61,7 @@ void setUpListeners(ProviderContainer ref) {
   ref.listen(SettingsProvider.themeAppProvider, (previous, next) {
     if (previous != next) {
       SettingsApp().appIsDarkMode = next == ThemeMode.dark;
-      ColorsEvents().countColor = 0;
+      ColorsEventsManager().countColor = 0;
     }
   });
 

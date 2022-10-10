@@ -3,11 +3,11 @@ import 'package:agenda_lyon1/model/color/color_event.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
-class ColorsEvents {
-  static ColorsEvents? instance;
-  ColorsEvents._();
-  factory ColorsEvents() {
-    instance ??= ColorsEvents._();
+class ColorsEventsManager {
+  static ColorsEventsManager? instance;
+  ColorsEventsManager._();
+  factory ColorsEventsManager() {
+    instance ??= ColorsEventsManager._();
     return instance!;
   }
 
