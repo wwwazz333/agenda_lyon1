@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:agenda_lyon1/data/file_manager.dart';
@@ -14,7 +13,14 @@ import '../model/settingsapp.dart';
 import 'event_controller.dart';
 
 class DataController {
-  Calendrier calendrier = Calendrier([]);
+  Calendrier _calendrier = Calendrier([]);
+  Calendrier get calendrier => _calendrier;
+
+  set calendrier(Calendrier newCal) {
+    _calendrier = newCal;
+    Stockage().calendrierBox.put("default", _calendrier);
+  }
+
   Map<String, void Function()> updateListeners = {};
 
   static DataController? _instance;
@@ -41,11 +47,10 @@ class DataController {
     if (resUpdate.isNotEmpty) {
       log("start writing in file");
       calendrier = resUpdate["newCal"];
-      FileManager.writeObject(
-          FileManager.calendrierFile, jsonEncode(calendrier));
 
-      List<Changement> changes = resUpdate["changes"];
-      Stockage().changementsBox.addAll(changes);
+      Stockage()
+          .changementsBox
+          .addAll(resUpdate["changes"] as List<Changement>);
     }
     informeUpdate();
 
@@ -83,13 +88,11 @@ class DataController {
   }
 
   Future<bool> loadCalendrier() async {
-    final String? jsonCal =
-        await FileManager.readObject(FileManager.calendrierFile);
-    if (jsonCal != null) {
-      calendrier = Calendrier.fromJson(jsonDecode(jsonCal));
-      return true;
-    }
-    return false;
+    final Calendrier? temp = Stockage().calendrierBox.get("default");
+    bool res = temp != null;
+    calendrier = temp ?? Calendrier([]);
+
+    return res;
   }
 
   DayController genDayController(DateTime date) {

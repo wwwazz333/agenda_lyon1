@@ -1,37 +1,48 @@
-import 'dart:convert';
-
 import 'package:agenda_lyon1/model/date.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 
-class EventCalendrier implements Comparable<EventCalendrier> {
+part 'event_calendrier.g.dart';
+
+@HiveType(typeId: 2)
+class EventCalendrier extends HiveObject
+    implements Comparable<EventCalendrier> {
+  @HiveField(0)
   String _nameEvent = "";
   String get summary {
     return _nameEvent;
   }
 
+  @HiveField(1)
   List<String> _salle = [];
   List<String> get salle {
     return _salle;
   }
 
+  @HiveField(2)
   String _description = "";
   String get description {
     return _description;
   }
 
+  @HiveField(3)
   String _uid = "";
   String get uid {
     return _uid;
   }
 
+  @HiveField(4)
   DateTime _date = DateTime.fromMicrosecondsSinceEpoch(0);
   DateTime get date {
     return _date;
   }
 
-  Duration _duree = const Duration(hours: 0, minutes: 0);
+  @HiveField(5)
+  int _duree = 0;
+
+  ///durée en seconds
   Duration get duree {
-    return _duree;
+    return Duration(seconds: _duree);
   }
 
   DateTime get dateFin => date.add(duree);
@@ -45,8 +56,9 @@ class EventCalendrier implements Comparable<EventCalendrier> {
   }
 
   EventCalendrier();
-  EventCalendrier.data(this._date, this._duree, this._nameEvent, this._salle,
-      this._description, this._uid);
+  EventCalendrier.data(this._date, Duration duree, this._nameEvent, this._salle,
+      this._description, this._uid)
+      : _duree = duree.inSeconds;
 
   void parseLine(String str) {
     final splited = str.split(":");
@@ -60,8 +72,9 @@ class EventCalendrier implements Comparable<EventCalendrier> {
       _date = getDateTime(splited[1]);
     } else if (title == "DTEND") {
       var fin = getDateTime(splited[1]);
-      _duree = Duration(hours: fin.hour, minutes: fin.minute) -
-          Duration(hours: date.hour, minutes: date.minute);
+      _duree = (Duration(hours: fin.hour, minutes: fin.minute) -
+              Duration(hours: date.hour, minutes: date.minute))
+          .inSeconds;
     } else if (title == "SUMMARY") {
       _nameEvent = splited[1];
     } else if (title == "LOCATION") {
@@ -104,26 +117,6 @@ class EventCalendrier implements Comparable<EventCalendrier> {
   int compareTo(EventCalendrier other) {
     return date.compareTo(other.date);
   }
-
-  EventCalendrier.fromJson(Map<String, dynamic> jsonData) {
-    _date = DateTime.fromMillisecondsSinceEpoch(jsonData["debut"]);
-    _duree = Duration(seconds: jsonData["duree"]);
-    _nameEvent = jsonData["name"];
-    _salle = (json.decode(jsonData["salle"]) as List<dynamic>)
-        .map((e) => e.toString())
-        .toList();
-    _description = jsonData["description"];
-    _uid = jsonData["uid"];
-  }
-
-  Map<String, dynamic> toJson() => {
-        "uid": uid,
-        "name": summary,
-        "description": description,
-        "debut": date.millisecondsSinceEpoch,
-        "duree": duree.inSeconds,
-        "salle": json.encode(salle),
-      };
 
   @override
   String toString() => "$summary, $date";

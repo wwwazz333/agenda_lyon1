@@ -1,15 +1,18 @@
-import 'dart:convert';
 import 'package:flutter_logs/flutter_logs.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import '../common/error/file_error.dart';
 import '../data/file_manager.dart';
 import 'changements/changement.dart';
 import 'changements/changement_type.dart';
 import 'date.dart';
 import 'event_calendrier.dart';
+import 'state_lecture.dart';
 
-enum _StateLecture { close, open, event }
+part 'calendrier.g.dart';
 
+@HiveType(typeId: 3)
 class Calendrier {
+  @HiveField(0)
   List<EventCalendrier> _events = [];
 
   List<EventCalendrier> get events => _events;
@@ -38,25 +41,19 @@ class Calendrier {
   Calendrier.load(String txtIcs) {
     loadFromString(txtIcs);
   }
-  Calendrier.fromJson(Map<String, dynamic> json) {
-    _events = [];
-    for (var jsonObj in jsonDecode(json["events"])) {
-      _events.add(EventCalendrier.fromJson(jsonObj));
-    }
-  }
 
   void loadFromString(String txtIcs) {
     final List<EventCalendrier> tempEvents = [];
     final lines = txtIcs.split(RegExp("\n(?=[A-Z])"));
-    var stateCal = _StateLecture.close;
+    var stateCal = StateLecture.close;
     for (var line in lines) {
       line = line.trim();
 
       if (line == "BEGIN:VCALENDAR") {
-        stateCal = _StateLecture.open;
-      } else if (stateCal == _StateLecture.open) {
+        stateCal = StateLecture.open;
+      } else if (stateCal == StateLecture.open) {
         if (line == "END:VCALENDAR") {
-          stateCal = _StateLecture.close;
+          stateCal = StateLecture.close;
           break;
         } else if (line == "BEGIN:VEVENT") {
           if (tempEvents.isNotEmpty &&
@@ -64,17 +61,15 @@ class Calendrier {
             FlutterLogs.logError("Event", "Calendrier", "date is wrong");
           }
           tempEvents.add(EventCalendrier());
-          stateCal = _StateLecture.event;
+          stateCal = StateLecture.event;
         }
-      } else if (stateCal == _StateLecture.event) {
+      } else if (stateCal == StateLecture.event) {
         if (line == "END:VEVENT") {
-          stateCal = _StateLecture.open;
+          stateCal = StateLecture.open;
         } else {
           tempEvents.last.parseLine(line);
         }
       }
-      // await Future.delayed(
-      //     const Duration(microseconds: 1)); //pour évité les freeze
     }
     events = tempEvents;
     if (_events.isEmpty) FlutterLogs.logWarn("Event", "_events", "is empty");
@@ -165,8 +160,4 @@ class Calendrier {
       throw InvalideFormatException("Le format du calendrier n'est pas valide");
     }
   }
-
-  Map<String, dynamic> toJson() => {
-        "events": jsonEncode(_events),
-      };
 }
