@@ -20,5 +20,5 @@ abstract class CardEvent extends StatefulWidget {
       required this.bgColor,
       super.key});
 
-  Color? get fontColor => goodColorFontOnBackground(bgColor());
+  Color? get fontColor => ColorsEvents().goodColorFontOnBackground(bgColor());
 }

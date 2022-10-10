@@ -12,9 +12,8 @@ Future<bool> showEventDialog(BuildContext context, EventCalendrier ev) async {
   final titleStyle = Theme.of(context).textTheme.headline2;
   final infoStyle = Theme.of(context).textTheme.bodyText1;
 
-  var bgColor = (SettingsApp().appIsDarkMode)
-      ? fixedColorsDark[ev.summary]!
-      : fixedColorsLight[ev.summary]!;
+  var bgColor =
+      ColorsEvents().getColorOrGen(ev.summary, SettingsApp().appIsDarkMode);
 
   await showDialog(
       context: context,
@@ -29,7 +28,7 @@ Future<bool> showEventDialog(BuildContext context, EventCalendrier ev) async {
                         setState(
                           () {
                             bgColor = color;
-                            addColor(
+                            ColorsEvents().addColor(
                                 ev.summary, color, SettingsApp().appIsDarkMode);
                             hasToUpdate = true;
                           },

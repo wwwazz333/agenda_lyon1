@@ -5,7 +5,6 @@ import 'package:agenda_lyon1/data/stockage.dart';
 import 'package:agenda_lyon1/network/file_downolader.dart';
 import 'package:flutter/foundation.dart';
 
-import '../common/colors.dart';
 import '../common/tasks.dart';
 import '../model/calendrier.dart';
 import '../model/changements/changement.dart';
@@ -78,7 +77,6 @@ class DataController {
     if (!_dataLoaded) {
       await Future.wait([
         loadCalendrier(),
-        loadColors(),
         loadTasks(),
       ]);
       _dataLoaded = true;

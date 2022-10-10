@@ -63,23 +63,8 @@ class DayController {
 
   Map<String, dynamic> infoEvent(int index) {
     final ev = _eventOfDay[index];
-    Color getColor() {
-      Color? bgColor;
-      if (SettingsApp().appIsDarkMode) {
-        bgColor = fixedColorsDark[ev.summary];
-        if (bgColor == null) {
-          bgColor = colorsDark[countColor++ % colorsDark.length];
-          addColor(ev.summary, bgColor, SettingsApp().appIsDarkMode);
-        }
-      } else {
-        bgColor = fixedColorsLight[ev.summary];
-        if (bgColor == null) {
-          bgColor = colorsLight[countColor++ % colorsLight.length];
-          addColor(ev.summary, bgColor, SettingsApp().appIsDarkMode);
-        }
-      }
-      return bgColor;
-    }
+    Color getColor() =>
+        ColorsEvents().getColorOrGen(ev.summary, SettingsApp().appIsDarkMode);
 
     return {
       "title": ev.summary,

@@ -61,7 +61,7 @@ void setUpListeners(ProviderContainer ref) {
   ref.listen(SettingsProvider.themeAppProvider, (previous, next) {
     if (previous != next) {
       SettingsApp().appIsDarkMode = next == ThemeMode.dark;
-      countColor = 0;
+      ColorsEvents().countColor = 0;
     }
   });
 
