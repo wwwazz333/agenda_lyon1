@@ -5,7 +5,6 @@ import 'package:agenda_lyon1/data/stockage.dart';
 import 'package:agenda_lyon1/network/file_downolader.dart';
 import 'package:flutter/foundation.dart';
 
-import '../common/tasks.dart';
 import '../model/calendrier.dart';
 import '../model/changements/changement.dart';
 import '../model/settingsapp.dart';
@@ -75,10 +74,7 @@ class DataController {
   bool _dataLoaded = false;
   Future<bool> load() async {
     if (!_dataLoaded) {
-      await Future.wait([
-        loadCalendrier(),
-        loadTasks(),
-      ]);
+      await loadCalendrier();
       _dataLoaded = true;
     }
     log("fin load");

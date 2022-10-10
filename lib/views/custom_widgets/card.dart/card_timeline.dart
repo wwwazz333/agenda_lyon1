@@ -81,24 +81,23 @@ class _CardEventTimeLine extends State<CardEventTimeLine> {
                         ],
                       )),
                 ),
-                (widget.nbrTask() != 0)
-                    ? Positioned(
-                        top: 0,
-                        right: 5,
-                        child: Container(
-                          padding: const EdgeInsets.all(6),
-                          decoration: BoxDecoration(
-                              color: Theme.of(context).primaryColor,
-                              shape: BoxShape.circle),
-                          child: Text(
-                            widget.nbrTask().toString(),
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText1!
-                                .copyWith(color: widget.fontColor),
-                          ),
-                        ))
-                    : const SizedBox(),
+                if (widget.nbrTask() != 0)
+                  Positioned(
+                      top: 0,
+                      right: 5,
+                      child: Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
+                            shape: BoxShape.circle),
+                        child: Text(
+                          widget.nbrTask().toString(),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText1!
+                              .copyWith(color: widget.fontColor),
+                        ),
+                      )),
               ],
             )),
       ),
