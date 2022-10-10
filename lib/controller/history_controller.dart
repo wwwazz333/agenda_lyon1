@@ -6,6 +6,6 @@ class HistoryController {
 
   HistoryController() {
     historique = Stockage().changementsBox.values.toList();
-    historique.sort(((a, b) => a.dateChange.compareTo(b.dateChange)));
+    historique.sort(((a, b) => b.dateChange.compareTo(a.dateChange)));
   }
 }
