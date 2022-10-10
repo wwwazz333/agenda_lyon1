@@ -1,11 +1,11 @@
 import 'package:agenda_lyon1/common/global_data.dart';
-import 'package:agenda_lyon1/model/settings.dart';
+import 'package:agenda_lyon1/model/settings/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/Picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:settings_ui/settings_ui.dart';
 
-import '../../../model/settingsapp.dart';
+import '../../../model/settings/settingsapp.dart';
 
 class MySettingsScreen extends ConsumerStatefulWidget {
   const MySettingsScreen({super.key});

@@ -1,13 +1,12 @@
 import 'dart:developer';
 
-import 'package:agenda_lyon1/data/file_manager.dart';
 import 'package:agenda_lyon1/data/stockage.dart';
 import 'package:agenda_lyon1/network/file_downolader.dart';
 import 'package:flutter/foundation.dart';
 
-import '../model/calendrier.dart';
+import '../model/calendrier/calendrier.dart';
 import '../model/changements/changement.dart';
-import '../model/settingsapp.dart';
+import '../model/settings/settingsapp.dart';
 import 'event_controller.dart';
 
 class DataController {
@@ -111,7 +110,7 @@ class DataController {
 
   void clear() {
     calendrier = Calendrier([]);
-    FileManager.delFile(FileManager.calendrierFile);
+    Stockage().calendrierBox.clear();
   }
 
   void addListenerUpdate(String uniquKey, void Function() fun) {

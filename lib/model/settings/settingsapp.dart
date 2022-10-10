@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import '../common/global_data.dart';
+import '../../common/global_data.dart';
 part 'settingsapp.g.dart';
 
 @HiveType(typeId: 0)

@@ -1,12 +1,12 @@
-import 'package:agenda_lyon1/model/calendrier.dart';
+import 'package:agenda_lyon1/model/calendrier/calendrier.dart';
 import 'package:agenda_lyon1/model/changements/changement.dart';
-import 'package:agenda_lyon1/model/color_event.dart';
-import 'package:agenda_lyon1/model/event_calendrier.dart';
-import 'package:agenda_lyon1/model/task.dart';
-import 'package:agenda_lyon1/model/tasks_of_event.dart';
+import 'package:agenda_lyon1/model/color/color_event.dart';
+import 'package:agenda_lyon1/model/event/event_calendrier.dart';
+import 'package:agenda_lyon1/model/task/task.dart';
+import 'package:agenda_lyon1/model/task/tasks_of_event.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import '../model/settingsapp.dart';
+import '../model/settings/settingsapp.dart';
 
 class Stockage {
   static Stockage? instance;

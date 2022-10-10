@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../model/changements/changement.dart';
-import '../../model/settings.dart';
+import '../../model/settings/settings.dart';
 
 class HistoriqueScreen extends ConsumerStatefulWidget {
   const HistoriqueScreen({super.key});

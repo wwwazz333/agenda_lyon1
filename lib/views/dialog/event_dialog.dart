@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:intl/intl.dart';
 
-import '../../model/settingsapp.dart';
-import '../../model/event_calendrier.dart';
-import '../../model/tasks_manager.dart';
+import '../../model/settings/settingsapp.dart';
+import '../../model/event/event_calendrier.dart';
+import '../../model/task/tasks_manager.dart';
 
 Future<bool> showEventDialog(BuildContext context, EventCalendrier ev) async {
   bool hasToUpdate = false;

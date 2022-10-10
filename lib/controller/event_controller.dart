@@ -1,11 +1,11 @@
 import 'package:agenda_lyon1/common/colors.dart';
-import 'package:agenda_lyon1/model/tasks_manager.dart';
+import 'package:agenda_lyon1/model/task/tasks_manager.dart';
 import 'package:agenda_lyon1/model/date.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../model/event_calendrier.dart';
-import '../model/event_timeline.dart';
-import '../model/settingsapp.dart';
+import '../model/event/event_calendrier.dart';
+import '../model/event/event_timeline.dart';
+import '../model/settings/settingsapp.dart';
 import '../views/dialog/event_dialog.dart';
 
 class EventController {

@@ -1,6 +1,6 @@
-import 'package:agenda_lyon1/model/calendrier.dart';
+import 'package:agenda_lyon1/model/calendrier/calendrier.dart';
 import 'package:agenda_lyon1/model/changements/changement_type.dart';
-import 'package:agenda_lyon1/model/event_calendrier.dart';
+import 'package:agenda_lyon1/model/event/event_calendrier.dart';
 import 'package:test/test.dart';
 
 final List<EventCalendrier> oldEvents = [

@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../common/global_data.dart';
 import '../../controller/tabcalendarui_controller.dart';
 import '../../providers.dart';
-import '../../model/settings.dart';
+import '../../model/settings/settings.dart';
 
 class Header extends ConsumerWidget {
   final DateTime startingDate;

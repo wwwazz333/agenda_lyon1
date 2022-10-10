@@ -1,11 +1,9 @@
 import 'package:flutter_logs/flutter_logs.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import '../common/error/file_error.dart';
-import '../data/file_manager.dart';
-import 'changements/changement.dart';
-import 'changements/changement_type.dart';
-import 'date.dart';
-import 'event_calendrier.dart';
+import '../changements/changement.dart';
+import '../changements/changement_type.dart';
+import '../date.dart';
+import '../event/event_calendrier.dart';
 import 'state_lecture.dart';
 
 part 'calendrier.g.dart';
@@ -151,13 +149,5 @@ class Calendrier {
     }
 
     return changements;
-  }
-
-  static writeCalendrierFile(String content, String fileName) {
-    if (mayBeValideFormat(content)) {
-      FileManager.writeString(fileName, content);
-    } else {
-      throw InvalideFormatException("Le format du calendrier n'est pas valide");
-    }
   }
 }

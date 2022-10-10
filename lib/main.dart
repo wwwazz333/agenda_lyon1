@@ -1,6 +1,6 @@
 import 'package:agenda_lyon1/controller/background_work.dart';
 import 'package:agenda_lyon1/data/stockage.dart';
-import 'package:agenda_lyon1/model/settings.dart';
+import 'package:agenda_lyon1/model/settings/settings.dart';
 import 'package:agenda_lyon1/views/screen/historique_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:workmanager/workmanager.dart';

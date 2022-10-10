@@ -5,7 +5,7 @@ import 'package:agenda_lyon1/data/stockage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../common/global_data.dart';
+import '../../common/global_data.dart';
 import 'settingsapp.dart';
 
 class SettingsNames {

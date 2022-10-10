@@ -1,5 +1,5 @@
 import 'package:agenda_lyon1/data/stockage.dart';
-import 'package:agenda_lyon1/model/color_event.dart';
+import 'package:agenda_lyon1/model/color/color_event.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 

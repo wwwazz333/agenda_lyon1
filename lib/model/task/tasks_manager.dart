@@ -1,6 +1,6 @@
 import 'package:agenda_lyon1/data/stockage.dart';
-import 'package:agenda_lyon1/model/task.dart';
-import 'package:agenda_lyon1/model/tasks_of_event.dart';
+import 'package:agenda_lyon1/model/task/task.dart';
+import 'package:agenda_lyon1/model/task/tasks_of_event.dart';
 import 'package:hive/hive.dart';
 
 class TasksManager {

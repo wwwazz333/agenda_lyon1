@@ -4,7 +4,7 @@ import 'package:agenda_lyon1/controller/data_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../model/settings.dart';
+import '../../../model/settings/settings.dart';
 
 class SettingsScreenURL extends ConsumerStatefulWidget {
   const SettingsScreenURL({super.key});
