@@ -60,7 +60,8 @@ class _MySettingsScreen extends ConsumerState<MySettingsScreen> {
                       languages.length,
                       (index) => DropdownMenuItem(
                             value: languages.values.elementAt(index),
-                            child: Text(languages.keys.elementAt(index)),
+                            child: Text(
+                                languages.values.elementAt(index).fullName()),
                           )),
                   onChanged: (value) {
                     if (value != null) {

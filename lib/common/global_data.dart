@@ -6,3 +6,15 @@ const languages = {
   "fr": Locale("fr", "FR"),
   "en": Locale("en", "EN"),
 };
+
+extension FullName on Locale {
+  String fullName() {
+    switch (languageCode) {
+      case 'en':
+        return 'English';
+
+      default:
+        return 'Français';
+    }
+  }
+}
