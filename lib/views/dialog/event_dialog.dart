@@ -1,6 +1,6 @@
 import 'package:agenda_lyon1/model/color/colors.dart';
+import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:intl/intl.dart';
 
 import '../../model/settings/settingsapp.dart';
@@ -216,7 +216,14 @@ Future<dynamic> showColorPicker(BuildContext context, Color defaultColor) {
       title: const Text('Pick a color!'),
       content: SingleChildScrollView(
         child: ColorPicker(
-          pickerColor: defaultColor,
+          pickersEnabled: const <ColorPickerType, bool>{
+            ColorPickerType.custom: false,
+            ColorPickerType.accent: false,
+            ColorPickerType.both: false,
+            ColorPickerType.bw: false,
+            ColorPickerType.primary: true,
+            ColorPickerType.wheel: true,
+          },
           onColorChanged: (Color color) {
             defaultColor = color;
           },
