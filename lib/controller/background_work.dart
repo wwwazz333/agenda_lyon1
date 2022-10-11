@@ -4,7 +4,7 @@ import 'package:workmanager/workmanager.dart';
 import 'dart:io' show Platform;
 import 'local_notification_service.dart';
 
-const updateCalendrier = "com.agenda_lyon1.workUpdate.calendrier";
+const updateCalendrier = "com.agenda_lyon1.background.updateCalendrier";
 
 void launchPerodicalWork() {
   if (Platform.isAndroid) {

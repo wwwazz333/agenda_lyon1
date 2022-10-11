@@ -144,7 +144,7 @@ class TabCalendar extends ConsumerWidget {
         children: [
           Header(startingDate: _controller.startingDate),
           SizedBox(
-            height: 50,
+            height: 55,
             child: PageView.builder(
                 controller: _controller.pageController,
                 itemCount: null,

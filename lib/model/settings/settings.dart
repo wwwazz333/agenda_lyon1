@@ -9,7 +9,6 @@ import '../../common/global_data.dart';
 import 'settingsapp.dart';
 
 class SettingsNames {
-  static const String changeIds = "nbrChange";
   static const String notifEnabled = "notifEnabled";
   static const String jourFeriesEnabled = "jourFeriesEnabled";
   static const String alarmesAvancesEnabled = "alamresAvancesEnabled";
