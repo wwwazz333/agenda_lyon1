@@ -209,35 +209,24 @@ class TaskWidget extends StatelessWidget {
   }
 }
 
-Future<dynamic> showColorPicker(BuildContext context, Color defaultColor) {
-  return showDialog(
-    context: context,
-    builder: (context) => AlertDialog(
-      title: const Text('Pick a color!'),
-      content: SingleChildScrollView(
-        child: ColorPicker(
-          pickersEnabled: const <ColorPickerType, bool>{
-            ColorPickerType.custom: false,
-            ColorPickerType.accent: false,
-            ColorPickerType.both: false,
-            ColorPickerType.bw: false,
-            ColorPickerType.primary: true,
-            ColorPickerType.wheel: true,
-          },
-          onColorChanged: (Color color) {
-            defaultColor = color;
-          },
-        ),
-      ),
-      actions: <Widget>[
-        TextButton(
-          child: const Text('Confirmer'),
-          onPressed: () {
-            Navigator.pop(context, defaultColor);
-          },
-        ),
-      ],
+Future<dynamic> showColorPicker(
+    BuildContext context, Color defaultColor) async {
+  return await showColorPickerDialog(
+    context,
+    defaultColor,
+    actionButtons: const ColorPickerActionButtons(
+      okButton: true,
+      closeButton: true,
+      dialogActionButtons: false,
+      dialogActionIcons: false,
     ),
+    pickersEnabled: const <ColorPickerType, bool>{
+      ColorPickerType.accent: false,
+      ColorPickerType.wheel: true,
+    },
+    wheelDiameter: 250,
+    enableTooltips: true,
+    enableTonalPalette: true,
   );
 }
 
