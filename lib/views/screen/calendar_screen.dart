@@ -59,6 +59,7 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
               },
             ));
     launchPerodicalWork();
+
     super.initState();
   }
 

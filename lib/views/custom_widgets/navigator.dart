@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 
@@ -40,10 +42,11 @@ class FloatingNavButton extends StatelessWidget {
             Navigator.pushNamed(context, "/settings");
             fabKey.currentState?.close();
           }),
-          _genButton(context, const Icon(Icons.search), () {
-            Navigator.pushNamed(context, "/listscreen");
-            fabKey.currentState?.close();
-          }),
+          if (Platform.isAndroid)
+            _genButton(context, const Icon(Icons.alarm), () {
+              Navigator.pushNamed(context, "/alarms");
+              fabKey.currentState?.close();
+            }),
           _genButton(context, const Icon(Icons.history), () {
             Navigator.pushNamed(context, "/history");
             fabKey.currentState?.close();
