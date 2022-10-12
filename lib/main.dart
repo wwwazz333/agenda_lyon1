@@ -3,6 +3,7 @@ import 'package:agenda_lyon1/data/stockage.dart';
 import 'package:agenda_lyon1/model/settings/settings.dart';
 import 'package:agenda_lyon1/views/screen/historique_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_alarm_background_trigger/flutter_alarm_background_trigger.dart';
 import 'package:workmanager/workmanager.dart';
 import 'common/themes.dart';
 import 'views/screen/calendar_screen.dart';
@@ -14,6 +15,7 @@ import 'views/screen/settings/settings_screen_url.dart';
 Future<void> main() async {
   // à faire au démarrage de l'app
   WidgetsFlutterBinding.ensureInitialized();
+  FlutterAlarmBackgroundTrigger.initialize();
   Workmanager().initialize(
     callbackDispatcher,
     isInDebugMode: true,

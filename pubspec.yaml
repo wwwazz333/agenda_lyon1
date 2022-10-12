@@ -58,6 +58,7 @@ dependencies:
   hive_flutter: ^1.1.0
   google_fonts: ^3.0.1
   flex_color_picker: ^2.6.1
+  flutter_alarm_background_trigger: ^1.0.1
   
   
 

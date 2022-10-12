@@ -237,6 +237,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_alarm_background_trigger:
+    dependency: "direct main"
+    description:
+      name: flutter_alarm_background_trigger
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   flutter_colorpicker:
     dependency: "direct main"
     description:

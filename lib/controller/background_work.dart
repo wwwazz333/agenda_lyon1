@@ -16,7 +16,6 @@ void launchPerodicalWork() {
   } else if (Platform.isIOS) {
     Workmanager().registerOneOffTask(updateCalendrier, updateCalendrier,
         initialDelay: const Duration(hours: 1),
-        constraints: Constraints(networkType: NetworkType.connected),
         existingWorkPolicy: ExistingWorkPolicy.replace);
   }
 }
@@ -25,10 +24,14 @@ void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     switch (task) {
       case updateCalendrier:
+        final notif = LocalNotifService();
+        notif.init();
+        notif.showNotif(
+            id: LocalNotifService.notifChangementEvent,
+            title: "Test",
+            body: "appel back");
         await DataController().loadCalendrier();
         DataController().addListenerUpdate("sendNotif", () {
-          final notif = LocalNotifService();
-          notif.init();
           if (Stockage().changementHasChange) {
             notif.showNotif(
                 id: LocalNotifService.notifChangementEvent,
