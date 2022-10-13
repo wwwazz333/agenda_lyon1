@@ -59,6 +59,9 @@ dependencies:
   google_fonts: ^3.0.1
   flex_color_picker: ^2.6.1
   flutter_alarm_background_trigger: ^1.0.1
+  slidable_button: ^2.0.0+1
+  ringtone_player: ^0.1.1
+  flutter_alarm_clock: ^0.0.2
   
   
 

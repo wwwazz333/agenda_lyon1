@@ -4,6 +4,7 @@ import 'package:agenda_lyon1/model/settings/settingsapp.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_alarm_background_trigger/flutter_alarm_background_trigger.dart';
 
+import '../../common/global_data.dart';
 import '../../controller/local_notification_service.dart';
 
 class AlarmManager {
@@ -15,6 +16,7 @@ class AlarmManager {
     instance ??= AlarmManager._(FlutterAlarmBackgroundTrigger());
     return instance!;
   }
+  static void Function() callBack = () {};
   void init() {
     if (!Platform.isAndroid) return;
     _setEventHandler((items) {
@@ -26,7 +28,11 @@ class AlarmManager {
           title: "Test",
           body: "Alarm............");
       clearPassedAlarms();
-      SettingsApp().pointDepart = "/alarms";
+      SettingsApp().pointDepart = "/alarm";
+      if (navigatorKey.currentContext != null) {
+        Navigator.of(navigatorKey.currentContext!)
+            .pushNamed(SettingsApp().pointDepart);
+      }
     });
   }
 

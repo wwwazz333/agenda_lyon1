@@ -1,10 +1,12 @@
 import 'dart:developer';
 
+import 'package:agenda_lyon1/common/global_data.dart';
 import 'package:agenda_lyon1/controller/background_work.dart';
 import 'package:agenda_lyon1/data/stockage.dart';
 import 'package:agenda_lyon1/model/alarm/alarm_manager.dart';
 import 'package:agenda_lyon1/model/settings/settings.dart';
 import 'package:agenda_lyon1/model/settings/settingsapp.dart';
+import 'package:agenda_lyon1/views/screen/alarm.dart';
 import 'package:agenda_lyon1/views/screen/historique_screen.dart';
 import 'package:agenda_lyon1/views/screen/list_alarms.dart';
 import 'package:flutter/material.dart';
@@ -44,14 +46,9 @@ class MyApp extends ConsumerStatefulWidget {
 
 class _MyApp extends ConsumerState<MyApp> {
   @override
-  void initState() {
-    log(SettingsApp().pointDepart);
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       supportedLocales: const [
         Locale('fr'),
         Locale('en'),
@@ -67,7 +64,8 @@ class _MyApp extends ConsumerState<MyApp> {
         '/settings': ((context) => const MySettingsScreen()),
         '/settings_url': ((context) => const SettingsScreenURL()),
         '/history': ((context) => const HistoriqueScreen()),
-        '/alarms': ((context) => const ListAlarms()),
+        '/list_alarms': ((context) => const ListAlarms()),
+        '/alarm': ((context) => const Alarm()),
       },
       theme: themes["light"],
       darkTheme: themes["dark"],

@@ -18,3 +18,5 @@ extension FullName on Locale {
     }
   }
 }
+
+final navigatorKey = GlobalKey<NavigatorState>();

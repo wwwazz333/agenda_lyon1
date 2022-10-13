@@ -244,6 +244,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  flutter_alarm_clock:
+    dependency: "direct main"
+    description:
+      name: flutter_alarm_clock
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.2"
   flutter_colorpicker:
     dependency: "direct main"
     description:
@@ -581,6 +588,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.1"
+  ringtone_player:
+    dependency: "direct main"
+    description:
+      name: ringtone_player
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1"
   riverpod:
     dependency: transitive
     description:
@@ -691,6 +705,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  slidable_button:
+    dependency: "direct main"
+    description:
+      name: slidable_button
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0+1"
   source_gen:
     dependency: transitive
     description:

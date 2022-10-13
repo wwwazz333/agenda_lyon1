@@ -30,6 +30,7 @@ class SettingsProvider {
       StateProvider<ThemeMode>((ref) => ThemeMode.system);
 
   static final urlCalendarProvider = StateProvider<String>((ref) => "");
+  static final startingAppPoint = StateProvider<String>((ref) => "/");
 }
 
 bool _criticalSettingsLoaded = false;
