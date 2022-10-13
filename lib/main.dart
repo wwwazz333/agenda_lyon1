@@ -6,7 +6,7 @@ import 'package:agenda_lyon1/data/stockage.dart';
 import 'package:agenda_lyon1/model/alarm/alarm_manager.dart';
 import 'package:agenda_lyon1/model/settings/settings.dart';
 import 'package:agenda_lyon1/model/settings/settingsapp.dart';
-import 'package:agenda_lyon1/views/screen/alarm.dart';
+import 'package:agenda_lyon1/views/screen/alarm_screen.dart';
 import 'package:agenda_lyon1/views/screen/historique_screen.dart';
 import 'package:agenda_lyon1/views/screen/list_alarms.dart';
 import 'package:flutter/material.dart';
@@ -18,12 +18,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'views/screen/settings/settings_screen.dart';
 import 'views/screen/settings/settings_screen_url.dart';
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 
 Future<void> main() async {
   // à faire au démarrage de l'app
   WidgetsFlutterBinding.ensureInitialized();
-  FlutterAlarmBackgroundTrigger.initialize();
-  AlarmManager().init();
+  await AndroidAlarmManager.initialize();
+  await AlarmManager().init();
   Workmanager().initialize(
     callbackDispatcher,
     isInDebugMode: true,
@@ -46,6 +47,12 @@ class MyApp extends ConsumerStatefulWidget {
 
 class _MyApp extends ConsumerState<MyApp> {
   @override
+  void initState() {
+    log("point : ${SettingsApp().pointDepart}");
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       navigatorKey: navigatorKey,
@@ -65,7 +72,7 @@ class _MyApp extends ConsumerState<MyApp> {
         '/settings_url': ((context) => const SettingsScreenURL()),
         '/history': ((context) => const HistoriqueScreen()),
         '/list_alarms': ((context) => const ListAlarms()),
-        '/alarm': ((context) => const Alarm()),
+        '/alarm': ((context) => const AlarmScreen()),
       },
       theme: themes["light"],
       darkTheme: themes["dark"],

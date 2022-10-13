@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:slidable_button/slidable_button.dart';
 
-class Alarm extends StatelessWidget {
-  const Alarm({super.key});
+class AlarmScreen extends StatelessWidget {
+  const AlarmScreen({super.key});
 
   void startAlarm() {
     AlarmRing().start();

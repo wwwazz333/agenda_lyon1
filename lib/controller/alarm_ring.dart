@@ -13,6 +13,7 @@ class AlarmRing {
   void start() {
     if (!Platform.isAndroid) return;
     RingtonePlayer.alarm(
+      volume: 1,
       alarmMeta: AlarmMeta(
         'com.example.agenda_lyon1.MainActivity',
         'ic_alarm_notification',
