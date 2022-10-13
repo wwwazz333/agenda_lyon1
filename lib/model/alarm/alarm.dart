@@ -12,4 +12,6 @@ class Alarm extends HiveObject {
   bool removable;
   @HiveField(2)
   int? id;
+  @HiveField(3)
+  bool isSet = false;
 }

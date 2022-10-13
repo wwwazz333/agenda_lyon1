@@ -19,19 +19,23 @@ class AlarmAdapter extends TypeAdapter<Alarm> {
     return Alarm(
       dateTime: fields[0] as DateTime,
       removable: fields[1] as bool,
-    )..id = fields[2] as int?;
+    )
+      ..id = fields[2] as int?
+      ..isSet = fields[3] as bool;
   }
 
   @override
   void write(BinaryWriter writer, Alarm obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.dateTime)
       ..writeByte(1)
       ..write(obj.removable)
       ..writeByte(2)
-      ..write(obj.id);
+      ..write(obj.id)
+      ..writeByte(3)
+      ..write(obj.isSet);
   }
 
   @override
