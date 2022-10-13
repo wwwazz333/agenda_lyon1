@@ -1,9 +1,8 @@
 import 'package:agenda_lyon1/common/global_data.dart';
+import 'package:agenda_lyon1/model/alarm/alarm.dart';
 import 'package:agenda_lyon1/model/alarm/alarm_manager.dart';
 import 'package:agenda_lyon1/views/custom_widgets/loading_widget.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_alarm_background_trigger/flutter_alarm_background_trigger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
@@ -68,16 +67,13 @@ class _ListAlarmsState extends ConsumerState<ListAlarms> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data != null) {
-              final alarms =
-                  (snapshot.data as List<AlarmItem>).reversed.toList();
+              final alarms = (snapshot.data as List<Alarm>).reversed.toList();
               return ListView.builder(
                 itemCount: alarms.length,
                 itemBuilder: (context, index) =>
-                    AlarmCard(alarms[index].time, formatter, () async {
-                  if (alarms[index].id != null) {
-                    await AlarmManager().remove(alarms[index].id!);
-                    setState(() {});
-                  }
+                    AlarmCard(alarms[index].dateTime, formatter, () async {
+                  await AlarmManager().remove(alarms[index]);
+                  setState(() {});
                 }),
               );
             } else {
@@ -104,12 +100,10 @@ class AlarmCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Expanded(
-        child: date != null
-            ? AutoSizeText(
-                "${formatter.format(date!).capitalize().replaceAll(".", "")} ${timeFormmatter.format(date!)}")
-            : const Text("erreur"),
-      ),
+      child: date != null
+          ? Text(
+              "${formatter.format(date!).capitalize().replaceAll(".", "")} ${timeFormmatter.format(date!)}")
+          : const Text("erreur"),
     );
   }
 }

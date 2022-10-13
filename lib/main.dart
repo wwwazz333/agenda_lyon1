@@ -10,7 +10,6 @@ import 'package:agenda_lyon1/views/screen/alarm_screen.dart';
 import 'package:agenda_lyon1/views/screen/historique_screen.dart';
 import 'package:agenda_lyon1/views/screen/list_alarms.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_alarm_background_trigger/flutter_alarm_background_trigger.dart';
 import 'package:workmanager/workmanager.dart';
 import 'common/themes.dart';
 import 'views/screen/calendar_screen.dart';

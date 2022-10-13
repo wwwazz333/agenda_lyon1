@@ -18,9 +18,8 @@ class AlarmAdapter extends TypeAdapter<Alarm> {
     };
     return Alarm(
       dateTime: fields[0] as DateTime,
-      id: fields[1] as int,
-      removable: fields[2] as bool,
-    );
+      removable: fields[1] as bool,
+    )..id = fields[2] as int?;
   }
 
   @override
@@ -30,9 +29,9 @@ class AlarmAdapter extends TypeAdapter<Alarm> {
       ..writeByte(0)
       ..write(obj.dateTime)
       ..writeByte(1)
-      ..write(obj.id)
+      ..write(obj.removable)
       ..writeByte(2)
-      ..write(obj.removable);
+      ..write(obj.id);
   }
 
   @override
