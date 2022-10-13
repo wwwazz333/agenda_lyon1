@@ -1,12 +1,8 @@
 import 'dart:developer';
 import 'dart:io' show Platform;
-import 'dart:isolate';
-import 'dart:ui';
 import 'package:agenda_lyon1/data/stockage.dart';
 import 'package:agenda_lyon1/model/alarm/alarm.dart';
-import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
+import 'package:background_fetch/background_fetch.dart';
 
 class AlarmManager {
   static AlarmManager? instance;
@@ -20,19 +16,13 @@ class AlarmManager {
   static void Function() callBack = () {};
   Future<void> init() async {
     if (!Platform.isAndroid) return;
+    BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
   }
 
   Future<void> addAlarm(DateTime time, [bool removable = true]) async {
     if (!Platform.isAndroid) return;
     final alarm = Alarm(dateTime: time, removable: removable);
     alarm.id = await Stockage().alarmsBox.add(alarm);
-
-    AndroidAlarmManager.oneShotAt(alarm.dateTime, alarm.id!, handeler,
-        alarmClock: true,
-        allowWhileIdle: true,
-        exact: true,
-        rescheduleOnReboot: true,
-        wakeup: true);
   }
 
   Future<List<Alarm>?> getAllAlarms() async {
@@ -50,13 +40,10 @@ class AlarmManager {
     await Future.forEach(alarms, remove);
   }
 
-  Future<bool> remove(Alarm alarm) async {
+  bool remove(Alarm alarm) {
     if (!Platform.isAndroid) return false;
     alarm.delete();
-    if (alarm.id != null) {
-      return await AndroidAlarmManager.cancel(alarm.id!);
-    }
-    return false;
+    return true;
   }
 
   Future<void> clearAll() async {
@@ -64,29 +51,64 @@ class AlarmManager {
     _alarms.forEach(remove);
   }
 
-  @pragma('vm:entry-point')
-  static void handeler() async {
-    // log("Alarm............");
-    // final notif = LocalNotifService();
-    // notif.init();
-    // notif.showNotif(
-    //     id: LocalNotifService.notifChangementEvent,
-    //     title: "Test",
-    //     body: "Alarm............");
-    // AlarmManager().clearPassedAlarms();
-    // SettingsApp().pointDepart = "/alarm";
-    // if (navigatorKey.currentContext != null) {
-    //   Navigator.of(navigatorKey.currentContext!)
-    //       .pushNamed(SettingsApp().pointDepart);
-    // }
+  void backgroundFetchHeadlessTask(HeadlessTask task) async {
+    String taskId = task.taskId;
+    bool isTimeout = task.timeout;
+    if (isTimeout) {
+      // This task has exceeded its allowed running-time.
+      // You must stop what you're doing and immediately .finish(taskId)
+      log("[BackgroundFetch] Headless task timed-out: $taskId");
+      BackgroundFetch.finish(taskId);
+      return;
+    }
+    log('[BackgroundFetch] Headless event received.');
+    // Do your work here...
+    BackgroundFetch.finish(taskId);
+  }
 
-    DartPluginRegistrant.ensureInitialized();
+  Future<void> initPlatformState() async {
+    // Configure BackgroundFetch.
+    int status = await BackgroundFetch.configure(
+        BackgroundFetchConfig(
+            minimumFetchInterval: 15,
+            stopOnTerminate: false,
+            enableHeadless: true,
+            requiresBatteryNotLow: false,
+            requiresCharging: false,
+            requiresStorageNotLow: false,
+            requiresDeviceIdle: false,
+            requiredNetworkType: NetworkType.NONE), (String taskId) async {
+      // <-- Event handler
+      // This is the fetch-event callback.
+      print("[BackgroundFetch] Event received $taskId");
+      // IMPORTANT:  You must signal completion of your task or the OS can punish your app
+      // for taking too long in the background.
+      BackgroundFetch.finish(taskId);
+    }, (String taskId) async {
+      // <-- Task timeout handler.
+      // This task has exceeded its allowed running-time.  You must stop what you're doing and immediately .finish(taskId)
+      print("[BackgroundFetch] TASK TIMEOUT taskId: $taskId");
+      BackgroundFetch.finish(taskId);
+    });
+    print('[BackgroundFetch] configure success: $status');
+  }
 
-    final DateTime now = DateTime.now();
-    // FlutterAlarmClock.createAlarm(now.hour, now.minute, title: "Cours");
-    final int isolateId = Isolate.current.hashCode;
-    log("[$now] Hello, world! isolate=$isolateId function='$handeler'");
-    FlutterAlarmClock.createAlarm(now.hour, now.minute);
-    log("fin isolate");
+  void _onClickEnable(enabled) {
+    if (enabled) {
+      BackgroundFetch.start().then((int status) {
+        print('[BackgroundFetch] start success: $status');
+      }).catchError((e) {
+        print('[BackgroundFetch] start FAILURE: $e');
+      });
+    } else {
+      BackgroundFetch.stop().then((int status) {
+        print('[BackgroundFetch] stop success: $status');
+      });
+    }
+  }
+
+  void _onClickStatus() async {
+    int status = await BackgroundFetch.status;
+    print('[BackgroundFetch] status: $status');
   }
 }
