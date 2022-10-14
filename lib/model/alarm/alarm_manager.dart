@@ -5,8 +5,9 @@ import 'dart:ui';
 import 'package:agenda_lyon1/data/stockage.dart';
 import 'package:agenda_lyon1/model/alarm/alarm.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
+
+import '../../controller/local_notification_service.dart';
 
 class AlarmManager {
   static AlarmManager? instance;
@@ -67,12 +68,12 @@ class AlarmManager {
   @pragma('vm:entry-point')
   static void handeler() async {
     // log("Alarm............");
-    // final notif = LocalNotifService();
-    // notif.init();
-    // notif.showNotif(
-    //     id: LocalNotifService.notifChangementEvent,
-    //     title: "Test",
-    //     body: "Alarm............");
+    final notif = LocalNotifService();
+    notif.init();
+    notif.showNotif(
+        id: LocalNotifService.notifChangementEvent,
+        title: "Test",
+        body: "Alarm............");
     // AlarmManager().clearPassedAlarms();
     // SettingsApp().pointDepart = "/alarm";
     // if (navigatorKey.currentContext != null) {
@@ -80,10 +81,9 @@ class AlarmManager {
     //       .pushNamed(SettingsApp().pointDepart);
     // }
 
-    DartPluginRegistrant.ensureInitialized();
-
     final DateTime now = DateTime.now();
-    // FlutterAlarmClock.createAlarm(now.hour, now.minute, title: "Cours");
+
+    FlutterAlarmClock.createAlarm(now.hour, now.minute, title: "Cours");
     final int isolateId = Isolate.current.hashCode;
     log("[$now] Hello, world! isolate=$isolateId function='$handeler'");
     FlutterAlarmClock.createAlarm(now.hour, now.minute);
