@@ -17,6 +17,8 @@ class Stockage {
     return instance!;
   }
 
+  bool isInit = false;
+
   late Box<SettingsApp> settingsAppBox;
   late Box<Changement> changementsBox;
   late Box<Calendrier> calendrierBox;
@@ -28,6 +30,7 @@ class Stockage {
 
   late Box<Alarm> alarmsBox;
   Future<void> init() async {
+    if (isInit) return;
     await Hive.initFlutter();
     Hive.registerAdapter(SettingsAppAdapter());
     Hive.registerAdapter(ChangementAdapter());
@@ -47,6 +50,8 @@ class Stockage {
 
     tasksBox = await Hive.openBox<TasksOfEvent>("tasksBox");
     alarmsBox = await Hive.openBox<Alarm>("alarmsBox");
+
+    isInit = true;
   }
 
   bool get changementHasChange {

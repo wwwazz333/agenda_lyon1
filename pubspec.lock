@@ -8,6 +8,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "47.0.0"
+  alarmplayer:
+    dependency: "direct main"
+    description:
+      name: alarmplayer
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.4"
   analyzer:
     dependency: transitive
     description:

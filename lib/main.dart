@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:isolate';
 
 import 'package:agenda_lyon1/common/global_data.dart';
 import 'package:agenda_lyon1/controller/background_work.dart';
@@ -17,17 +18,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'views/screen/settings/settings_screen.dart';
 import 'views/screen/settings/settings_screen_url.dart';
-import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 
 Future<void> main() async {
   // à faire au démarrage de l'app
   WidgetsFlutterBinding.ensureInitialized();
-  await AndroidAlarmManager.initialize();
+
   await AlarmManager().init();
-  Workmanager().initialize(
-    callbackDispatcher,
-    isInDebugMode: true,
-  );
+  // Workmanager().initialize(
+  //   callbackDispatcher,
+  //   isInDebugMode: true,
+  // );
   await Stockage().init();
   loadCriticalSettings();
   final container = ProviderContainer();
@@ -53,6 +53,7 @@ class _MyApp extends ConsumerState<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    log("main isoalte = ${Isolate.current.hashCode}");
     return MaterialApp(
       navigatorKey: navigatorKey,
       supportedLocales: const [
