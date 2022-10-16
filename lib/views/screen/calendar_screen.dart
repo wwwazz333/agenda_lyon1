@@ -67,12 +67,6 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final notif = LocalNotifService();
-    notif.init();
-    notif.showNotif(
-        id: LocalNotifService.notifChangementEvent,
-        title: "title",
-        body: "body");
     showDialogHistoryIfNeeded();
     final typeCardToDisplay =
         ref.watch(SettingsProvider.cardTypeDisplayProvider);
