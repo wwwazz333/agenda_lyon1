@@ -1,6 +1,5 @@
 import 'dart:io' show Platform;
 
-import 'package:agenda_lyon1/controller/local_notification_service.dart';
 import 'package:ringtone_player/ringtone_player.dart';
 
 class AlarmRing {

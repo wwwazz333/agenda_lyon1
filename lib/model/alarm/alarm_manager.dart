@@ -1,14 +1,10 @@
 import 'dart:developer';
 import 'dart:io' show Platform;
 import 'dart:isolate';
-import 'dart:ui';
-import 'package:agenda_lyon1/controller/alarm_ring.dart';
 import 'package:agenda_lyon1/data/stockage.dart';
 import 'package:agenda_lyon1/model/alarm/alarm.dart';
-import 'package:alarmplayer/alarmplayer.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
 
 import '../../controller/local_notification_service.dart';
 

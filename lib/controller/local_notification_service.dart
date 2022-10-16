@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'dart:isolate';
 import 'package:agenda_lyon1/model/alarm/alarm_manager.dart';
-import 'package:agenda_lyon1/model/color/color_event.dart';
 import 'package:agenda_lyon1/model/color/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/subjects.dart';
@@ -134,7 +133,8 @@ class LocalNotifService {
         WidgetsFlutterBinding.ensureInitialized();
         await Stockage().init();
         await AlarmManager().init();
-        AlarmManager().addAlarm(DateTime.now().add(Duration(seconds: 10)));
+        AlarmManager()
+            .addAlarm(DateTime.now().add(const Duration(seconds: 10)));
         break;
       default:
     }

@@ -1,8 +1,8 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:isolate';
 
 import 'package:agenda_lyon1/common/global_data.dart';
-import 'package:agenda_lyon1/controller/background_work.dart';
 import 'package:agenda_lyon1/controller/local_notification_service.dart';
 import 'package:agenda_lyon1/data/stockage.dart';
 import 'package:agenda_lyon1/model/alarm/alarm_manager.dart';
@@ -11,9 +11,9 @@ import 'package:agenda_lyon1/model/settings/settingsapp.dart';
 import 'package:agenda_lyon1/views/screen/alarm_screen.dart';
 import 'package:agenda_lyon1/views/screen/historique_screen.dart';
 import 'package:agenda_lyon1/views/screen/list_alarms.dart';
+import 'package:auto_start_flutter/auto_start_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:workmanager/workmanager.dart';
+import 'package:flutter/services.dart';
 import 'common/themes.dart';
 import 'views/screen/calendar_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -52,6 +52,20 @@ class _MyApp extends ConsumerState<MyApp> {
   void initState() {
     log("point : ${SettingsApp().pointDepart}");
     super.initState();
+    initAutoStart();
+  }
+
+  Future<void> initAutoStart() async {
+    try {
+      //check auto-start availability.
+      var test = (await isAutoStartAvailable ?? false);
+      print(test);
+      //if available then navigate to auto-start setting page.
+      if (true) await getAutoStartPermission();
+    } on PlatformException catch (e) {
+      print(e);
+    }
+    if (!mounted) return;
   }
 
   @override
