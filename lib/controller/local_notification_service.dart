@@ -32,10 +32,13 @@ class LocalNotifService {
       android: initializationSettingsAndroid,
       iOS: initializationSettingsDarwin,
     );
-    await _localNotifService.initialize(initializationSettings,
-        onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
-        onDidReceiveBackgroundNotificationResponse:
-            LocalNotifService.notificationTapBackground);
+
+    await _localNotifService.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
+      onDidReceiveBackgroundNotificationResponse:
+          LocalNotifService.notificationTapBackground,
+    );
   }
 
   void onDidReceiveNotificationResponseDarwin(
@@ -112,7 +115,8 @@ class LocalNotifService {
     AlarmRing().start();
     final details = await _notificationDetailsAlarm();
     await _localNotifService.show(
-        LocalNotifService.notifAlarm, "Alarme", "", details);
+        LocalNotifService.notifAlarm, "Alarme", "", details,
+        payload: "start:alarm");
   }
 
   @pragma('vm:entry-point')
@@ -133,6 +137,19 @@ class LocalNotifService {
         AlarmManager().addAlarm(DateTime.now().add(Duration(seconds: 10)));
         break;
       default:
+    }
+  }
+
+  Future<void> setupEntryPoint() async {
+    final notifLaunchDetails = await FlutterLocalNotificationsPlugin()
+        .getNotificationAppLaunchDetails();
+
+    if ((notifLaunchDetails?.notificationResponse?.payload ?? "") != "") {
+      final payload = (notifLaunchDetails?.notificationResponse?.payload)!;
+      final splited = payload.split(':');
+      if (splited[0] == "start") {
+        SettingsApp().pointDepart = "/${splited[1]}";
+      }
     }
   }
 }
