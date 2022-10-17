@@ -52,20 +52,6 @@ class _MyApp extends ConsumerState<MyApp> {
   void initState() {
     log("point : ${SettingsApp().pointDepart}");
     super.initState();
-    initAutoStart();
-  }
-
-  Future<void> initAutoStart() async {
-    try {
-      //check auto-start availability.
-      var test = (await isAutoStartAvailable ?? false);
-      print(test);
-      //if available then navigate to auto-start setting page.
-      if (true) await getAutoStartPermission();
-    } on PlatformException catch (e) {
-      print(e);
-    }
-    if (!mounted) return;
   }
 
   @override

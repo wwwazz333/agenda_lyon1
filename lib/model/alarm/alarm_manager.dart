@@ -6,6 +6,7 @@ import 'package:agenda_lyon1/model/alarm/alarm.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
 
+import '../../controller/alarm_ring.dart';
 import '../../controller/local_notification_service.dart';
 
 class AlarmManager {
@@ -75,9 +76,8 @@ class AlarmManager {
 
     final DateTime now = DateTime.now();
 
-    final notif = LocalNotifService();
-    notif.init();
-    notif.showAlarm(id: LocalNotifService.notifChangementEvent);
+    AlarmRing().start();
+
     final int isolateId = Isolate.current.hashCode;
     log("[$now] Hello, world! isolate=$isolateId function='$handeler'");
     log("fin isolate");

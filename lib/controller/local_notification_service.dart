@@ -61,17 +61,19 @@ class LocalNotifService {
     }
   }
 
-  Future<NotificationDetails> _notificationDetails() async {
+  Future<NotificationDetails> _notificationDetailsChangement() async {
     const androidNotifDetails = AndroidNotificationDetails(
-      "channelId",
-      "channelName",
-      channelDescription: 'déscription',
+      "changements",
+      "Changementes",
+      channelDescription:
+          "Avertissement des changements dans l'empoloi du temps.",
       category: AndroidNotificationCategory("Changement"),
       playSound: false,
       autoCancel: true,
       ongoing: false,
       enableVibration: true,
       colorized: true,
+      color: ColorsEventsManager.redOnePlus,
     );
 
     const darwinNotificationDetails = DarwinNotificationDetails();
@@ -81,8 +83,7 @@ class LocalNotifService {
   }
 
   Future<NotificationDetails> _notificationDetailsAlarm() async {
-    const androidNotifDetails = AndroidNotificationDetails(
-        "channelId", "Alarmes",
+    const androidNotifDetails = AndroidNotificationDetails("alarmes", "Alarmes",
         channelDescription:
             'affichage des alarmes (ne surtout pas désactivé si vous utiliser les alarmes).',
         importance: Importance.high,
@@ -106,23 +107,30 @@ class LocalNotifService {
 
   Future<void> showNotif(
       {required int id, required String title, required String body}) async {
-    final details = await _notificationDetails();
+    final details = await _notificationDetailsChangement();
     await _localNotifService.show(id, title, body, details);
   }
 
   Future<void> showAlarm({required int id}) async {
-    AlarmRing().start();
     final details = await _notificationDetailsAlarm();
     await _localNotifService.show(
         LocalNotifService.notifAlarm, "Alarme", "", details,
         payload: "start:alarm");
   }
 
+  Future<void> clear(int id) async {
+    await _localNotifService.cancel(id);
+  }
+
+  Future<void> clearAlarm() async {
+    await clear(LocalNotifService.notifAlarm);
+  }
+
   @pragma('vm:entry-point')
   static void notificationTapBackground(
       NotificationResponse notificationResponse) async {
     log("notif res : ${notificationResponse.payload}, ${notificationResponse.input}, ${notificationResponse.actionId}");
-    log("Hello, world! isolate=${Isolate.current.hashCode}");
+    log("notif isolate=${Isolate.current.hashCode}");
     // handle action
     switch (notificationResponse.actionId) {
       case "stop":
@@ -133,8 +141,7 @@ class LocalNotifService {
         WidgetsFlutterBinding.ensureInitialized();
         await Stockage().init();
         await AlarmManager().init();
-        AlarmManager()
-            .addAlarm(DateTime.now().add(const Duration(seconds: 10)));
+        AlarmManager().addAlarm(DateTime.now().add(AlarmRing().snooze()));
         break;
       default:
     }
@@ -149,6 +156,10 @@ class LocalNotifService {
       final splited = payload.split(':');
       if (splited[0] == "start") {
         SettingsApp().pointDepart = "/${splited[1]}";
+        if (navigatorKey.currentContext != null) {
+          Navigator.of(navigatorKey.currentContext!)
+              .pushNamed(SettingsApp().pointDepart);
+        }
       }
     }
   }
