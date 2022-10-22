@@ -1,13 +1,7 @@
-import 'dart:developer';
 import 'dart:io' show Platform;
-import 'dart:isolate';
 import 'package:agenda_lyon1/data/stockage.dart';
 import 'package:agenda_lyon1/model/alarm/alarm.dart';
-import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
-import 'package:flutter/material.dart';
-
-import '../../controller/alarm_ring.dart';
-import '../../controller/local_notification_service.dart';
+import 'package:flutter/services.dart';
 
 class AlarmManager {
   static AlarmManager? instance;
@@ -16,6 +10,8 @@ class AlarmManager {
     instance ??= AlarmManager._();
     return instance!;
   }
+
+  static const methodChannel = MethodChannel("alarmChannel");
   bool isInit = false;
 
   List<Alarm> get _alarms => Stockage().alarmsBox.values.toList();
@@ -24,21 +20,16 @@ class AlarmManager {
   Future<void> init() async {
     if (isInit) return;
     if (!Platform.isAndroid) return;
-    await AndroidAlarmManager.initialize();
     isInit = true;
   }
 
-  Future<void> addAlarm(DateTime time, [bool removable = true]) async {
-    if (!Platform.isAndroid) return;
+  Future<bool> addAlarm(DateTime time, [bool removable = true]) async {
+    if (!Platform.isAndroid) return false;
     final alarm = Alarm(dateTime: time, removable: removable);
     alarm.id = await Stockage().alarmsBox.add(alarm);
 
-    AndroidAlarmManager.oneShotAt(alarm.dateTime, alarm.id!, handeler,
-        alarmClock: true,
-        allowWhileIdle: true,
-        exact: true,
-        rescheduleOnReboot: true,
-        wakeup: true);
+    return await methodChannel
+        .invokeMethod("setAlarm", {"time": time.millisecondsSinceEpoch});
   }
 
   Future<List<Alarm>?> getAllAlarms() async {
@@ -60,7 +51,8 @@ class AlarmManager {
     if (!Platform.isAndroid) return false;
     alarm.delete();
     if (alarm.id != null) {
-      return await AndroidAlarmManager.cancel(alarm.id!);
+      return await methodChannel.invokeMethod(
+          "cancelAlarm", {"time": alarm.dateTime.millisecondsSinceEpoch});
     }
     return false;
   }
@@ -68,18 +60,5 @@ class AlarmManager {
   Future<void> clearAll() async {
     if (!Platform.isAndroid) return;
     _alarms.forEach(remove);
-  }
-
-  @pragma('vm:entry-point')
-  static void handeler() async {
-    WidgetsFlutterBinding.ensureInitialized();
-
-    final DateTime now = DateTime.now();
-
-    AlarmRing().start();
-
-    final int isolateId = Isolate.current.hashCode;
-    log("[$now] Hello, world! isolate=$isolateId function='$handeler'");
-    log("fin isolate");
   }
 }

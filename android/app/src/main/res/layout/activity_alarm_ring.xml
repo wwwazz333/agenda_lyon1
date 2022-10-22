@@ -1,7 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:orientation="vertical"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.agenda_lyon1.AlarmRingActivity">
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/title"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:text="Alarme"
+        android:textSize="75sp" />
+    <TextView
+        android:id="@+id/horaire"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="40sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp" android:layout_below="@+id/title"/>
+
+    <ImageView
+        android:id="@+id/shadow_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/stop_alarm_btn"
+        android:layout_alignBottom="@+id/stop_alarm_btn"
+        android:layout_alignParentStart="@+id/stop_alarm_btn"
+        android:layout_alignParentEnd="@+id/stop_alarm_btn"
+        android:layout_centerHorizontal="true"
+        android:background="#ffff0000"
+        android:backgroundTint="#ff666666"
+        android:minWidth="48dp"
+        android:minHeight="48dp" />
+
+    <ImageButton
+        android:id="@+id/stop_alarm_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="100dp"
+        android:background="#ffff0000"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
+        android:src="@drawable/ic_alarm_off" />
+
+    <Button
+        android:id="@+id/snoozeBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/stop_alarm_btn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="80dp"
+        android:text="SNOOZE" />
+
+
+</RelativeLayout>

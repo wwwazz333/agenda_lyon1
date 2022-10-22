@@ -8,6 +8,7 @@ import android.os.VibratorManager
 
 class VibratorSimpleUse {
     companion object {
+
         fun getVibrator(context: Context): Vibrator {
             val vb: Vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 val vibratorManager =
@@ -21,7 +22,14 @@ class VibratorSimpleUse {
 
         fun pushVibration(context: Context) {
             val vibrator = getVibrator(context)
-            vibrator.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE))
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vibrator.vibrate(
+                    VibrationEffect.createOneShot(
+                        100,
+                        VibrationEffect.DEFAULT_AMPLITUDE
+                    )
+                )
+            }
         }
     }
 }

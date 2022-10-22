@@ -8,7 +8,6 @@ import 'package:agenda_lyon1/data/stockage.dart';
 import 'package:agenda_lyon1/model/alarm/alarm_manager.dart';
 import 'package:agenda_lyon1/model/settings/settings.dart';
 import 'package:agenda_lyon1/model/settings/settingsapp.dart';
-import 'package:agenda_lyon1/views/screen/alarm_screen.dart';
 import 'package:agenda_lyon1/views/screen/historique_screen.dart';
 import 'package:agenda_lyon1/views/screen/list_alarms.dart';
 import 'package:auto_start_flutter/auto_start_flutter.dart';
@@ -75,7 +74,6 @@ class _MyApp extends ConsumerState<MyApp> {
         '/settings_url': ((context) => const SettingsScreenURL()),
         '/history': ((context) => const HistoriqueScreen()),
         '/list_alarms': ((context) => const ListAlarms()),
-        '/alarm': ((context) => const AlarmScreen()),
       },
       theme: themes["light"],
       darkTheme: themes["dark"],

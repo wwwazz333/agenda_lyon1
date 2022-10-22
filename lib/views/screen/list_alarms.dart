@@ -58,7 +58,9 @@ class _ListAlarmsState extends ConsumerState<ListAlarms> {
                 //     setState(() {});
                 //   }
                 // }
-                AlarmManager().addAlarm(date.add(const Duration(seconds: 10)));
+                await AlarmManager()
+                    .addAlarm(date.add(const Duration(seconds: 10)));
+                setState(() {});
               },
               icon: const Icon(Icons.add))
         ],

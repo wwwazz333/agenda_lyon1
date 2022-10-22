@@ -9,7 +9,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../common/global_data.dart';
 import '../data/stockage.dart';
 import '../model/settings/settingsapp.dart';
-import 'alarm_ring.dart';
 
 class LocalNotifService {
   static const notifChangementEvent = 1;
@@ -35,8 +34,6 @@ class LocalNotifService {
     await _localNotifService.initialize(
       initializationSettings,
       onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
-      onDidReceiveBackgroundNotificationResponse:
-          LocalNotifService.notificationTapBackground,
     );
   }
 
@@ -50,15 +47,7 @@ class LocalNotifService {
     log("id: ${details.id} & payload = ${details.payload}");
     if (details.id == notifChangementEvent) {
       onNotificationClick.add(details.payload);
-    } else if (details.id == notifAlarm) {
-      log("Alarm............");
-      AlarmManager().clearPassedAlarms();
-      SettingsApp().pointDepart = "/alarm";
-      if (navigatorKey.currentContext != null) {
-        Navigator.of(navigatorKey.currentContext!)
-            .pushNamed(SettingsApp().pointDepart);
-      }
-    }
+    } else if (details.id == notifAlarm) {}
   }
 
   Future<NotificationDetails> _notificationDetailsChangement() async {
@@ -82,40 +71,10 @@ class LocalNotifService {
         android: androidNotifDetails, iOS: darwinNotificationDetails);
   }
 
-  Future<NotificationDetails> _notificationDetailsAlarm() async {
-    const androidNotifDetails = AndroidNotificationDetails("alarmes", "Alarmes",
-        channelDescription:
-            'affichage des alarmes (ne surtout pas désactivé si vous utiliser les alarmes).',
-        importance: Importance.high,
-        priority: Priority.high,
-        playSound: true,
-        autoCancel: false,
-        usesChronometer: true,
-        visibility: NotificationVisibility.public,
-        ongoing: true,
-        enableVibration: true,
-        colorized: true,
-        category: AndroidNotificationCategory.alarm,
-        color: ColorsEventsManager.redOnePlus,
-        actions: [
-          AndroidNotificationAction('stop', 'Stop'),
-          AndroidNotificationAction('snooze', 'Snooze'),
-        ]);
-
-    return const NotificationDetails(android: androidNotifDetails);
-  }
-
   Future<void> showNotif(
       {required int id, required String title, required String body}) async {
     final details = await _notificationDetailsChangement();
     await _localNotifService.show(id, title, body, details);
-  }
-
-  Future<void> showAlarm({required int id}) async {
-    final details = await _notificationDetailsAlarm();
-    await _localNotifService.show(
-        LocalNotifService.notifAlarm, "Alarme", "", details,
-        payload: "start:alarm");
   }
 
   Future<void> clear(int id) async {
@@ -124,27 +83,6 @@ class LocalNotifService {
 
   Future<void> clearAlarm() async {
     await clear(LocalNotifService.notifAlarm);
-  }
-
-  @pragma('vm:entry-point')
-  static void notificationTapBackground(
-      NotificationResponse notificationResponse) async {
-    log("notif res : ${notificationResponse.payload}, ${notificationResponse.input}, ${notificationResponse.actionId}");
-    log("notif isolate=${Isolate.current.hashCode}");
-    // handle action
-    switch (notificationResponse.actionId) {
-      case "stop":
-        AlarmRing().stop();
-        break;
-      case "snooze":
-        AlarmRing().stop();
-        WidgetsFlutterBinding.ensureInitialized();
-        await Stockage().init();
-        await AlarmManager().init();
-        AlarmManager().addAlarm(DateTime.now().add(AlarmRing().snooze()));
-        break;
-      default:
-    }
   }
 
   Future<void> setupEntryPoint() async {
