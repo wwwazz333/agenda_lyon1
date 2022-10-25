@@ -33,33 +33,11 @@ class _ListAlarmsState extends ConsumerState<ListAlarms> {
         actions: [
           IconButton(
               onPressed: () async {
-                final date = DateTime.now();
-                // final datePicked = await showDatePicker(
-                //   locale: language,
-                //   initialDate: date,
-                //   firstDate: date,
-                //   lastDate: date.add(const Duration(days: 365 * 100)),
-                //   context: context,
-                // );
-                // if (datePicked != null) {
-                //   final timeOfDay = await showTimePicker(
-                //       helpText: "Sélectionner une heure",
-                //       builder: (context, child) => MediaQuery(
-                //             data: MediaQuery.of(context)
-                //                 .copyWith(alwaysUse24HourFormat: true),
-                //             child: child ?? const LoadingWidget(),
-                //           ),
-                //       context: context,
-                //       initialTime: TimeOfDay.fromDateTime(date));
-                //   if (timeOfDay != null) {
-                //     final alarmTime = DateTime(date.year, date.month, date.day,
-                //         timeOfDay.hour, timeOfDay.minute);
-                //     AlarmManager().addAlarm(alarmTime);
-                //     setState(() {});
-                //   }
+                // if (await pickADate(context, language)) {
+                //   setState(() {});
                 // }
                 await AlarmManager()
-                    .addAlarm(date.add(const Duration(seconds: 10)));
+                    .addAlarm(DateTime.now().add(const Duration(seconds: 10)));
                 setState(() {});
               },
               icon: const Icon(Icons.add))
@@ -92,6 +70,35 @@ class _ListAlarmsState extends ConsumerState<ListAlarms> {
       floatingActionButton: const FloatingNavButton(),
     );
   }
+}
+
+Future<bool> pickADate(BuildContext context, Locale? locale) async {
+  final date = DateTime.now();
+  final datePicked = await showDatePicker(
+    locale: locale,
+    initialDate: date,
+    firstDate: date,
+    lastDate: date.add(const Duration(days: 365 * 100)),
+    context: context,
+  );
+  if (datePicked != null) {
+    final timeOfDay = await showTimePicker(
+        helpText: "Sélectionner une heure",
+        builder: (context, child) => MediaQuery(
+              data:
+                  MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+              child: child ?? const LoadingWidget(),
+            ),
+        context: context,
+        initialTime: TimeOfDay.fromDateTime(date));
+    if (timeOfDay != null) {
+      final alarmTime = DateTime(
+          date.year, date.month, date.day, timeOfDay.hour, timeOfDay.minute);
+      AlarmManager().addAlarm(alarmTime);
+      return true;
+    }
+  }
+  return false;
 }
 
 class AlarmCard extends StatelessWidget {
