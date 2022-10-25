@@ -60,13 +60,3 @@ class TabCalendarUIController {
     });
   }
 }
-
-extension CapString on String {
-  String capitalize() {
-    if (length >= 2) {
-      return substring(0, 1).toUpperCase() + toLowerCase().substring(1);
-    } else {
-      return toUpperCase();
-    }
-  }
-}

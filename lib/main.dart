@@ -1,9 +1,18 @@
-import 'package:agenda_lyon1/controller/background_work.dart';
+import 'dart:async';
+import 'dart:developer';
+import 'dart:isolate';
+
+import 'package:agenda_lyon1/common/global_data.dart';
+import 'package:agenda_lyon1/controller/local_notification_service.dart';
 import 'package:agenda_lyon1/data/stockage.dart';
+import 'package:agenda_lyon1/model/alarm/alarm_manager.dart';
 import 'package:agenda_lyon1/model/settings/settings.dart';
+import 'package:agenda_lyon1/model/settings/settingsapp.dart';
 import 'package:agenda_lyon1/views/screen/historique_screen.dart';
+import 'package:agenda_lyon1/views/screen/list_alarms.dart';
+import 'package:auto_start_flutter/auto_start_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:workmanager/workmanager.dart';
+import 'package:flutter/services.dart';
 import 'common/themes.dart';
 import 'views/screen/calendar_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,10 +23,13 @@ import 'views/screen/settings/settings_screen_url.dart';
 Future<void> main() async {
   // à faire au démarrage de l'app
   WidgetsFlutterBinding.ensureInitialized();
-  Workmanager().initialize(
-    callbackDispatcher,
-    isInDebugMode: true,
-  );
+  await AlarmManager().init();
+  // Workmanager().initialize(
+  //   callbackDispatcher,
+  //   isInDebugMode: true,
+  // );
+
+  await LocalNotifService().setupEntryPoint();
   await Stockage().init();
   loadCriticalSettings();
   final container = ProviderContainer();
@@ -27,12 +39,25 @@ Future<void> main() async {
   runApp(UncontrolledProviderScope(container: container, child: const MyApp()));
 }
 
-class MyApp extends ConsumerWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _MyApp();
+}
+
+class _MyApp extends ConsumerState<MyApp> {
+  @override
+  void initState() {
+    log("point : ${SettingsApp().pointDepart}");
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    log("main isoalte = ${Isolate.current.hashCode}");
     return MaterialApp(
+      navigatorKey: navigatorKey,
       supportedLocales: const [
         Locale('fr'),
         Locale('en'),
@@ -43,11 +68,12 @@ class MyApp extends ConsumerWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       title: 'Agenda Lyon1',
-      initialRoute: '/',
+      initialRoute: SettingsApp().pointDepart,
       routes: {
         '/settings': ((context) => const MySettingsScreen()),
         '/settings_url': ((context) => const SettingsScreenURL()),
         '/history': ((context) => const HistoriqueScreen()),
+        '/list_alarms': ((context) => const ListAlarms()),
       },
       theme: themes["light"],
       darkTheme: themes["dark"],

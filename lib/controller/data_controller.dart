@@ -54,6 +54,7 @@ class DataController {
     log("end writing in file");
   }
 
+  @pragma('vm:entry-point')
   static Future<Map<String, dynamic>> updateCalendrier(
       Map<String, dynamic> data) async {
     try {
