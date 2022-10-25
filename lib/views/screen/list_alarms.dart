@@ -52,8 +52,12 @@ class _ListAlarmsState extends ConsumerState<ListAlarms> {
               return ListView.builder(
                 itemCount: alarms.length,
                 itemBuilder: (context, index) =>
-                    AlarmCard(alarms[index].dateTime, formatter, () async {
+                    AlarmCard(alarms[index], formatter, () async {
                   await AlarmManager().remove(alarms[index]);
+                  setState(() {});
+                }, () async {
+                  alarms[index].isSet = !alarms[index].isSet;
+                  await AlarmManager().updateAlarm(alarms[index]);
                   setState(() {});
                 }),
               );
@@ -102,18 +106,33 @@ Future<bool> pickADate(BuildContext context, Locale? locale) async {
 }
 
 class AlarmCard extends StatelessWidget {
-  final DateTime? date;
+  final Alarm alarm;
   final void Function() removeSelf;
+  final void Function() toggleEnable;
   final DateFormat formatter;
   static DateFormat timeFormmatter = DateFormat.Hm();
-  const AlarmCard(this.date, this.formatter, this.removeSelf, {super.key});
+  const AlarmCard(
+      this.alarm, this.formatter, this.removeSelf, this.toggleEnable,
+      {super.key});
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: date != null
-          ? Text(
-              "${formatter.format(date!).capitalize().replaceAll(".", "")} ${timeFormmatter.format(date!)}")
-          : const Text("erreur"),
+      child: ListTile(
+        title: Text(
+          "${formatter.format(alarm.dateTime).capitalize().replaceAll(".", "")} ${timeFormmatter.format(alarm.dateTime)}",
+          style: Theme.of(context).textTheme.headline2,
+        ),
+        trailing: alarm.removable
+            ? IconButton(
+                icon: const Icon(Icons.remove_circle_outline),
+                onPressed: removeSelf)
+            : Switch.adaptive(
+                value: alarm.isSet,
+                onChanged: (value) {
+                  toggleEnable();
+                },
+              ),
+      ),
     );
   }
 }

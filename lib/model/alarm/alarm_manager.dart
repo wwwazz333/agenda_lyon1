@@ -32,6 +32,16 @@ class AlarmManager {
         .invokeMethod("setAlarm", {"time": time.millisecondsSinceEpoch});
   }
 
+  Future<bool> updateAlarm(Alarm alarm) async {
+    if (!Platform.isAndroid) return false;
+    alarm.save();
+
+    return await methodChannel.invokeMethod("setAlarm", {
+      "time": alarm.dateTime.millisecondsSinceEpoch,
+      "enabled": alarm.isSet
+    });
+  }
+
   Future<List<Alarm>?> getAllAlarms() async {
     if (!Platform.isAndroid) return null;
     await clearPassedAlarms();

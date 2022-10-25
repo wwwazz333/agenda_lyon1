@@ -2,8 +2,6 @@ package com.example.agenda_lyon1
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -32,7 +30,16 @@ class MainActivity : FlutterActivity() {
                 "setAlarm" -> {
                     var success = false
                     call.argument<Long>("time")?.let { time ->
-                        Alarm.setAlarm(context, time, time.toString(), Alarm.START)
+                        var enabled = call.argument<Boolean>("enabled")
+                        if (enabled == null) {
+                            enabled = true
+                        }
+                        Alarm.setAlarm(
+                            context,
+                            time,
+                            time.toString(),
+                            if (enabled) Alarm.START else Alarm.NONE
+                        )
                         success = true
                     }
                     res.success(success)
@@ -52,15 +59,14 @@ class MainActivity : FlutterActivity() {
     }
 
 
-
     private fun createNotificationChannels() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationManager = getSystemService(NotificationManager::class.java)
             val channelAlarmNotif = NotificationChannel(
-                    Notif.ALARM_NOTIFICATION_ID,
-                    "Notification alarms",
-                    NotificationManager.IMPORTANCE_HIGH
-                )
+                Notif.ALARM_NOTIFICATION_ID,
+                "Notification alarms",
+                NotificationManager.IMPORTANCE_HIGH
+            )
 
             channelAlarmNotif.enableLights(true)
             channelAlarmNotif.lightColor = Color.BLUE
