@@ -3,10 +3,12 @@ import 'dart:developer';
 import 'package:agenda_lyon1/controller/data_controller.dart';
 import 'package:agenda_lyon1/controller/background_work.dart';
 import 'package:agenda_lyon1/data/stockage.dart';
+import 'package:agenda_lyon1/model/alarm/alarm_manager.dart';
 import 'package:agenda_lyon1/model/settings/settings.dart';
 import 'package:agenda_lyon1/views/custom_widgets/event_list.dart';
 import 'package:agenda_lyon1/views/custom_widgets/loading_widget.dart';
 import 'package:agenda_lyon1/views/dialog/history_dialog.dart';
+import 'package:agenda_lyon1/views/screen/list_alarms.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -61,6 +63,9 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
             ));
     launchPerodicalWork();
 
+    AlarmManager().setAllAlarmsWith(DataController().calendrier, [
+      ParametrageHoraire(Duration(), Duration(hours: 24), Duration(minutes: 50))
+    ]);
     super.initState();
   }
 

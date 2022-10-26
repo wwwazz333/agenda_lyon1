@@ -18,11 +18,6 @@ class ListAlarms extends ConsumerStatefulWidget {
 
 class _ListAlarmsState extends ConsumerState<ListAlarms> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final language = ref.watch(SettingsProvider.languageAppProvider);
     final formatter = DateFormat.MMMEd(language.languageCode);
@@ -33,18 +28,20 @@ class _ListAlarmsState extends ConsumerState<ListAlarms> {
         actions: [
           IconButton(
               onPressed: () async {
-                // if (await pickADate(context, language)) {
-                //   setState(() {});
-                // }
-                await AlarmManager()
-                    .addAlarm(DateTime.now().add(const Duration(seconds: 10)));
-                setState(() {});
+                var alarmTime = await pickADate(context, language);
+                if (alarmTime != null) {
+                  AlarmManager().addAlarm(alarmTime);
+                  setState(() {});
+                }
+                // await AlarmManager()
+                //     .addAlarm(DateTime.now().add(const Duration(seconds: 10)));
+                // setState(() {});
               },
               icon: const Icon(Icons.add))
         ],
       ),
       body: FutureBuilder(
-        future: AlarmManager().getAllAlarms(),
+        future: AlarmManager().getAllAlarmsSorted(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data != null) {
@@ -76,16 +73,16 @@ class _ListAlarmsState extends ConsumerState<ListAlarms> {
   }
 }
 
-Future<bool> pickADate(BuildContext context, Locale? locale) async {
-  final date = DateTime.now();
-  final datePicked = await showDatePicker(
+Future<DateTime?> pickADate(BuildContext context, Locale? locale) async {
+  DateTime? date = DateTime.now();
+  date = await showDatePicker(
     locale: locale,
     initialDate: date,
     firstDate: date,
     lastDate: date.add(const Duration(days: 365 * 100)),
     context: context,
   );
-  if (datePicked != null) {
+  if (date != null) {
     final timeOfDay = await showTimePicker(
         helpText: "Sélectionner une heure",
         builder: (context, child) => MediaQuery(
@@ -98,11 +95,10 @@ Future<bool> pickADate(BuildContext context, Locale? locale) async {
     if (timeOfDay != null) {
       final alarmTime = DateTime(
           date.year, date.month, date.day, timeOfDay.hour, timeOfDay.minute);
-      AlarmManager().addAlarm(alarmTime);
-      return true;
+      return alarmTime;
     }
   }
-  return false;
+  return null;
 }
 
 class AlarmCard extends StatelessWidget {
@@ -118,10 +114,26 @@ class AlarmCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        title: Text(
-          "${formatter.format(alarm.dateTime).capitalize().replaceAll(".", "")} ${timeFormmatter.format(alarm.dateTime)}",
-          style: Theme.of(context).textTheme.headline2,
-        ),
+        title: RichText(
+            text: TextSpan(
+                style: Theme.of(context).textTheme.bodyText1,
+                children: [
+              TextSpan(
+                  text: formatter
+                      .format(alarm.dateTime)
+                      .capitalize()
+                      .replaceAll(".", "")),
+              const TextSpan(
+                text: " ",
+              ),
+              TextSpan(
+                text: timeFormmatter.format(alarm.dateTime),
+                style: Theme.of(context)
+                    .textTheme
+                    .headline2
+                    ?.copyWith(fontSize: 36),
+              )
+            ])),
         trailing: alarm.removable
             ? IconButton(
                 icon: const Icon(Icons.remove_circle_outline),

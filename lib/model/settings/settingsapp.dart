@@ -13,7 +13,6 @@ class SettingsApp extends HiveObject {
     return instance!;
   }
 
-  String pointDepart = "/";
   @HiveField(0)
   bool _notifEnabled = true;
   @HiveField(1)

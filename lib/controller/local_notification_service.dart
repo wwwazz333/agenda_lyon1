@@ -1,14 +1,8 @@
 import 'dart:developer';
 import 'dart:isolate';
-import 'package:agenda_lyon1/model/alarm/alarm_manager.dart';
 import 'package:agenda_lyon1/model/color/colors.dart';
-import 'package:flutter/material.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
-import '../common/global_data.dart';
-import '../data/stockage.dart';
-import '../model/settings/settingsapp.dart';
 
 class LocalNotifService {
   static const notifChangementEvent = 1;
@@ -83,22 +77,5 @@ class LocalNotifService {
 
   Future<void> clearAlarm() async {
     await clear(LocalNotifService.notifAlarm);
-  }
-
-  Future<void> setupEntryPoint() async {
-    final notifLaunchDetails = await FlutterLocalNotificationsPlugin()
-        .getNotificationAppLaunchDetails();
-
-    if ((notifLaunchDetails?.notificationResponse?.payload ?? "") != "") {
-      final payload = (notifLaunchDetails?.notificationResponse?.payload)!;
-      final splited = payload.split(':');
-      if (splited[0] == "start") {
-        SettingsApp().pointDepart = "/${splited[1]}";
-        if (navigatorKey.currentContext != null) {
-          Navigator.of(navigatorKey.currentContext!)
-              .pushNamed(SettingsApp().pointDepart);
-        }
-      }
-    }
   }
 }
