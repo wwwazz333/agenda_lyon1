@@ -5,6 +5,7 @@ import 'package:agenda_lyon1/model/alarm/alarm.dart';
 import 'package:agenda_lyon1/model/calendrier/calendrier.dart';
 import 'package:agenda_lyon1/model/date.dart';
 import 'package:agenda_lyon1/model/event/event_calendrier.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class AlarmManager {
@@ -23,9 +24,13 @@ class AlarmManager {
 
   Future<bool> addAlarm(DateTime time, [bool removable = true]) async {
     if (!Platform.isAndroid) return false;
-    final alarm = Alarm(dateTime: time, removable: removable);
-    alarm.id = await Stockage().alarmsBox.add(alarm);
+    var others = await getAllAlarmsWhere(
+        (alarm) => alarm.dateTime.isAtSameMomentAs(time));
 
+    if (others == null || others.isEmpty) {
+      final alarm = Alarm(dateTime: time, removable: removable);
+      alarm.id = await Stockage().alarmsBox.add(alarm);
+    }
     return await methodChannel
         .invokeMethod("setAlarm", {"time": time.millisecondsSinceEpoch});
   }
@@ -44,6 +49,12 @@ class AlarmManager {
     if (!Platform.isAndroid) return null;
     await clearPassedAlarms();
     return _alarms;
+  }
+
+  Future<List<Alarm>?> getAllAlarmsWhere(bool Function(Alarm) test) async {
+    if (!Platform.isAndroid) return null;
+    await clearPassedAlarms();
+    return _alarms.where(test).toList();
   }
 
   Future<List<Alarm>?> getAllAlarmsSorted() async {
@@ -81,10 +92,15 @@ class AlarmManager {
   Future<void> setAllAlarmsWith(Calendrier calendrier,
       List<ParametrageHoraire> parametrageHoraire) async {
     if (!Platform.isAndroid) return;
-    clearAlarmsWhere((alarm) => alarm.removable == false);
+    await clearAlarmsWhere((alarm) => alarm.removable == false);
+
     DateTime now = DateTime.now();
+    DateTime limit = now.add(const Duration(days: 7));
     DateTime lastDate = now.subtract(const Duration(days: 1));
     for (EventCalendrier event in calendrier.events) {
+      if (event.date.isAfter(limit)) {
+        break;
+      }
       if (!event.date.isSameDay(lastDate)) {
         for (ParametrageHoraire para in parametrageHoraire) {
           var alarmTime = para.getHoraireSonnerieFor(event.date);

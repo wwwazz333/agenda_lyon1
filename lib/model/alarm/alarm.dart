@@ -14,4 +14,9 @@ class Alarm extends HiveObject {
   int? id;
   @HiveField(3)
   bool isSet = true;
+
+  @override
+  String toString() {
+    return dateTime.toString();
+  }
 }
