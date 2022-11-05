@@ -35,7 +35,12 @@ class SettingsApp extends HiveObject {
   @HiveField(9)
   int _lastHourDisplay = 20;
 
+  @HiveField(10)
+  bool _alarmAcitvated = false;
+
   ///getters
+
+  bool get alarmAcitvated => _alarmAcitvated;
 
   bool get notifEnabled => _notifEnabled;
 
@@ -62,6 +67,11 @@ class SettingsApp extends HiveObject {
 
   set jourFeriesEnabled(bool newVal) {
     _jourFeriesEnabled = newVal;
+    save();
+  }
+
+  set alarmAcitvated(bool newVal) {
+    _alarmAcitvated = newVal;
     save();
   }
 

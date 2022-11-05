@@ -1,6 +1,7 @@
 import 'package:agenda_lyon1/common/global_data.dart';
 import 'package:agenda_lyon1/model/alarm/alarm.dart';
 import 'package:agenda_lyon1/model/alarm/alarm_manager.dart';
+import 'package:agenda_lyon1/model/settings/settingsapp.dart';
 import 'package:agenda_lyon1/views/custom_widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,15 +19,16 @@ class ListAlarms extends ConsumerStatefulWidget {
 }
 
 class _ListAlarmsState extends ConsumerState<ListAlarms> {
-  @override
-  void initState() {
-    AlarmManager().setAllAlarmsWith(DataController().calendrier, [
-      ParametrageHoraire(const Duration(), const Duration(hours: 24),
-          const Duration(minutes: 50)),
-    ]).then((value) => setState(
-          () {},
-        ));
-    super.initState();
+  Future<List<Alarm>>? getAlarmForDisplay() async {
+    await AlarmManager().setAllAlarmsWith(
+        DataController().calendrier,
+        [
+          ParametrageHoraire(const Duration(), const Duration(hours: 24),
+              const Duration(minutes: 50)),
+        ],
+        SettingsApp().alarmAcitvated);
+
+    return await AlarmManager().getAllAlarmsSorted();
   }
 
   @override
@@ -38,39 +40,59 @@ class _ListAlarmsState extends ConsumerState<ListAlarms> {
       appBar: AppBar(
         title: const Text("Alarmes"),
         actions: [
-          IconButton(
-              onPressed: () async {
-                var alarmTime = await pickADate(context, language);
-                if (alarmTime != null) {
-                  AlarmManager()
-                      .addAlarm(Alarm(dateTime: alarmTime, removable: true));
-                  setState(() {});
-                }
-                // await AlarmManager()
-                //     .addAlarm(DateTime.now().add(const Duration(seconds: 10)));
-                // setState(() {});
-              },
-              icon: const Icon(Icons.add))
+          if (SettingsApp().alarmAcitvated)
+            IconButton(
+                onPressed: () async {
+                  var alarmTime = await pickADate(context, language);
+                  if (alarmTime != null) {
+                    AlarmManager()
+                        .addAlarm(Alarm(dateTime: alarmTime, removable: true));
+                    setState(() {});
+                  }
+                  //Pour débugage rapide
+                  // await AlarmManager()
+                  //     .addAlarm(DateTime.now().add(const Duration(seconds: 10)));
+                  // setState(() {});
+                },
+                icon: const Icon(Icons.add)),
+          Switch.adaptive(
+            activeColor: Colors.white,
+            value: SettingsApp().alarmAcitvated,
+            onChanged: (value) {
+              setState(() {
+                SettingsApp().alarmAcitvated = !SettingsApp().alarmAcitvated;
+              });
+            },
+          ),
         ],
       ),
       body: FutureBuilder(
-        future: AlarmManager().getAllAlarmsSorted(),
+        future: getAlarmForDisplay(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data != null) {
               final alarms = (snapshot.data as List<Alarm>).reversed.toList();
-              return ListView.builder(
-                itemCount: alarms.length,
-                itemBuilder: (context, index) =>
-                    AlarmCard(alarms[index], formatter, () async {
-                  await AlarmManager().remove(alarms[index]);
-                  setState(() {});
-                }, () async {
-                  alarms[index].isSet = !alarms[index].isSet;
-                  await AlarmManager().updateAlarm(alarms[index]);
-                  setState(() {});
-                }),
-              );
+              if (alarms.isNotEmpty) {
+                return ListView.builder(
+                  itemCount: alarms.length,
+                  itemBuilder: (context, index) =>
+                      AlarmCard(alarms[index], formatter, () async {
+                    await AlarmManager().remove(alarms[index]);
+                    setState(() {});
+                  }, () async {
+                    alarms[index].isSet = !alarms[index].isSet;
+                    await AlarmManager().updateAlarm(alarms[index]);
+                    setState(() {});
+                  }),
+                );
+              } else {
+                if (SettingsApp().alarmAcitvated) {
+                  return const Center(child: Text("Aucune Alarmes."));
+                } else {
+                  return const Center(
+                      child: Text("Système d'alarme désactivé."));
+                }
+              }
             } else {
               return const Center(
                 child: Text("Disponible uniquement sous android."),

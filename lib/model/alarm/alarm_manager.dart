@@ -91,10 +91,17 @@ class AlarmManager {
     return false;
   }
 
-  Future<void> setAllAlarmsWith(Calendrier calendrier,
-      List<ParametrageHoraire> parametrageHoraire) async {
+  ///Si les [alarmAreActivate] == false => supprime toutes les alarmes
+  ///
+  ///Sinon paramètres les alarmes avec la liste de parametres [parametrageHoraire]
+  Future<void> setAllAlarmsWith(
+      Calendrier calendrier, List<ParametrageHoraire> parametrageHoraire,
+      [bool alarmAreActivate = true]) async {
     if (!Platform.isAndroid) return;
-    log("1 nbr alarm = ${_alarms.length}");
+    if (!alarmAreActivate) {
+      await clearAll();
+      return;
+    }
 
     DateTime now = DateTime.now();
     DateTime limit = now.add(const Duration(days: 7));

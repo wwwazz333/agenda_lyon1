@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'card.dart/card_tile.dart';
+import 'card/card_tile.dart';
 import 'event_display.dart';
 
 class EventList extends EventDisplay {
