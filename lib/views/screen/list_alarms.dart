@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../controller/data_controller.dart';
+import '../../model/alarm/parametrage_horiare.dart';
 import '../../model/settings/settings.dart';
 import '../custom_widgets/navigator.dart';
 
@@ -55,15 +56,16 @@ class _ListAlarmsState extends ConsumerState<ListAlarms> {
                   // setState(() {});
                 },
                 icon: const Icon(Icons.add)),
-          Switch.adaptive(
-            activeColor: Colors.white,
-            value: SettingsApp().alarmAcitvated,
-            onChanged: (value) {
-              setState(() {
-                SettingsApp().alarmAcitvated = !SettingsApp().alarmAcitvated;
-              });
-            },
-          ),
+          IconButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .pushNamed("/list_alarms/settings")
+                    .then((value) {
+                  ///whene come back
+                  setState(() {});
+                });
+              },
+              icon: const Icon(Icons.settings)),
         ],
       ),
       body: FutureBuilder(

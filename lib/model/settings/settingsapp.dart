@@ -35,6 +35,7 @@ class SettingsApp extends HiveObject {
   @HiveField(9)
   int _lastHourDisplay = 20;
 
+  ///Alarmes
   @HiveField(10)
   bool _alarmAcitvated = false;
 

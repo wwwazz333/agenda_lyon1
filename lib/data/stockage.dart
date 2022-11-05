@@ -1,4 +1,5 @@
 import 'package:agenda_lyon1/model/alarm/alarm.dart';
+import 'package:agenda_lyon1/model/alarm/parametrage_horiare.dart';
 import 'package:agenda_lyon1/model/calendrier/calendrier.dart';
 import 'package:agenda_lyon1/model/changements/changement.dart';
 import 'package:agenda_lyon1/model/color/color_event.dart';
@@ -29,6 +30,7 @@ class Stockage {
   late Box<TasksOfEvent> tasksBox;
 
   late Box<Alarm> alarmsBox;
+  late Box<ParametrageHoraire> settingsAlarmBox;
   Future<void> init() async {
     if (isInit) return;
     await Hive.initFlutter();
@@ -40,6 +42,8 @@ class Stockage {
     Hive.registerAdapter(TaskAdapter());
     Hive.registerAdapter(TasksOfEventAdapter());
     Hive.registerAdapter(AlarmAdapter());
+    Hive.registerAdapter(ParametrageHoraireAdapter());
+
     settingsAppBox = await Hive.openBox<SettingsApp>("settingsAppBox");
     changementsBox = await Hive.openBox<Changement>("changementsBox");
     calendrierBox = await Hive.openBox<Calendrier>("calendrierBox");
@@ -49,7 +53,10 @@ class Stockage {
     colorsEventsDarkBox = await Hive.openBox<ColorEvent>("colorsEventsDarkBox");
 
     tasksBox = await Hive.openBox<TasksOfEvent>("tasksBox");
+
     alarmsBox = await Hive.openBox<Alarm>("alarmsBox");
+    settingsAlarmBox =
+        await Hive.openBox<ParametrageHoraire>("settingsAlarmBox");
 
     isInit = true;
   }

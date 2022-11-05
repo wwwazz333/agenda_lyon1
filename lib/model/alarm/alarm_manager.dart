@@ -6,6 +6,8 @@ import 'package:agenda_lyon1/model/date.dart';
 import 'package:agenda_lyon1/model/event/event_calendrier.dart';
 import 'package:flutter/services.dart';
 
+import 'parametrage_horiare.dart';
+
 class AlarmManager {
   static AlarmManager? instance;
   AlarmManager._();
@@ -130,34 +132,5 @@ class AlarmManager {
     for (var a in stocked.values) {
       addAlarm(a);
     }
-  }
-}
-
-class ParametrageHoraire {
-  ///les bornes sont comprise
-  Duration debutMatch, finMatch;
-  Duration reglageHoraire;
-
-  ///si true -> sera plaser par rapport à l'horaire indiquer
-  ///
-  ///si false -> sera plaser à l'horaire indiquer
-  bool relative = true;
-
-  ParametrageHoraire(this.debutMatch, this.finMatch, this.reglageHoraire,
-      [this.relative = true]);
-
-  DateTime? getHoraireSonnerieFor(DateTime date) {
-    DateTime debut = DateTime(date.year, date.month, date.day).add(debutMatch);
-    DateTime fin = DateTime(date.year, date.month, date.day).add(finMatch);
-    if (date.isAfter(debut) && date.isBefore(fin) ||
-        date.isAtSameMomentAs(debut) ||
-        date.isAtSameMomentAs(fin)) {
-      if (relative) {
-        return date.subtract(reglageHoraire);
-      } else {
-        return DateTime(date.year, date.month, date.day).add(reglageHoraire);
-      }
-    }
-    return null;
   }
 }

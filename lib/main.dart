@@ -7,6 +7,7 @@ import 'package:agenda_lyon1/data/stockage.dart';
 import 'package:agenda_lyon1/model/settings/settings.dart';
 import 'package:agenda_lyon1/views/screen/historique_screen.dart';
 import 'package:agenda_lyon1/views/screen/list_alarms.dart';
+import 'package:agenda_lyon1/views/screen/settings/settings_alarm.dart';
 import 'package:flutter/material.dart';
 import 'common/themes.dart';
 import 'views/screen/calendar_screen.dart';
@@ -61,6 +62,7 @@ class _MyApp extends ConsumerState<MyApp> {
         '/settings_url': ((context) => const SettingsScreenURL()),
         '/history': ((context) => const HistoriqueScreen()),
         '/list_alarms': ((context) => const ListAlarms()),
+        '/list_alarms/settings': ((context) => const SettingsAlarm()),
       },
       theme: themes["light"],
       darkTheme: themes["dark"],
