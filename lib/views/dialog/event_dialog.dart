@@ -9,8 +9,8 @@ import '../../model/task/tasks_manager.dart';
 
 Future<bool> showEventDialog(BuildContext context, EventCalendrier ev) async {
   bool hasToUpdate = false;
-  final titleStyle = Theme.of(context).textTheme.headline2;
-  final infoStyle = Theme.of(context).textTheme.bodyText1;
+  final titleStyle = Theme.of(context).textTheme.displayMedium;
+  final infoStyle = Theme.of(context).textTheme.bodyLarge;
 
   var bgColor = ColorsEventsManager()
       .getColorOrGen(ev.summary, SettingsApp().appIsDarkMode);
@@ -38,7 +38,7 @@ Future<bool> showEventDialog(BuildContext context, EventCalendrier ev) async {
                     child: RichText(
                         text: TextSpan(
                             text: "${ev.summary}\t",
-                            style: Theme.of(context).textTheme.headline1!,
+                            style: Theme.of(context).textTheme.displayLarge!,
                             children: [
                           WidgetSpan(
                               child: Container(
@@ -203,7 +203,7 @@ class TaskWidget extends StatelessWidget {
       padding: const EdgeInsets.all(6),
       child: Text(
         txt,
-        style: Theme.of(context).textTheme.headline3,
+        style: Theme.of(context).textTheme.displaySmall,
       ),
     );
   }
@@ -237,10 +237,10 @@ Future<dynamic> showStringPicker(BuildContext context, String title) {
       builder: (context) => AlertDialog(
             title: Text(
               title,
-              style: Theme.of(context).textTheme.headline1,
+              style: Theme.of(context).textTheme.displayLarge,
             ),
             content: TextField(
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
               autofocus: true,
               controller: controller,
             ),
@@ -262,11 +262,11 @@ Future<dynamic> showConfirmDel(BuildContext context, String task) {
       builder: (context) => AlertDialog(
             title: Text(
               "Supprimer la tâche ?",
-              style: Theme.of(context).textTheme.headline1,
+              style: Theme.of(context).textTheme.displayLarge,
             ),
             content: Text(
               task,
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
             actions: [
               TextButton(

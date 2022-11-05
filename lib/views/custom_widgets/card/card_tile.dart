@@ -22,14 +22,14 @@ class _CardEventTile extends State<CardEventTile> {
                       widget.debut,
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText1!
+                          .bodyLarge!
                           .copyWith(color: widget.fontColor),
                     ),
                     Text(
                       widget.fin,
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText1!
+                          .bodyLarge!
                           .copyWith(color: widget.fontColor),
                     )
                   ],
@@ -38,7 +38,7 @@ class _CardEventTile extends State<CardEventTile> {
                   widget.title,
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText1!
+                      .bodyLarge!
                       .copyWith(color: widget.fontColor),
                   softWrap: true,
                 ),
@@ -46,7 +46,7 @@ class _CardEventTile extends State<CardEventTile> {
                   widget.subTitle,
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText2!
+                      .bodyMedium!
                       .copyWith(color: widget.fontColor),
                 ),
               ),
@@ -64,7 +64,7 @@ class _CardEventTile extends State<CardEventTile> {
                         widget.nbrTask().toString(),
                         style: Theme.of(context)
                             .textTheme
-                            .bodyText1!
+                            .bodyLarge!
                             .copyWith(color: widget.fontColor),
                       ),
                     ))

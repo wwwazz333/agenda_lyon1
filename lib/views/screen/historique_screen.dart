@@ -42,7 +42,7 @@ class _HistoriqueScreenState extends ConsumerState<HistoriqueScreen>
               child: Text(
                 "Aucun changements d'emplois du temps n'a été enregistré.",
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
             ),
     );
@@ -65,7 +65,7 @@ class ChangementCard extends StatelessWidget {
         children: [
           Text(
             change.name,
-            style: Theme.of(context).textTheme.headline1,
+            style: Theme.of(context).textTheme.displayLarge,
             textAlign: TextAlign.center,
           ),
           Text(
@@ -74,7 +74,7 @@ class ChangementCard extends StatelessWidget {
                 : (change.newDate == null)
                     ? "supprimé du : ${change.oldDate!.affichageDateHeure(formatter)}"
                     : "déplacé du : ${change.oldDate!.affichageDateHeure(formatter)}\naux : ${change.newDate!.affichageDateHeure(formatter)}",
-            style: Theme.of(context).textTheme.bodyText1,
+            style: Theme.of(context).textTheme.bodyLarge,
           )
         ],
       ),

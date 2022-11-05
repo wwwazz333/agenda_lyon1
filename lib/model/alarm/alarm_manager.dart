@@ -1,12 +1,9 @@
-import 'dart:developer';
-import 'dart:ffi';
 import 'dart:io' show Platform;
 import 'package:agenda_lyon1/data/stockage.dart';
 import 'package:agenda_lyon1/model/alarm/alarm.dart';
 import 'package:agenda_lyon1/model/calendrier/calendrier.dart';
 import 'package:agenda_lyon1/model/date.dart';
 import 'package:agenda_lyon1/model/event/event_calendrier.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class AlarmManager {
@@ -28,7 +25,7 @@ class AlarmManager {
     var others = await getAllAlarmsWhere(
         (alarmOther) => alarmOther.dateTime.isAtSameMomentAs(alarm.dateTime));
 
-    if (others == null || others.isEmpty) {
+    if (others.isEmpty) {
       alarm.id = await Stockage().alarmsBox.add(alarm);
     }
     return await methodChannel.invokeMethod("setAlarm", {

@@ -4,7 +4,6 @@ import 'dart:isolate';
 
 import 'package:agenda_lyon1/common/global_data.dart';
 import 'package:agenda_lyon1/data/stockage.dart';
-import 'package:agenda_lyon1/model/alarm/alarm_manager.dart';
 import 'package:agenda_lyon1/model/settings/settings.dart';
 import 'package:agenda_lyon1/views/screen/historique_screen.dart';
 import 'package:agenda_lyon1/views/screen/list_alarms.dart';

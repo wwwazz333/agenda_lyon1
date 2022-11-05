@@ -33,7 +33,7 @@ class _CardEventTimeLine extends State<CardEventTimeLine> {
                                 widget.debut,
                                 style: Theme.of(context)
                                     .textTheme
-                                    .bodyText1!
+                                    .bodyLarge!
                                     .copyWith(color: widget.fontColor),
                               ),
                               Expanded(
@@ -43,7 +43,7 @@ class _CardEventTimeLine extends State<CardEventTimeLine> {
                                     widget.fin,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .bodyText1!
+                                        .bodyLarge!
                                         .copyWith(color: widget.fontColor),
                                   ),
                                 ),
@@ -61,7 +61,7 @@ class _CardEventTimeLine extends State<CardEventTimeLine> {
                                     textAlign: TextAlign.center,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .bodyText1!
+                                        .bodyLarge!
                                         .copyWith(color: widget.fontColor),
                                   ),
                                 ),
@@ -72,7 +72,7 @@ class _CardEventTimeLine extends State<CardEventTimeLine> {
                                   textAlign: TextAlign.center,
                                   style: Theme.of(context)
                                       .textTheme
-                                      .bodyText2!
+                                      .bodyMedium!
                                       .copyWith(color: widget.fontColor),
                                 ),
                               )
@@ -94,7 +94,7 @@ class _CardEventTimeLine extends State<CardEventTimeLine> {
                           widget.nbrTask().toString(),
                           style: Theme.of(context)
                               .textTheme
-                              .bodyText1!
+                              .bodyLarge!
                               .copyWith(color: widget.fontColor),
                         ),
                       )),

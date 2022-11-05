@@ -151,7 +151,7 @@ class AlarmCard extends StatelessWidget {
       child: ListTile(
         title: RichText(
             text: TextSpan(
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context).textTheme.bodyLarge,
                 children: [
               TextSpan(
                   text: formatter
@@ -165,7 +165,7 @@ class AlarmCard extends StatelessWidget {
                 text: timeFormmatter.format(alarm.dateTime),
                 style: Theme.of(context)
                     .textTheme
-                    .headline2
+                    .displayMedium
                     ?.copyWith(fontSize: 36),
               )
             ])),

@@ -25,7 +25,7 @@ class _MySettingsScreen extends ConsumerState<MySettingsScreen> {
       body: SettingsList(
         darkTheme: SettingsThemeData(
             titleTextColor: Theme.of(context).primaryColor,
-            settingsListBackground: Theme.of(context).backgroundColor),
+            settingsListBackground: Theme.of(context).colorScheme.background),
         sections: [
           SettingsSection(
             title: const Text("URL"),
