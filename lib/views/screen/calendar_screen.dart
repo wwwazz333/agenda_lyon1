@@ -62,10 +62,7 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
               },
             ));
     launchPerodicalWork();
-    AlarmManager().setAllAlarmsWith(DataController().calendrier, [
-      ParametrageHoraire(const Duration(), const Duration(hours: 24),
-          const Duration(minutes: 50)),
-    ]);
+
     super.initState();
   }
 

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../controller/data_controller.dart';
 import '../../model/settings/settings.dart';
 import '../custom_widgets/navigator.dart';
 
@@ -17,6 +18,17 @@ class ListAlarms extends ConsumerStatefulWidget {
 }
 
 class _ListAlarmsState extends ConsumerState<ListAlarms> {
+  @override
+  void initState() {
+    AlarmManager().setAllAlarmsWith(DataController().calendrier, [
+      ParametrageHoraire(const Duration(), const Duration(hours: 24),
+          const Duration(minutes: 50)),
+    ]).then((value) => setState(
+          () {},
+        ));
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final language = ref.watch(SettingsProvider.languageAppProvider);
@@ -30,7 +42,8 @@ class _ListAlarmsState extends ConsumerState<ListAlarms> {
               onPressed: () async {
                 var alarmTime = await pickADate(context, language);
                 if (alarmTime != null) {
-                  AlarmManager().addAlarm(alarmTime);
+                  AlarmManager()
+                      .addAlarm(Alarm(dateTime: alarmTime, removable: true));
                   setState(() {});
                 }
                 // await AlarmManager()
