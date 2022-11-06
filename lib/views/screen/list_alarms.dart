@@ -1,6 +1,7 @@
 import 'package:agenda_lyon1/common/global_data.dart';
 import 'package:agenda_lyon1/model/alarm/alarm.dart';
 import 'package:agenda_lyon1/model/alarm/alarm_manager.dart';
+import 'package:agenda_lyon1/model/date.dart';
 import 'package:agenda_lyon1/model/settings/settingsapp.dart';
 import 'package:agenda_lyon1/views/custom_widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
@@ -143,7 +144,6 @@ class AlarmCard extends StatelessWidget {
   final void Function() removeSelf;
   final void Function() toggleEnable;
   final DateFormat formatter;
-  static DateFormat timeFormmatter = DateFormat.Hm();
   const AlarmCard(
       this.alarm, this.formatter, this.removeSelf, this.toggleEnable,
       {super.key});
@@ -164,7 +164,7 @@ class AlarmCard extends StatelessWidget {
                 text: " ",
               ),
               TextSpan(
-                text: timeFormmatter.format(alarm.dateTime),
+                text: alarm.dateTime.affichageHeure(),
                 style: Theme.of(context)
                     .textTheme
                     .displayMedium

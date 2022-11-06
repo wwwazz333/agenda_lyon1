@@ -5,6 +5,7 @@ import 'package:agenda_lyon1/model/calendrier/calendrier.dart';
 import 'package:agenda_lyon1/model/date.dart';
 import 'package:agenda_lyon1/model/event/event_calendrier.dart';
 import 'package:flutter/services.dart';
+import 'package:jiffy/jiffy.dart';
 
 import 'parametrage_horiare.dart';
 
@@ -117,8 +118,6 @@ class AlarmManager {
           if (alarmTime != null && alarmTime.isAfter(now)) {
             stocked[alarmTime.millisecondsSinceEpoch] =
                 Alarm(dateTime: alarmTime, removable: false);
-
-            // addAlarm(alarmTime, false);
           }
         }
       }

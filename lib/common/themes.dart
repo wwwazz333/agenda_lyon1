@@ -32,6 +32,9 @@ final themes = {
       textButtonTheme: _parentTheme.textButtonTheme,
       switchTheme: _parentTheme.switchTheme,
       cardColor: const Color.fromARGB(255, 237, 237, 237),
+      checkboxTheme: const CheckboxThemeData(
+          checkColor: MaterialStatePropertyAll(Colors.white),
+          fillColor: MaterialStatePropertyAll(ColorsEventsManager.redOnePlus)),
       textTheme:
           GoogleFonts.openSansTextTheme(ThemeData.light().textTheme.copyWith(
                 displayLarge: const TextStyle(
@@ -64,6 +67,9 @@ final themes = {
       elevatedButtonTheme: _parentTheme.elevatedButtonTheme,
       textButtonTheme: _parentTheme.textButtonTheme,
       cardColor: const Color.fromARGB(255, 29, 29, 29),
+      checkboxTheme: const CheckboxThemeData(
+          checkColor: MaterialStatePropertyAll(Colors.white),
+          fillColor: MaterialStatePropertyAll(ColorsEventsManager.redOnePlus)),
       textTheme:
           GoogleFonts.openSansTextTheme(ThemeData.dark().textTheme.copyWith(
                 displayLarge: const TextStyle(

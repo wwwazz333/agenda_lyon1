@@ -23,8 +23,10 @@ class _SettingsAlarmState extends State<SettingsAlarm> {
         if (SettingsApp().alarmAcitvated)
           IconButton(
               onPressed: () async {
-                final temp = ParametrageHoraire(const Duration(),
-                    const Duration(hours: 24), const Duration(minutes: 50));
+                final temp = ParametrageHoraire(
+                    const Duration(hours: 0),
+                    const Duration(hours: 23, minutes: 59),
+                    const Duration(hours: 1));
                 Stockage().settingsAlarmBox.add(temp);
                 setState(() {});
               },
@@ -42,8 +44,9 @@ class _SettingsAlarmState extends State<SettingsAlarm> {
       body: (SettingsApp().alarmAcitvated)
           ? ListView.builder(
               itemCount: _settingsAlarms.length,
-              itemBuilder: (context, index) =>
-                  SettingsAlarmCard(_settingsAlarms[index]),
+              itemBuilder: (context, index) => SettingsAlarmCard(
+                  _settingsAlarms[_settingsAlarms.length - index - 1],
+                  remove: () {}),
             )
           : const Center(child: Text("Système d'alarme désactivé.")),
     );

@@ -33,6 +33,11 @@ extension Date on DateTime {
     final hourFormat = DateFormat.Hm();
     return "${formatter.format(this)}, ${hourFormat.format(this)}";
   }
+
+  String affichageHeure() {
+    final hourFormat = DateFormat.Hm();
+    return hourFormat.format(this);
+  }
 }
 
 bool timeZoneInitilized = false;
@@ -43,4 +48,10 @@ int _getTimeZone(DateTime forr) {
   }
   final locationFrance = tz.getLocation('Europe/Paris');
   return tz.TZDateTime.from(forr, locationFrance).timeZoneOffset.inMinutes;
+}
+
+extension DurationDisplay on Duration {
+  String displayHasTime() {
+    return DateTime(2000, 1, 1, inHours, inMinutes % 60).affichageHeure();
+  }
 }

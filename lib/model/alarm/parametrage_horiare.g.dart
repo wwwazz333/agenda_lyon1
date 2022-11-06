@@ -20,13 +20,16 @@ class ParametrageHoraireAdapter extends TypeAdapter<ParametrageHoraire> {
       .._debutMatch = fields[0] as int
       .._finMatch = fields[1] as int
       .._reglageHoraire = fields[2] as int
-      ..relative = fields[3] as bool;
+      ..relative = fields[3] as bool
+      ..enabledDay =
+          ((fields[4] ?? ParametrageHoraire.defaultEnabledDays) as List)
+              .cast<int>();
   }
 
   @override
   void write(BinaryWriter writer, ParametrageHoraire obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj._debutMatch)
       ..writeByte(1)
@@ -34,7 +37,9 @@ class ParametrageHoraireAdapter extends TypeAdapter<ParametrageHoraire> {
       ..writeByte(2)
       ..write(obj._reglageHoraire)
       ..writeByte(3)
-      ..write(obj.relative);
+      ..write(obj.relative)
+      ..writeByte(4)
+      ..write(obj.enabledDay);
   }
 
   @override
