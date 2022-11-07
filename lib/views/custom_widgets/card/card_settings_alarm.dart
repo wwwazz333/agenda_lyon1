@@ -134,15 +134,16 @@ class _SettingsAlarmCardState extends State<SettingsAlarmCard> {
                                     (index + 2) % 8,
                                     widget.parametrageHoraire.enabledDay),
                                 onChanged: (value) {
-                                  setState(() {
-                                    if (value != null && value) {
-                                      widget.parametrageHoraire.enabledDay
-                                          .add((index + 2) % 8);
-                                    } else {
-                                      widget.parametrageHoraire.enabledDay
-                                          .remove((index + 2) % 8);
-                                    }
-                                  });
+                                  int i = (index + 2) % 8;
+
+                                  if (widget.parametrageHoraire.enabledDay
+                                      .contains(i)) {
+                                    widget.parametrageHoraire.enabledDay
+                                        .remove(i);
+                                  } else {
+                                    widget.parametrageHoraire.enabledDay.add(i);
+                                  }
+                                  setState(() {});
                                   widget.parametrageHoraire.save();
                                 },
                               )

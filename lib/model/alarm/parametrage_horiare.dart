@@ -8,7 +8,7 @@ part 'parametrage_horiare.g.dart';
 
 @HiveType(typeId: 8)
 class ParametrageHoraire extends HiveObject {
-  static const List<int> defaultEnabledDays = [2, 3, 4, 5, 6];
+  static List<int> get defaultEnabledDays => [2, 3, 4, 5, 6];
 
   ///les bornes sont comprise
   @HiveField(0)
@@ -58,7 +58,7 @@ class ParametrageHoraire extends HiveObject {
 
   ParametrageHoraire(
       Duration debutMatch, Duration finMatch, Duration reglageHoraire,
-      [this.relative = true, this.enabledDay = const [2, 3, 4, 5, 6]])
+      [this.relative = true])
       : _debutMatch = debutMatch.inSeconds,
         _finMatch = finMatch.inSeconds,
         _reglageHoraire = reglageHoraire.inSeconds;
