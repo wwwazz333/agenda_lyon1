@@ -9,7 +9,6 @@ import 'package:agenda_lyon1/views/custom_widgets/loading_widget.dart';
 import 'package:agenda_lyon1/views/dialog/history_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import '../../controller/calendarui_controller.dart';
 import '../../providers.dart';
@@ -66,7 +65,6 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Permission.systemAlertWindow.request();
     showDialogHistoryIfNeeded();
     final typeCardToDisplay =
         ref.watch(SettingsProvider.cardTypeDisplayProvider);

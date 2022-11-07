@@ -1,6 +1,7 @@
 import 'package:agenda_lyon1/model/alarm/parametrage_horaire_manager.dart';
 import 'package:agenda_lyon1/model/alarm/parametrage_horiare.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../data/stockage.dart';
 import '../../../model/settings/settingsapp.dart';
@@ -35,10 +36,13 @@ class _SettingsAlarmState extends State<SettingsAlarm> {
         Switch.adaptive(
           activeColor: Colors.white,
           value: SettingsApp().alarmAcitvated,
-          onChanged: (value) {
-            setState(() {
-              SettingsApp().alarmAcitvated = !SettingsApp().alarmAcitvated;
-            });
+          onChanged: (value) async {
+            final res = await Permission.systemAlertWindow.request();
+            if (res.isGranted) {
+              setState(() {
+                SettingsApp().alarmAcitvated = !SettingsApp().alarmAcitvated;
+              });
+            }
           },
         )
       ]),
