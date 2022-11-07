@@ -4,6 +4,7 @@ import 'package:agenda_lyon1/model/alarm/parametrage_horiare.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
 import '../../../model/date.dart';
+import '../loading_widget.dart';
 
 class SettingsAlarmCard extends StatefulWidget {
   final ParametrageHoraire parametrageHoraire;
@@ -17,11 +18,20 @@ class SettingsAlarmCard extends StatefulWidget {
 
 class _SettingsAlarmCardState extends State<SettingsAlarmCard> {
   final controller = CustomPopupMenuController();
+  static const List<String> daysName = [
+    "Lun",
+    "Mar",
+    "Mer",
+    "Jeu",
+    "Ven",
+    "Sam",
+    "Dim",
+  ];
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPress: () {
-        log("long press");
         controller.showMenu();
       },
       child: Card(
@@ -32,22 +42,36 @@ class _SettingsAlarmCardState extends State<SettingsAlarmCard> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text.rich(
-                      TextSpan(
-                          text:
-                              (widget.parametrageHoraire.relative ? " - " : ""),
-                          children: [
-                            TextSpan(
-                                text: widget.parametrageHoraire.reglageHoraire
-                                    .displayHasTime()),
-                            if (!widget.parametrageHoraire.relative)
-                              WidgetSpan(child: Icon(Icons.alarm))
-                          ]),
-                      style: Theme.of(context).textTheme.displayLarge,
+                    GestureDetector(
+                      onTap: () async {
+                        widget.parametrageHoraire.reglageHoraire =
+                            await pickTime(
+                                context,
+                                widget.parametrageHoraire.reglageHoraire,
+                                !widget.parametrageHoraire.relative);
+                        setState(() {});
+                      },
+                      child: Text.rich(
+                        TextSpan(
+                            text: (widget.parametrageHoraire.relative
+                                ? " - "
+                                : ""),
+                            children: [
+                              TextSpan(
+                                  text: widget.parametrageHoraire.reglageHoraire
+                                      .displayHasTime()),
+                              if (!widget.parametrageHoraire.relative)
+                                const WidgetSpan(child: Icon(Icons.alarm))
+                            ]),
+                        style: Theme.of(context).textTheme.displayLarge,
+                      ),
                     ),
                     Row(
                       children: [
-                        const Text("Relative"),
+                        Text(
+                          "Relative",
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
                         Switch.adaptive(
                           value: widget.parametrageHoraire.relative,
                           onChanged: (value) {
@@ -65,8 +89,23 @@ class _SettingsAlarmCardState extends State<SettingsAlarmCard> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text(widget.parametrageHoraire.debutMatch.displayHasTime()),
-                    Text(widget.parametrageHoraire.finMatch.displayHasTime())
+                    const Text("Entre"),
+                    GestureDetector(
+                        onTap: () async {
+                          widget.parametrageHoraire.debutMatch = await pickTime(
+                              context, widget.parametrageHoraire.debutMatch);
+                          setState(() {});
+                        },
+                        child: Text(widget.parametrageHoraire.debutMatch
+                            .displayHasTime())),
+                    GestureDetector(
+                        onTap: () async {
+                          widget.parametrageHoraire.finMatch = await pickTime(
+                              context, widget.parametrageHoraire.finMatch);
+                          setState(() {});
+                        },
+                        child: Text(widget.parametrageHoraire.finMatch
+                            .displayHasTime()))
                   ],
                 ),
                 Row(
@@ -75,10 +114,26 @@ class _SettingsAlarmCardState extends State<SettingsAlarmCard> {
                       7,
                       (index) => Column(
                             children: [
-                              Text("D"),
+                              Text(
+                                daysName[index],
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
                               Checkbox(
-                                value: true,
-                                onChanged: (value) {},
+                                value: ParametrageHoraire.isOneOf(
+                                    (index + 2) % 8,
+                                    widget.parametrageHoraire.enabledDay),
+                                onChanged: (value) {
+                                  setState(() {
+                                    if (value != null && value) {
+                                      widget.parametrageHoraire.enabledDay
+                                          .add((index + 2) % 8);
+                                    } else {
+                                      widget.parametrageHoraire.enabledDay
+                                          .remove((index + 2) % 8);
+                                    }
+                                  });
+                                  widget.parametrageHoraire.save();
+                                },
                               )
                             ],
                           )),
@@ -109,4 +164,23 @@ class _SettingsAlarmCardState extends State<SettingsAlarmCard> {
       ),
     );
   }
+}
+
+Future<Duration> pickTime(BuildContext context, Duration previous,
+    [bool clockDisplay = true]) async {
+  TimeOfDay? timeOfDay = await showTimePicker(
+      helpText: "Sélectionner une heure",
+      builder: (context, child) => MediaQuery(
+            data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+            child: child ?? const LoadingWidget(),
+          ),
+      context: context,
+      initialEntryMode:
+          clockDisplay ? TimePickerEntryMode.dial : TimePickerEntryMode.input,
+      initialTime:
+          TimeOfDay(hour: previous.inHours, minute: previous.inMinutes % 60));
+  if (timeOfDay != null) {
+    return Duration(hours: timeOfDay.hour, minutes: timeOfDay.minute);
+  }
+  return previous;
 }

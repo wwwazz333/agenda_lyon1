@@ -70,7 +70,7 @@ class ParametrageHoraire extends HiveObject {
     return null;
   }
 
-  bool isOneOf(int day, List<int> days) {
+  static bool isOneOf(int day, List<int> days) {
     for (int d in days) {
       if (d == day) {
         return true;
