@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jiffy/jiffy.dart';
 
@@ -79,4 +81,7 @@ class ParametrageHoraire extends HiveObject {
 
     return false;
   }
+
+  @override
+  String toString() => "$debutMatch -> $finMatch = $reglageHoraire";
 }

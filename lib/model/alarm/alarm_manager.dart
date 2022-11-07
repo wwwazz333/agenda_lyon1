@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io' show Platform;
 import 'package:agenda_lyon1/data/stockage.dart';
 import 'package:agenda_lyon1/model/alarm/alarm.dart';
@@ -125,8 +126,11 @@ class AlarmManager {
     }
     var alarmToDel = await getAllAlarmsWhere((alarm) => !alarm.removable);
     for (var a in alarmToDel) {
-      stocked[a.dateTime.millisecondsSinceEpoch] = a;
+      if (stocked.containsKey(a.dateTime.millisecondsSinceEpoch)) {
+        stocked[a.dateTime.millisecondsSinceEpoch] = a;
+      }
     }
+
     await clearAlarmsWhere((alarm) => alarm.removable == false);
     for (var a in stocked.values) {
       addAlarm(a);

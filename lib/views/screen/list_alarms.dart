@@ -1,4 +1,5 @@
 import 'package:agenda_lyon1/common/global_data.dart';
+import 'package:agenda_lyon1/data/stockage.dart';
 import 'package:agenda_lyon1/model/alarm/alarm.dart';
 import 'package:agenda_lyon1/model/alarm/alarm_manager.dart';
 import 'package:agenda_lyon1/model/date.dart';
@@ -24,10 +25,7 @@ class _ListAlarmsState extends ConsumerState<ListAlarms> {
   Future<List<Alarm>>? getAlarmForDisplay() async {
     await AlarmManager().setAllAlarmsWith(
         DataController().calendrier,
-        [
-          ParametrageHoraire(const Duration(), const Duration(hours: 24),
-              const Duration(minutes: 50)),
-        ],
+        Stockage().settingsAlarmBox.values.toList(),
         SettingsApp().alarmAcitvated);
 
     return await AlarmManager().getAllAlarmsSorted();
