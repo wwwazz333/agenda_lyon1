@@ -37,20 +37,15 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   fab_circular_menu: ^1.0.2
-  flutter_logs: ^2.1.7
-  flutter_riverpod: ^2.0.2
+  flutter_logs: ^2.1.8
+  flutter_riverpod: ^2.1.1
   intl: ^0.17.0
   jiffy: ^5.0.0
-  path: ^1.8.2
-  path_provider: ^2.0.11
-  shared_preferences: ^2.0.15
-  sqflite: ^2.1.0
   settings_ui: ^2.0.2
   timezone: ^0.9.0
   flutter_picker: ^2.0.5
-  flutter_colorpicker: ^1.0.3
   workmanager: ^0.5.0
-  flutter_local_notifications: ^12.0.1+1
+  flutter_local_notifications: ^12.0.3
   rxdart: ^0.27.5
   flex_color_scheme: ^6.0.1
   auto_size_text: ^3.0.0
@@ -58,23 +53,15 @@ dependencies:
   hive_flutter: ^1.1.0
   google_fonts: ^3.0.1
   flex_color_picker: ^2.6.1
-  slidable_button: ^2.0.0+1
-  ringtone_player: ^0.1.1
-  flutter_alarm_clock: ^0.0.2
-  android_alarm_manager_plus: ^2.0.7+1
-  alarmplayer: ^1.0.4
-  auto_start_flutter: ^0.1.1
   permission_handler: ^10.2.0
   
   
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  flutter_lints: ^2.0.0
-  test: ^1.21.4
-  hive_generator: ^1.1.3
+  flutter_lints: ^2.0.1
+  hive_generator: ^2.0.0
   build_runner: ^2.3.2
+  test: ^1.22.0
 
 # The following section is specific to Flutter packages.
 flutter:
