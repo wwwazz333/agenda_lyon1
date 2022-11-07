@@ -1,3 +1,4 @@
+import 'package:agenda_lyon1/model/alarm/parametrage_horaire_manager.dart';
 import 'package:agenda_lyon1/model/alarm/parametrage_horiare.dart';
 import 'package:flutter/material.dart';
 
@@ -44,9 +45,13 @@ class _SettingsAlarmState extends State<SettingsAlarm> {
       body: (SettingsApp().alarmAcitvated)
           ? ListView.builder(
               itemCount: _settingsAlarms.length,
-              itemBuilder: (context, index) => SettingsAlarmCard(
-                  _settingsAlarms[_settingsAlarms.length - index - 1],
-                  remove: () {}),
+              itemBuilder: (context, index) {
+                int i = _settingsAlarms.length - index - 1;
+                return SettingsAlarmCard(_settingsAlarms[i], remove: () {
+                  ParametrageHoraireManager.remove(i);
+                  setState(() {});
+                });
+              },
             )
           : const Center(child: Text("Système d'alarme désactivé.")),
     );
