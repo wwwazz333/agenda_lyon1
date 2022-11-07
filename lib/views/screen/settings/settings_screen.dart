@@ -51,27 +51,27 @@ class _MySettingsScreen extends ConsumerState<MySettingsScreen> {
                 leading: const Icon(Icons.notifications),
                 title: const Text('Notification'),
               ),
-              SettingsTile(
-                leading: const Icon(Icons.language),
-                title: const Text('Language'),
-                trailing: DropdownButton(
-                  value: ref.watch(SettingsProvider.languageAppProvider),
-                  items: List.generate(
-                      languages.length,
-                      (index) => DropdownMenuItem(
-                            value: languages.values.elementAt(index),
-                            child: Text(
-                                languages.values.elementAt(index).fullName()),
-                          )),
-                  onChanged: (value) {
-                    if (value != null) {
-                      ref
-                          .read(SettingsProvider.languageAppProvider.notifier)
-                          .state = value;
-                    }
-                  },
-                ),
-              ),
+              // SettingsTile(
+              //   leading: const Icon(Icons.language),
+              //   title: const Text('Language'),
+              //   trailing: DropdownButton(
+              //     value: ref.watch(SettingsProvider.languageAppProvider),
+              //     items: List.generate(
+              //         languages.length,
+              //         (index) => DropdownMenuItem(
+              //               value: languages.values.elementAt(index),
+              //               child: Text(
+              //                   languages.values.elementAt(index).fullName()),
+              //             )),
+              //     onChanged: (value) {
+              //       if (value != null) {
+              //         ref
+              //             .read(SettingsProvider.languageAppProvider.notifier)
+              //             .state = value;
+              //       }
+              //     },
+              //   ),
+              // ),
               SettingsTile.switchTile(
                 onToggle: (value) {
                   if (ref.read(SettingsProvider.themeAppProvider) ==

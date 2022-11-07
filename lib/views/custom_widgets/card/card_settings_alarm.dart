@@ -27,6 +27,7 @@ class _SettingsAlarmCardState extends State<SettingsAlarmCard> {
     "Sam",
     "Dim",
   ];
+  bool get isRelative => widget.parametrageHoraire.relative;
 
   @override
   Widget build(BuildContext context) {
@@ -44,40 +45,43 @@ class _SettingsAlarmCardState extends State<SettingsAlarmCard> {
                   children: [
                     GestureDetector(
                       onTap: () async {
-                        widget.parametrageHoraire.reglageHoraire =
-                            await pickTime(
-                                context,
-                                widget.parametrageHoraire.reglageHoraire,
-                                !widget.parametrageHoraire.relative);
+                        widget.parametrageHoraire.reglageHoraire = await pickTime(
+                            context, widget.parametrageHoraire.reglageHoraire,
+                            clockDisplay: !isRelative,
+                            msg: isRelative
+                                ? "L'alarme sonnera ... de temps avant le 1er cours"
+                                : "L'alarme sonnera à ...");
                         setState(() {});
                       },
                       child: Text.rich(
-                        TextSpan(
-                            text: (widget.parametrageHoraire.relative
-                                ? " - "
-                                : ""),
-                            children: [
-                              TextSpan(
-                                  text: widget.parametrageHoraire.reglageHoraire
-                                      .displayHasTime()),
-                              if (!widget.parametrageHoraire.relative)
-                                const WidgetSpan(child: Icon(Icons.alarm))
-                            ]),
+                        TextSpan(text: (isRelative ? " - " : ""), children: [
+                          TextSpan(
+                              text:
+                                  "${widget.parametrageHoraire.reglageHoraire.displayHasTime()} "),
+                          WidgetSpan(
+                              child: Icon(
+                            isRelative ? Icons.timelapse : Icons.alarm,
+                            size: 36,
+                          ))
+                        ]),
                         style: Theme.of(context).textTheme.displayLarge,
                       ),
+                    ),
+                    Text(
+                      (isRelative) ? "Placé en amont" : "Placé à l'heure",
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                     Row(
                       children: [
                         Text(
-                          "Relative",
+                          (isRelative) ? "Relative" : "Fixe",
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                         Switch.adaptive(
-                          value: widget.parametrageHoraire.relative,
+                          value: isRelative,
                           onChanged: (value) {
                             setState(() {
-                              widget.parametrageHoraire.relative =
-                                  !widget.parametrageHoraire.relative;
+                              widget.parametrageHoraire.relative = !isRelative;
                               widget.parametrageHoraire.save();
                             });
                           },
@@ -89,13 +93,13 @@ class _SettingsAlarmCardState extends State<SettingsAlarmCard> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    const Text("Entre"),
                     GestureDetector(
                         onTap: () async {
                           try {
-                            widget.parametrageHoraire.debutMatch =
-                                await pickTime(context,
-                                    widget.parametrageHoraire.debutMatch);
+                            widget.parametrageHoraire.debutMatch = await pickTime(
+                                context, widget.parametrageHoraire.debutMatch,
+                                msg:
+                                    "Condition pour la sonnerie de l'alarme : Heure minimal du 1er cours pour que l'alarme sonne");
                             setState(() {});
                           } on ParmettreError catch (e) {
                             showErrorDialog(context, e.error);
@@ -103,11 +107,14 @@ class _SettingsAlarmCardState extends State<SettingsAlarmCard> {
                         },
                         child: Text(widget.parametrageHoraire.debutMatch
                             .displayHasTime())),
+                    const Icon(Icons.arrow_forward),
                     GestureDetector(
                         onTap: () async {
                           try {
                             widget.parametrageHoraire.finMatch = await pickTime(
-                                context, widget.parametrageHoraire.finMatch);
+                                context, widget.parametrageHoraire.finMatch,
+                                msg:
+                                    "Condition pour la sonnerie de l'alarme : Heure maxiaml du 1er cours pour que l'alarme sonne");
                             setState(() {});
                           } on ParmettreError catch (e) {
                             showErrorDialog(context, e.error);
@@ -177,9 +184,12 @@ class _SettingsAlarmCardState extends State<SettingsAlarmCard> {
 }
 
 Future<Duration> pickTime(BuildContext context, Duration previous,
-    [bool clockDisplay = true]) async {
+    {bool clockDisplay = true, String msg = "Sélectionner une heure"}) async {
   TimeOfDay? timeOfDay = await showTimePicker(
-      helpText: "Sélectionner une heure",
+      helpText: msg,
+      confirmText: "VALIDER",
+      cancelText: "ANNULER",
+      errorInvalidText: "Horaire invalide",
       builder: (context, child) => MediaQuery(
             data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
             child: child ?? const LoadingWidget(),

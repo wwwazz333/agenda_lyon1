@@ -19,10 +19,6 @@ import 'views/screen/settings/settings_screen_url.dart';
 Future<void> main() async {
   // à faire au démarrage de l'app
   WidgetsFlutterBinding.ensureInitialized();
-  // Workmanager().initialize(
-  //   callbackDispatcher,
-  //   isInDebugMode: true,
-  // );
 
   await Stockage().init();
   loadCriticalSettings();
