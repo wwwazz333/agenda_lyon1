@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../model/settings/settings.dart';
+import '../qr_scanner.dart';
 
 class SettingsScreenURL extends ConsumerStatefulWidget {
   const SettingsScreenURL({super.key});
@@ -25,23 +26,55 @@ class _SettingsScreenURL extends ConsumerState<SettingsScreenURL> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            TextField(
-              controller: urlController,
-              keyboardType: TextInputType.multiline,
-              maxLines: null,
-              decoration: const InputDecoration(
-                  border: UnderlineInputBorder(),
-                  labelText: "URL",
-                  hintText: fakeUrl),
+            Column(
+              children: [
+                TextField(
+                  controller: urlController,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  decoration: const InputDecoration(
+                      border: UnderlineInputBorder(),
+                      labelText: "URL",
+                      hintText: fakeUrl),
+                ),
+                Align(
+                  alignment: const Alignment(0.9, 0),
+                  child: ElevatedButton.icon(
+                      onPressed: () async {
+                        String? url = await scanQR();
+                        if (url != null) {
+                          urlController.text = url;
+                        }
+                      },
+                      icon: const Icon(Icons.qr_code),
+                      label: const Text("Scan QR")),
+                ),
+              ],
             ),
-            TextField(
-              controller: urlRoomController,
-              keyboardType: TextInputType.multiline,
-              maxLines: null,
-              decoration: const InputDecoration(
-                  border: UnderlineInputBorder(),
-                  labelText: "URL Room",
-                  hintText: fakeUrl),
+            Column(
+              children: [
+                TextField(
+                  controller: urlRoomController,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  decoration: const InputDecoration(
+                      border: UnderlineInputBorder(),
+                      labelText: "URL Room",
+                      hintText: fakeUrl),
+                ),
+                Align(
+                  alignment: const Alignment(0.9, 0),
+                  child: ElevatedButton.icon(
+                      onPressed: () async {
+                        String? url = await scanQR();
+                        if (url != null) {
+                          urlRoomController.text = url;
+                        }
+                      },
+                      icon: const Icon(Icons.qr_code),
+                      label: const Text("Scan QR")),
+                ),
+              ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,

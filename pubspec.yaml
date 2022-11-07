@@ -55,6 +55,7 @@ dependencies:
   flex_color_picker: ^2.6.1
   permission_handler: ^10.2.0
   custom_pop_up_menu: ^1.2.4
+  barcode_scan2: ^4.2.1
   
   
 
