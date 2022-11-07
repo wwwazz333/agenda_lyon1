@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:agenda_lyon1/common/error/paremetre_error.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jiffy/jiffy.dart';
 
@@ -15,6 +16,9 @@ class ParametrageHoraire extends HiveObject {
 
   Duration get debutMatch => Duration(seconds: _debutMatch);
   set debutMatch(Duration newVal) {
+    if (newVal.inSeconds > finMatch.inSeconds) {
+      throw ParmettreError("la borne de début est après la borne de fin");
+    }
     _debutMatch = newVal.inSeconds;
   }
 
@@ -24,6 +28,9 @@ class ParametrageHoraire extends HiveObject {
 
   Duration get finMatch => Duration(seconds: _finMatch);
   set finMatch(Duration newVal) {
+    if (newVal.inSeconds < debutMatch.inSeconds) {
+      throw ParmettreError("la borne de fin est avant la borne de début");
+    }
     _finMatch = newVal.inSeconds;
   }
 

@@ -1,8 +1,10 @@
 import 'dart:developer';
 
 import 'package:agenda_lyon1/model/alarm/parametrage_horiare.dart';
+import 'package:agenda_lyon1/views/dialog/error_dialog.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
+import '../../../common/error/paremetre_error.dart';
 import '../../../model/date.dart';
 import '../loading_widget.dart';
 
@@ -92,17 +94,26 @@ class _SettingsAlarmCardState extends State<SettingsAlarmCard> {
                     const Text("Entre"),
                     GestureDetector(
                         onTap: () async {
-                          widget.parametrageHoraire.debutMatch = await pickTime(
-                              context, widget.parametrageHoraire.debutMatch);
-                          setState(() {});
+                          try {
+                            widget.parametrageHoraire.debutMatch =
+                                await pickTime(context,
+                                    widget.parametrageHoraire.debutMatch);
+                            setState(() {});
+                          } on ParmettreError catch (e) {
+                            showErrorDialog(context, e.error);
+                          }
                         },
                         child: Text(widget.parametrageHoraire.debutMatch
                             .displayHasTime())),
                     GestureDetector(
                         onTap: () async {
-                          widget.parametrageHoraire.finMatch = await pickTime(
-                              context, widget.parametrageHoraire.finMatch);
-                          setState(() {});
+                          try {
+                            widget.parametrageHoraire.finMatch = await pickTime(
+                                context, widget.parametrageHoraire.finMatch);
+                            setState(() {});
+                          } on ParmettreError catch (e) {
+                            showErrorDialog(context, e.error);
+                          }
                         },
                         child: Text(widget.parametrageHoraire.finMatch
                             .displayHasTime()))
