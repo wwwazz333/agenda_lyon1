@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:agenda_lyon1/common/error/paremetre_error.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jiffy/jiffy.dart';

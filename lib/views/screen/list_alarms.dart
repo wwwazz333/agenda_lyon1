@@ -10,7 +10,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../controller/data_controller.dart';
-import '../../model/alarm/parametrage_horiare.dart';
 import '../../model/settings/settings.dart';
 import '../custom_widgets/navigator.dart';
 

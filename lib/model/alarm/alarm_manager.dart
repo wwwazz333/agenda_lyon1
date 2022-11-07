@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io' show Platform;
 import 'package:agenda_lyon1/data/stockage.dart';
 import 'package:agenda_lyon1/model/alarm/alarm.dart';
@@ -6,7 +5,6 @@ import 'package:agenda_lyon1/model/calendrier/calendrier.dart';
 import 'package:agenda_lyon1/model/date.dart';
 import 'package:agenda_lyon1/model/event/event_calendrier.dart';
 import 'package:flutter/services.dart';
-import 'package:jiffy/jiffy.dart';
 
 import 'parametrage_horiare.dart';
 

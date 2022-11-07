@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:agenda_lyon1/model/alarm/parametrage_horiare.dart';
 import 'package:agenda_lyon1/views/dialog/error_dialog.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
