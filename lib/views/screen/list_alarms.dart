@@ -126,7 +126,7 @@ Future<DateTime?> pickADate(BuildContext context, Locale? locale) async {
               child: child ?? const LoadingWidget(),
             ),
         context: context,
-        initialTime: TimeOfDay.fromDateTime(date));
+        initialTime: TimeOfDay.now());
     if (timeOfDay != null) {
       final alarmTime = DateTime(
           date.year, date.month, date.day, timeOfDay.hour, timeOfDay.minute);
