@@ -4,6 +4,7 @@ import 'package:agenda_lyon1/model/alarm/alarm.dart';
 import 'package:agenda_lyon1/model/calendrier/calendrier.dart';
 import 'package:agenda_lyon1/model/date.dart';
 import 'package:agenda_lyon1/model/event/event_calendrier.dart';
+import 'package:agenda_lyon1/model/settings/settingsapp.dart';
 import 'package:flutter/services.dart';
 
 import 'parametrage_horiare.dart';
@@ -114,7 +115,9 @@ class AlarmManager {
       if (!event.date.isSameDay(lastDate)) {
         for (ParametrageHoraire para in parametrageHoraire) {
           var alarmTime = para.getHoraireSonnerieFor(event.date);
-          if (alarmTime != null && alarmTime.isAfter(now)) {
+          if (alarmTime != null &&
+              alarmTime.isAfter(now) &&
+              (event.duree.inHours < 8 || !SettingsApp().jourFeriesEnabled)) {
             stocked[alarmTime.millisecondsSinceEpoch] =
                 Alarm(dateTime: alarmTime, removable: false);
           }

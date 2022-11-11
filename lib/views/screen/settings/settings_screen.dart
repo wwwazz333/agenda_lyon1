@@ -1,4 +1,3 @@
-import 'package:agenda_lyon1/common/global_data.dart';
 import 'package:agenda_lyon1/model/settings/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/Picker.dart';
@@ -31,6 +30,7 @@ class _MySettingsScreen extends ConsumerState<MySettingsScreen> {
             title: const Text("URL"),
             tiles: <SettingsTile>[
               SettingsTile.navigation(
+                leading: const Icon(Icons.link),
                 title: const Text("URL"),
                 onPressed: (context) {
                   Navigator.pushNamed(context, "/settings_url");
@@ -146,7 +146,21 @@ class _MySettingsScreen extends ConsumerState<MySettingsScreen> {
                         cardTypeToDisplay.setHours(value[0], value[1]);
                       }).showDialog(context);
                 },
-              )
+              ),
+              SettingsTile.switchTile(
+                onToggle: (value) {
+                  setState(() {
+                    SettingsApp().jourFeriesEnabled = value;
+                  });
+                },
+                initialValue: SettingsApp().jourFeriesEnabled,
+                leading: const Icon(Icons.calendar_month_sharp),
+                title: const Text('Détection jours feries'),
+                description: SettingsApp().jourFeriesEnabled
+                    ? const Text(
+                        "La détéction des jours feries est activé pour les alarmes. (les cours de 8h ou plus ne déclancherons pas d'alarmes)")
+                    : null,
+              ),
             ],
           ),
         ],
