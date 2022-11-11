@@ -4,6 +4,7 @@ import 'package:agenda_lyon1/controller/data_controller.dart';
 import 'package:agenda_lyon1/controller/background_work.dart';
 import 'package:agenda_lyon1/data/stockage.dart';
 import 'package:agenda_lyon1/model/settings/settings.dart';
+import 'package:agenda_lyon1/model/settings/settingsapp.dart';
 import 'package:agenda_lyon1/views/custom_widgets/event_list.dart';
 import 'package:agenda_lyon1/views/custom_widgets/loading_widget.dart';
 import 'package:agenda_lyon1/views/dialog/history_dialog.dart';
@@ -65,6 +66,7 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log(SettingsApp().urlCalendarRoom);
     showDialogHistoryIfNeeded();
     final typeCardToDisplay =
         ref.watch(SettingsProvider.cardTypeDisplayProvider);

@@ -46,7 +46,15 @@ class _SearchRoomState extends State<SearchRoom> {
       body: FutureBuilder(
         future: url,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.error == null) {
+            return const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                    "Erreur : url des salle incorrecte ou problème de connexion."),
+              ),
+            );
+          } else if (snapshot.hasData) {
             return Column(
               children: [
                 SearchBar((dateTime) {
