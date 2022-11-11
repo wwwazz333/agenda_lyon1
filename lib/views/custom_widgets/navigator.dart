@@ -47,6 +47,10 @@ class FloatingNavButton extends StatelessWidget {
               Navigator.pushNamed(context, "/list_alarms");
               fabKey.currentState?.close();
             }),
+          _genButton(context, const Icon(Icons.search), () {
+            Navigator.pushNamed(context, "/search_room");
+            fabKey.currentState?.close();
+          }),
           _genButton(context, const Icon(Icons.history), () {
             Navigator.pushNamed(context, "/history");
             fabKey.currentState?.close();

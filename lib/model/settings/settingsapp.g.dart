@@ -27,13 +27,14 @@ class SettingsAppAdapter extends TypeAdapter<SettingsApp> {
       .._cardTimeLineDisplay = fields[7] as bool
       .._firstHourDisplay = fields[8] as int
       .._lastHourDisplay = fields[9] as int
-      .._alarmAcitvated = fields[10] as bool;
+      .._alarmAcitvated = fields[10] as bool
+      .._urlCalendarRoom = fields[11] as String?;
   }
 
   @override
   void write(BinaryWriter writer, SettingsApp obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj._notifEnabled)
       ..writeByte(1)
@@ -55,7 +56,9 @@ class SettingsAppAdapter extends TypeAdapter<SettingsApp> {
       ..writeByte(9)
       ..write(obj._lastHourDisplay)
       ..writeByte(10)
-      ..write(obj._alarmAcitvated);
+      ..write(obj._alarmAcitvated)
+      ..writeByte(11)
+      ..write(obj._urlCalendarRoom);
   }
 
   @override

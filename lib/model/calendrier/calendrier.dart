@@ -73,6 +73,28 @@ class Calendrier {
     if (_events.isEmpty) FlutterLogs.logWarn("Event", "_events", "is empty");
   }
 
+  List<String> getAllRooms() {
+    List<String> rooms = [];
+    for (EventCalendrier event in events) {
+      for (var room in event.salle) {
+        if (!rooms.contains(room)) {
+          rooms.add(room);
+        }
+      }
+    }
+    return rooms;
+  }
+
+  List<String> getAvaliableRoomsAt(DateTime dateTime) {
+    var allRooms = getAllRooms();
+    for (EventCalendrier event in getEventsDuring(dateTime)) {
+      for (var room in event.salle) {
+        allRooms.remove(room);
+      }
+    }
+    return allRooms;
+  }
+
   List<EventCalendrier> getEventsOfDay(DateTime date) {
     final List<EventCalendrier> eventsOfDay = [];
     for (var ev in _events) {

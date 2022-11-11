@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:agenda_lyon1/controller/data_controller.dart';
+import 'package:agenda_lyon1/model/settings/settingsapp.dart';
+import 'package:agenda_lyon1/views/screen/settings/settings_alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -21,6 +23,8 @@ class _SettingsScreenURL extends ConsumerState<SettingsScreenURL> {
     final urlRoomController = TextEditingController();
     const fakeUrl =
         "http://adelb.univ-lyon1.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?resources=xxxxx&projectId=2&calType=ical&firstDate=20xx-xx-xx&lastDate=20xx-xx-xx";
+
+    urlRoomController.text = SettingsApp().urlCalendarRoom;
     return Scaffold(
         appBar: AppBar(title: const Text("Settings")),
         body: Column(
@@ -90,6 +94,7 @@ class _SettingsScreenURL extends ConsumerState<SettingsScreenURL> {
                       ref
                           .read(SettingsProvider.urlCalendarProvider.notifier)
                           .state = urlController.text;
+                      SettingsApp().urlCalendarRoom = urlRoomController.text;
                       DataController().clear();
                       Navigator.pop(context);
                     },

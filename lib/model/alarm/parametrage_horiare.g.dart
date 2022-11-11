@@ -20,10 +20,9 @@ class ParametrageHoraireAdapter extends TypeAdapter<ParametrageHoraire> {
       .._debutMatch = fields[0] as int
       .._finMatch = fields[1] as int
       .._reglageHoraire = fields[2] as int
-      ..relative = (fields[3] ?? true) as bool
       ..enabledDay =
-          ((fields[4] ?? ParametrageHoraire.defaultEnabledDays) as List)
-              .cast<int>();
+          (fields[4] ?? ParametrageHoraire.defaultEnabledDays).cast<int>()
+      ..relative = fields[3] as bool;
   }
 
   @override

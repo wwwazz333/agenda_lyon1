@@ -39,6 +39,9 @@ class SettingsApp extends HiveObject {
   @HiveField(10)
   bool _alarmAcitvated = false;
 
+  @HiveField(11)
+  String? _urlCalendarRoom;
+
   ///getters
 
   bool get alarmAcitvated => _alarmAcitvated;
@@ -53,6 +56,7 @@ class SettingsApp extends HiveObject {
   Locale get languageApp => languages[_languageApp] ?? languages["fr"]!;
 
   String get urlCalendar => _urlCalendar ?? "";
+  String get urlCalendarRoom => _urlCalendarRoom ?? "";
   ThemeMode get themeApp => _themeApp ?? ThemeMode.light;
 
   bool get cardTimeLineDisplay => _cardTimeLineDisplay;
@@ -98,6 +102,11 @@ class SettingsApp extends HiveObject {
     save();
   }
 
+  set urlCalendarRoom(String value) {
+    _urlCalendarRoom = value;
+    save();
+  }
+
   set themeApp(ThemeMode value) {
     _themeApp = value;
     save();
@@ -126,6 +135,7 @@ class SettingsApp extends HiveObject {
     _appIsDarkMode = other._appIsDarkMode;
     _languageApp = other._languageApp;
     _urlCalendar = other._urlCalendar;
+    _urlCalendarRoom = other._urlCalendarRoom;
     _themeApp = other._themeApp;
   }
 }
