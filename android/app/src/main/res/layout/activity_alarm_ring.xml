@@ -34,8 +34,9 @@
         android:layout_alignParentStart="@+id/stop_alarm_btn"
         android:layout_alignParentEnd="@+id/stop_alarm_btn"
         android:layout_centerHorizontal="true"
-        android:background="#ffff0000"
-        android:backgroundTint="#ff666666"
+        android:background="@drawable/background_round"
+        android:backgroundTint="@color/grey"
+        android:contentDescription="shadow of stop alarm button"
         android:minWidth="48dp"
         android:minHeight="48dp" />
 
@@ -46,7 +47,8 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="100dp"
-        android:background="#ffff0000"
+        android:background="@drawable/background_round"
+        android:contentDescription="stop alarm"
         android:minWidth="48dp"
         android:minHeight="48dp"
         android:scaleX="1.5"
@@ -60,7 +62,7 @@
         android:layout_above="@+id/stop_alarm_btn"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="80dp"
-        android:text="SNOOZE" />
+        android:text="SNOOZE (+10 min)" />
 
 
 </RelativeLayout>

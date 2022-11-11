@@ -12,6 +12,8 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class AlarmRingActivity : AppCompatActivity() {
@@ -26,7 +28,11 @@ class AlarmRingActivity : AppCompatActivity() {
         val stopAlarmBtn: ImageButton = findViewById(R.id.stop_alarm_btn)
 
 
-        horaire.text = Date().toString()
+        val current = LocalDateTime.now()
+
+        val formatter = DateTimeFormatter.ofPattern("HH:mm")
+
+        horaire.text = current.format(formatter)
         setAnimAlarmBtn()
         stopAlarmBtn.setOnClickListener {
             stopAlarm()
@@ -70,7 +76,7 @@ class AlarmRingActivity : AppCompatActivity() {
     private fun snooze() {
         stopAlarm()
         val c = GregorianCalendar()
-        c.add(GregorianCalendar.SECOND, 10)
+        c.add(GregorianCalendar.MINUTE, 10)
 
         Alarm.setAlarm(applicationContext, c.timeInMillis, c.timeInMillis.toString(), Alarm.START)
         //do snooze
