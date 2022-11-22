@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-import 'package:flutter_logs/flutter_logs.dart';
 
 import '../common/error/network_error.dart';
 

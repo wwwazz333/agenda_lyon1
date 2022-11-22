@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:agenda_lyon1/controller/data_controller.dart';
 import 'package:agenda_lyon1/model/settings/settingsapp.dart';
-import 'package:agenda_lyon1/views/screen/settings/settings_alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
