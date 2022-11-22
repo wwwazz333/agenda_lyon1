@@ -16,7 +16,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'views/screen/settings/settings_screen.dart';
 import 'views/screen/settings/settings_screen_url.dart';
-import 'package:cron/cron.dart';
 
 Future<void> main() async {
   // à faire au démarrage de l'app
@@ -26,19 +25,6 @@ Future<void> main() async {
   loadCriticalSettings();
   final container = ProviderContainer();
   setUpListeners(container);
-  final cron = Cron();
-  try {
-    cron.schedule(Schedule.parse('*/1 * * * *'), () {
-      print(DateTime.now());
-      log("cran..........");
-    });
-
-    await Future.delayed(Duration(seconds: 20));
-    await cron.close();
-  } on ScheduleParseException {
-    log("error cron");
-    await cron.close();
-  }
 
   // démarrage app
   runApp(UncontrolledProviderScope(container: container, child: const MyApp()));
