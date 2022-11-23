@@ -6,31 +6,22 @@ import 'package:flutter/material.dart';
 class FloatingNavButton extends StatelessWidget {
   const FloatingNavButton({super.key});
 
-  Widget _genButton(BuildContext context, Icon icon, Function onPressed) {
-    return RawMaterialButton(
-      onPressed: () => onPressed(),
-      shape: const CircleBorder(),
-      padding: const EdgeInsets.all(24.0),
-      child: icon,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FabCircularMenuState> fabKey = GlobalKey();
-    final secondaryColor = Theme.of(context).primaryColor;
+    final secondaryColor = Theme.of(context).primaryColor.withAlpha(50);
 
     return Builder(
       builder: (context) => FabCircularMenu(
         key: fabKey,
         alignment: Alignment.bottomRight,
-        ringColor: secondaryColor.withAlpha(45),
-        ringDiameter: 300.0,
+        ringColor: secondaryColor,
+        ringDiameter: 350.0,
         ringWidth: 100.0,
         fabSize: 64.0,
-        fabElevation: 8.0,
+        fabElevation: 10.0,
         fabIconBorder: const CircleBorder(),
-        fabColor: secondaryColor,
+        fabColor: Theme.of(context).primaryColor,
         fabOpenIcon: const Icon(Icons.menu),
         fabCloseIcon: const Icon(Icons.close),
         fabMargin: const EdgeInsets.all(16.0),
@@ -38,25 +29,43 @@ class FloatingNavButton extends StatelessWidget {
         animationCurve: Curves.easeInOutCirc,
         onDisplayChange: (isOpen) {},
         children: <Widget>[
-          _genButton(context, const Icon(Icons.settings), () {
+          NavButton(context, const Icon(Icons.settings), () {
             Navigator.pushNamed(context, "/settings");
             fabKey.currentState?.close();
           }),
           if (Platform.isAndroid)
-            _genButton(context, const Icon(Icons.alarm), () {
+            NavButton(context, const Icon(Icons.alarm), () {
               Navigator.pushNamed(context, "/list_alarms");
               fabKey.currentState?.close();
             }),
-          _genButton(context, const Icon(Icons.search), () {
+          NavButton(context, const Icon(Icons.search), () {
             Navigator.pushNamed(context, "/search_room");
             fabKey.currentState?.close();
           }),
-          _genButton(context, const Icon(Icons.history), () {
+          NavButton(context, const Icon(Icons.history), () {
             Navigator.pushNamed(context, "/history");
             fabKey.currentState?.close();
           }),
         ],
       ),
+    );
+  }
+}
+
+class NavButton extends StatelessWidget {
+  final BuildContext context;
+  final Icon icon;
+  final Function onPressed;
+  const NavButton(this.context, this.icon, this.onPressed, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return RawMaterialButton(
+      onPressed: () => onPressed(),
+      shape: const CircleBorder(),
+      padding: const EdgeInsets.all(16.0),
+      fillColor: Theme.of(context).primaryColor,
+      child: icon,
     );
   }
 }

@@ -56,7 +56,6 @@ dependencies:
   permission_handler: ^10.2.0
   custom_pop_up_menu: ^1.2.4
   barcode_scan2: ^4.2.1
-  cron: ^0.5.1
   
   
 
