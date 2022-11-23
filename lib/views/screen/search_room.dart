@@ -51,7 +51,8 @@ class _SearchRoomState extends State<SearchRoom> {
               padding: EdgeInsets.all(8.0),
               child: Center(
                 child: Text(
-                    "Erreur : url des salle incorrecte ou problème de connexion."),
+                    "Erreur : url des salle incorrecte ou problème de connexion.",
+                    textAlign: TextAlign.center),
               ),
             );
           } else if (snapshot.hasData) {

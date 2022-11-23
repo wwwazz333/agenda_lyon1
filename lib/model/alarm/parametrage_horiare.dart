@@ -18,6 +18,7 @@ class ParametrageHoraire extends HiveObject {
       throw ParmettreError("la borne de début est après la borne de fin");
     }
     _debutMatch = newVal.inSeconds;
+    save();
   }
 
   ///les bornes sont comprise
@@ -30,6 +31,7 @@ class ParametrageHoraire extends HiveObject {
       throw ParmettreError("la borne de fin est avant la borne de début");
     }
     _finMatch = newVal.inSeconds;
+    save();
   }
 
   @HiveField(2)
@@ -38,6 +40,7 @@ class ParametrageHoraire extends HiveObject {
   Duration get reglageHoraire => Duration(seconds: _reglageHoraire);
   set reglageHoraire(Duration newVal) {
     _reglageHoraire = newVal.inSeconds;
+    save();
   }
 
   ///si true -> sera plaser par rapport à l'horaire indiquer

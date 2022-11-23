@@ -66,6 +66,7 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log(Stockage().settingsAlarmBox.values.toList().toString());
     log(SettingsApp().urlCalendarRoom);
     showDialogHistoryIfNeeded();
     final typeCardToDisplay =
