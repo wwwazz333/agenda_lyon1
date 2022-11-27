@@ -10,7 +10,9 @@ import 'package:agenda_lyon1/views/screen/list_alarms.dart';
 import 'package:agenda_lyon1/views/screen/search_room.dart';
 import 'package:agenda_lyon1/views/screen/settings/settings_alarm.dart';
 import 'package:flutter/material.dart';
+import 'package:workmanager/workmanager.dart';
 import 'common/themes.dart';
+import 'controller/background_work.dart';
 import 'views/screen/calendar_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -20,6 +22,12 @@ import 'views/screen/settings/settings_screen_url.dart';
 Future<void> main() async {
   // à faire au démarrage de l'app
   WidgetsFlutterBinding.ensureInitialized();
+
+  Workmanager().initialize(
+      callbackDispatcher, // The top level function, aka callbackDispatcher
+      isInDebugMode:
+          true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
+      );
 
   await Stockage().init();
   loadCriticalSettings();
