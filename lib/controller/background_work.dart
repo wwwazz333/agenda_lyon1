@@ -7,7 +7,6 @@ import 'local_notification_service.dart';
 const updateCalendrier = "com.agenda_lyon1.background.updateCalendrier";
 
 void launchPerodicalWork() {
-  return;
   if (Platform.isAndroid) {
     Workmanager().registerPeriodicTask(updateCalendrier, updateCalendrier,
         initialDelay: const Duration(hours: 1),
