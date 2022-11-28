@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:agenda_lyon1/controller/data_controller.dart';
 import 'package:agenda_lyon1/model/calendrier/calendrier.dart';
 import 'package:agenda_lyon1/model/date.dart';
@@ -19,7 +21,7 @@ class SearchRoom extends StatefulWidget {
 }
 
 class _SearchRoomState extends State<SearchRoom> {
-  late List<String> _rooms;
+  List<String> _rooms = [];
   List<String> get rooms => _rooms;
   late Calendrier calendrier;
   late Future<String> url;
@@ -31,11 +33,8 @@ class _SearchRoomState extends State<SearchRoom> {
 
   @override
   void initState() {
-    url = FileDownloader.downloadFile(SettingsApp().urlCalendar);
-    url.then((value) {
-      calendrier = Calendrier.load(value);
-    });
-    rooms = DataController().calendrier.getAvaliableRoomsAt(DateTime.now());
+    url = FileDownloader.downloadFile(SettingsApp().urlCalendarRoom);
+
     super.initState();
   }
 
@@ -46,7 +45,8 @@ class _SearchRoomState extends State<SearchRoom> {
       body: FutureBuilder(
         future: url,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.error == null) {
+          if (snapshot.hasError) {
+            log(snapshot.error.toString());
             return const Padding(
               padding: EdgeInsets.all(8.0),
               child: Center(
@@ -56,11 +56,12 @@ class _SearchRoomState extends State<SearchRoom> {
               ),
             );
           } else if (snapshot.hasData) {
+            calendrier = Calendrier.load(snapshot.data);
+
             return Column(
               children: [
                 SearchBar((dateTime) {
-                  rooms =
-                      DataController().calendrier.getAvaliableRoomsAt(dateTime);
+                  rooms = calendrier.getAvaliableRoomsAt(dateTime);
                   setState(() {});
                 }),
                 Padding(
@@ -95,6 +96,7 @@ class _SearchBarState extends ConsumerState<SearchBar> {
   void setDateSelected(DateTime dateTime, TimeOfDay timeOfDay) {
     dateSelected = DateTime(dateTime.year, dateTime.month, dateTime.day,
         timeOfDay.hour, timeOfDay.minute);
+    widget.search(dateSelected);
   }
 
   @override

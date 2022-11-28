@@ -23,11 +23,7 @@ Future<void> main() async {
   // à faire au démarrage de l'app
   WidgetsFlutterBinding.ensureInitialized();
 
-  Workmanager().initialize(
-      callbackDispatcher, // The top level function, aka callbackDispatcher
-      isInDebugMode:
-          true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
-      );
+  Workmanager().initialize(callbackDispatcher, isInDebugMode: false);
 
   await Stockage().init();
   loadCriticalSettings();
