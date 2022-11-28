@@ -22,6 +22,8 @@ class FileDownloader {
     } on SocketException catch (_) {
       log("Download : téléchargement impossible");
       throw NetworkError("No Network");
+    } catch (_) {
+      throw Exception("URL mal formé.");
     }
   }
 }

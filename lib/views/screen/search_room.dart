@@ -34,7 +34,12 @@ class _SearchRoomState extends State<SearchRoom> {
   @override
   void initState() {
     url = FileDownloader.downloadFile(SettingsApp().urlCalendarRoom);
-
+    try {
+      url.then((value) {
+        calendrier = Calendrier.load(value);
+        rooms = calendrier.getAvaliableRoomsAt(DateTime.now());
+      });
+    } catch (_) {}
     super.initState();
   }
 
@@ -47,17 +52,17 @@ class _SearchRoomState extends State<SearchRoom> {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasError) {
             log(snapshot.error.toString());
-            return const Padding(
-              padding: EdgeInsets.all(8.0),
+
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Center(
                 child: Text(
-                    "Erreur : url des salle incorrecte ou problème de connexion.",
+                    "Erreur : url des salle incorrecte ou problème de connexion. ${snapshot.error}",
                     textAlign: TextAlign.center),
               ),
             );
           } else if (snapshot.hasData) {
-            calendrier = Calendrier.load(snapshot.data);
-
+            log("here");
             return Column(
               children: [
                 SearchBar((dateTime) {
@@ -113,54 +118,50 @@ class _SearchBarState extends ConsumerState<SearchBar> {
           child: Padding(
             padding: const EdgeInsets.only(left: 20),
             child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      TextButton(
-                          onPressed: () async {
-                            DateTime? date = DateTime.now();
-                            date = await showDatePicker(
-                              locale: language,
-                              initialDate: date,
-                              firstDate: date,
-                              lastDate:
-                                  date.add(const Duration(days: 365 * 100)),
-                              context: context,
-                            );
-                            if (date != null) {
-                              setDateSelected(
-                                  date, TimeOfDay.fromDateTime(dateSelected));
-                              setState(() {});
-                            }
-                          },
-                          child: Text(monthFormatter.format(dateSelected))),
-                      TextButton(
-                          onPressed: () async {
-                            final timeOfDay = await showTimePicker(
-                                helpText: "Sélectionner une heure",
-                                builder: (context, child) => MediaQuery(
-                                      data: MediaQuery.of(context).copyWith(
-                                          alwaysUse24HourFormat: true),
-                                      child: child ?? const LoadingWidget(),
-                                    ),
-                                context: context,
-                                initialTime: TimeOfDay.now());
-                            if (timeOfDay != null) {
-                              setDateSelected(dateSelected, timeOfDay);
-                              setState(() {});
-                            }
-                          },
-                          child: Text(dateSelected.affichageHeure())),
-                    ],
-                  ),
-                  IconButton(
-                      onPressed: () {
-                        widget.search(dateSelected);
-                      },
-                      icon: const Icon(Icons.search))
-                ]),
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                TextButton(
+                    onPressed: () async {
+                      DateTime? date = DateTime.now();
+                      date = await showDatePicker(
+                        locale: language,
+                        initialDate: date,
+                        firstDate: date,
+                        lastDate: date.add(const Duration(days: 365 * 100)),
+                        context: context,
+                      );
+                      if (date != null) {
+                        setDateSelected(
+                            date, TimeOfDay.fromDateTime(dateSelected));
+                        setState(() {});
+                      }
+                    },
+                    child: Text(monthFormatter.format(dateSelected))),
+                TextButton(
+                    onPressed: () async {
+                      final timeOfDay = await showTimePicker(
+                          helpText: "Sélectionner une heure",
+                          builder: (context, child) => MediaQuery(
+                                data: MediaQuery.of(context)
+                                    .copyWith(alwaysUse24HourFormat: true),
+                                child: child ?? const LoadingWidget(),
+                              ),
+                          context: context,
+                          initialTime: TimeOfDay.now());
+                      if (timeOfDay != null) {
+                        setDateSelected(dateSelected, timeOfDay);
+                        setState(() {});
+                      }
+                    },
+                    child: Text(dateSelected.affichageHeure())),
+              ],
+
+              // IconButton(
+              //     onPressed: () {
+              //       widget.search(dateSelected);
+              //     },
+              //     icon: const Icon(Icons.search))
+            ),
           ),
         ),
       ),

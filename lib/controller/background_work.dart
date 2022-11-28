@@ -27,10 +27,6 @@ void callbackDispatcher() {
       case updateCalendrier:
         final notif = LocalNotifService();
         notif.init();
-        notif.showNotif(
-            id: LocalNotifService.notifChangementEvent,
-            title: "Test",
-            body: "appel back");
         await DataController().loadCalendrier();
         DataController().addListenerUpdate("sendNotif", () {
           if (Stockage().changementHasChange) {
