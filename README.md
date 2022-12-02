@@ -1,16 +1,25 @@
-# agenda_lyon1
+# agendaLyon1
 
-A new Flutter project.
+Cet agenda vous permet de consulter votre emploi du temps universitaire de Lyon 1 avec des fonctionnalités telles que :
 
-## Getting Started
+- Associer des taches à un cours, pour vos devoirs, se rappeler d'un DS, etc.
 
-This project is a starting point for a Flutter application.
+- Être notifié des changements dans votre emploi du temps (EDT).
 
-A few resources to get you started if this is your first Flutter project:
+- Paramétrer des réveils qui s'adaptent à votre agenda, en fonction de vos heures de cours pour ne plus jamais être en retard.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Rechercher une salle libre dans votre établissement.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Un Widget pour consulter vos prochains cours rapidement.
+
+Cette application a été conçue pour consulter l'emploi du temps des étudiants de l'université Lyon 1 (lyon1), mais fonctionne avec tous les agendas universitaires qui utilisent un lien ICalendar (dynamique).
+
+Il est très facile d'ajouté votre agenda / calendrier / emplois du temps à l'application en faisant un scan du QR code proposer.
+
+![](https://media.discordapp.net/attachments/671746450861981768/1048325404399775765/image.png?width=313&height=657)
+
+![](https://media.discordapp.net/attachments/671746450861981768/1048325499648213172/image.png?width=312&height=657)
+
+![](https://media.discordapp.net/attachments/671746450861981768/1048325499941822465/image.png?width=310&height=656)
+
+![](https://media.discordapp.net/attachments/671746450861981768/1048325500235419648/image.png?width=311&height=657)
