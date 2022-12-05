@@ -10,16 +10,16 @@ class LoadingWidget extends StatelessWidget {
       child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
-          children: const [
-            Icon(
+          children: [
+            const Icon(
               Icons.calendar_today,
               size: 96,
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             SpinKitChasingDots(
-              color: Colors.black,
+              color: Theme.of(context).primaryColor,
               size: 50.0,
             ),
           ]),

@@ -2,6 +2,8 @@ import 'package:agenda_lyon1/controller/data_controller.dart';
 import 'package:agenda_lyon1/data/stockage.dart';
 import 'package:workmanager/workmanager.dart';
 import 'dart:io' show Platform;
+import '../model/alarm/alarm_manager.dart';
+import '../model/settings/settingsapp.dart';
 import 'local_notification_service.dart';
 
 const updateCalendrier = "com.agenda_lyon1.background.updateCalendrier";
@@ -41,7 +43,16 @@ void callbackDispatcher() {
                 body: "Aucun changement");
           }
         });
+        notif.showNotif(
+            id: LocalNotifService.notifChangementEvent,
+            title: "Background",
+            body:
+                "nombre de cours : ${DataController().calendrier.events.length}");
         await DataController().update();
+        await AlarmManager().setAllAlarmsWith(
+            DataController().calendrier,
+            Stockage().settingsAlarmBox.values.toList(),
+            SettingsApp().alarmAcitvated);
 
         if (Platform.isIOS) {
           launchPerodicalWork();
