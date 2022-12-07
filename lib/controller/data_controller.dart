@@ -82,6 +82,7 @@ class DataController {
   }
 
   Future<bool> loadCalendrier() async {
+    await Stockage().init();
     final Calendrier? temp = Stockage().calendrierBox.get("default");
     bool res = temp != null;
     calendrier = temp ?? Calendrier([]);
