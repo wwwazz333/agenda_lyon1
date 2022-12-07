@@ -13,8 +13,8 @@ const updateCalendrier = "com.agenda_lyon1.background.updateCalendrier";
 void launchPerodicalWork() {
   if (Platform.isAndroid) {
     Workmanager().registerPeriodicTask(updateCalendrier, updateCalendrier,
-        initialDelay: const Duration(seconds: 10),
-        frequency: const Duration(minutes: 15),
+        initialDelay: const Duration(hours: 1),
+        frequency: const Duration(hours: 1),
         constraints: Constraints(networkType: NetworkType.connected),
         existingWorkPolicy: ExistingWorkPolicy.replace);
   } else if (Platform.isIOS) {
