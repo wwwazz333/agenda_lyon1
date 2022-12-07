@@ -62,8 +62,15 @@ class Stockage {
   }
 
   bool get changementHasChange {
-    return changementsBox.values
-        .where((element) => !element.changeSaw)
-        .isNotEmpty;
+    var t = changementsBox.values.where((element) => !element.changeSaw);
+    if (t.length > 30) {
+      //si trop de modif ne pas les notfier
+      for (var element in t) {
+        element.changeSaw = true;
+        element.save();
+      }
+      return false;
+    }
+    return t.isNotEmpty;
   }
 }
