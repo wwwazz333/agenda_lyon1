@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:agenda_lyon1/controller/data_controller.dart';
 import 'package:agenda_lyon1/model/calendrier/calendrier.dart';
 import 'package:agenda_lyon1/model/date.dart';
 import 'package:agenda_lyon1/model/settings/settingsapp.dart';

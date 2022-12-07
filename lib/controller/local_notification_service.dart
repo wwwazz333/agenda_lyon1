@@ -18,7 +18,7 @@ class LocalNotifService {
     _instance ??= LocalNotifService._();
     return _instance!;
   }
-  final _localNotifService = FlutterLocalNotificationsPlugin();
+  // final _localNotifService = FlutterLocalNotificationsPlugin();
 
   final BehaviorSubject<String?> onNotificationClick = BehaviorSubject();
 
@@ -80,26 +80,26 @@ class LocalNotifService {
     } else if (details.id == notifAlarm) {}
   }
 
-  Future<NotificationDetails> _notificationDetailsChangement() async {
-    const androidNotifDetails = AndroidNotificationDetails(
-      "changements",
-      "Changementes",
-      channelDescription:
-          "Avertissement des changements dans l'empoloi du temps.",
-      category: AndroidNotificationCategory("Changement"),
-      playSound: false,
-      autoCancel: true,
-      ongoing: false,
-      enableVibration: true,
-      colorized: true,
-      color: ColorsEventsManager.redOnePlus,
-    );
+  // Future<NotificationDetails> _notificationDetailsChangement() async {
+  //   const androidNotifDetails = AndroidNotificationDetails(
+  //     "changements",
+  //     "Changementes",
+  //     channelDescription:
+  //         "Avertissement des changements dans l'empoloi du temps.",
+  //     category: AndroidNotificationCategory("Changement"),
+  //     playSound: false,
+  //     autoCancel: true,
+  //     ongoing: false,
+  //     enableVibration: true,
+  //     colorized: true,
+  //     color: ColorsEventsManager.redOnePlus,
+  //   );
 
-    const darwinNotificationDetails = DarwinNotificationDetails();
+  //   const darwinNotificationDetails = DarwinNotificationDetails();
 
-    return const NotificationDetails(
-        android: androidNotifDetails, iOS: darwinNotificationDetails);
-  }
+  //   return const NotificationDetails(
+  //       android: androidNotifDetails, iOS: darwinNotificationDetails);
+  // }
 
   Future<void> showNotif(
       {required int id, required String title, required String body}) async {
