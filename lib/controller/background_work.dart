@@ -40,18 +40,9 @@ void callbackDispatcher() {
                 id: LocalNotifService.notifChangementEvent,
                 title: "Changement EDT",
                 body: "Vous avez des changements dans votre EDT, regardez !");
-          } else {
-            notif.showNotif(
-                id: LocalNotifService.notifChangementEvent,
-                title: "Changement EDT",
-                body: "Aucun changement");
           }
         });
-        notif.showNotif(
-            id: LocalNotifService.notifChangementEvent,
-            title: "Background",
-            body:
-                "nombre de cours : ${DataController().calendrier.events.length}");
+
         await DataController().update();
         await AlarmManager().setAllAlarmsWith(
             DataController().calendrier,
