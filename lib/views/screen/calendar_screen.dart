@@ -4,11 +4,14 @@ import 'package:agenda_lyon1/controller/data_controller.dart';
 import 'package:agenda_lyon1/controller/background_work.dart';
 import 'package:agenda_lyon1/data/stockage.dart';
 import 'package:agenda_lyon1/model/settings/settings.dart';
+import 'package:agenda_lyon1/model/settings/settingsapp.dart';
 import 'package:agenda_lyon1/views/custom_widgets/event_list.dart';
 import 'package:agenda_lyon1/views/custom_widgets/loading_widget.dart';
 import 'package:agenda_lyon1/views/dialog/history_dialog.dart';
+import 'package:agenda_lyon1/views/dialog/message_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../controller/calendarui_controller.dart';
 import '../../controller/local_notification_service.dart';
@@ -47,6 +50,18 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
     }
   }
 
+  void checkVersionAndDisplayMessage() {
+    PackageInfo.fromPlatform().then((packageInfo) {
+      if (SettingsApp().appVersion == null ||
+          SettingsApp().appVersion != packageInfo.version) {
+        showMessageDialog(context, "Mise à jour",
+            "Voici la nouvelle mise à jour de l'application, malheureusement tous les paramètres ont été réinitialisés.");
+      }
+
+      SettingsApp().appVersion = packageInfo.version;
+    });
+  }
+
   @override
   void initState() {
     loadingFuture = DataController().load();
@@ -61,6 +76,7 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
             ));
     launchPerodicalWork();
 
+    checkVersionAndDisplayMessage();
     super.initState();
   }
 

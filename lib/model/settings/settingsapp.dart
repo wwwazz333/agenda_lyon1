@@ -42,6 +42,9 @@ class SettingsApp extends HiveObject {
   @HiveField(11)
   String? _urlCalendarRoom;
 
+  @HiveField(12)
+  String? _appVersion;
+
   ///getters
 
   bool get alarmAcitvated => _alarmAcitvated;
@@ -62,6 +65,8 @@ class SettingsApp extends HiveObject {
   bool get cardTimeLineDisplay => _cardTimeLineDisplay;
   int get firstHourDisplay => _firstHourDisplay;
   int get lastHourDisplay => _lastHourDisplay;
+
+  String? get appVersion => _appVersion;
 
   ///setters
 
@@ -124,6 +129,11 @@ class SettingsApp extends HiveObject {
 
   set lastHourDisplay(int value) {
     _lastHourDisplay = value;
+    save();
+  }
+
+  set appVersion(String? newVal) {
+    _appVersion = newVal;
     save();
   }
 
