@@ -1,4 +1,4 @@
-package com.example.agenda_lyon1
+package com.univlyon1.tools.agenda_lyon1
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

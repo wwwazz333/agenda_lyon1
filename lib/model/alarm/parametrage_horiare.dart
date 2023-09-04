@@ -70,7 +70,7 @@ class ParametrageHoraire extends HiveObject {
     if ((date.isAfter(debut) && date.isBefore(fin) ||
             date.isAtSameMomentAs(debut) ||
             date.isAtSameMomentAs(fin)) &&
-        isOneOf(Jiffy(date).day, enabledDay)) {
+        isOneOf(Jiffy.parseFromDateTime(date).dayOfWeek, enabledDay)) {
       if (relative) {
         return date.subtract(reglageHoraire);
       } else {

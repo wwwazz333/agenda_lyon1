@@ -24,9 +24,11 @@ class TabCalendarUIController {
   }
 
   int getIndexPageOfDate(DateTime date) {
-    final d = Jiffy(date.midi()).endOf(Units.DAY).add(days: -startDayWeek);
-    final f = Jiffy(firstDate);
-    return d.diff(f, Units.WEEK).toInt();
+    final d = Jiffy.parseFromDateTime(date.midi())
+        .endOf(Unit.day)
+        .add(days: -startDayWeek);
+    final f = Jiffy.parseFromDateTime(firstDate);
+    return d.diff(f, unit: Unit.week).toInt();
   }
 
   void goToGoodPage(DateTime newDate) {
@@ -54,7 +56,7 @@ class TabCalendarUIController {
 
   List<DateTime> genDateOfPage(int indexPage) {
     return List.generate(7, (i) {
-      final fir = Jiffy(firstDate);
+      final fir = Jiffy.parseFromDateTime(firstDate);
       fir.add(weeks: indexPage, days: i + startDayWeek);
       return fir.dateTime;
     });

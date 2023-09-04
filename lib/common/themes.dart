@@ -1,6 +1,5 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../model/color/colors.dart';
 
@@ -35,28 +34,25 @@ final themes = {
       checkboxTheme: const CheckboxThemeData(
           checkColor: MaterialStatePropertyAll(Colors.white),
           fillColor: MaterialStatePropertyAll(ColorsEventsManager.redOnePlus)),
-      textTheme:
-          GoogleFonts.openSansTextTheme(ThemeData.light().textTheme.copyWith(
-                displayLarge: const TextStyle(
-                  fontSize: 26,
-                  color: ColorsEventsManager.redOnePlus,
-                  fontWeight: FontWeight.w700,
-                ),
-                displayMedium: const TextStyle(
-                    fontSize: 22,
-                    color: ColorsEventsManager.redOnePlus,
-                    fontWeight: FontWeight.w400),
-                bodyLarge: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.normal),
-                bodyMedium: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                    fontSize: 16),
-                displaySmall: TextStyle(
-                    color: _parentTheme.colorScheme.onTertiary, fontSize: 14),
-              ))),
+      textTheme: ThemeData.light().textTheme.copyWith(
+            displayLarge: const TextStyle(
+              fontSize: 26,
+              color: ColorsEventsManager.redOnePlus,
+              fontWeight: FontWeight.w700,
+            ),
+            displayMedium: const TextStyle(
+                fontSize: 22,
+                color: ColorsEventsManager.redOnePlus,
+                fontWeight: FontWeight.w400),
+            bodyLarge: const TextStyle(
+                color: Colors.black,
+                fontSize: 16,
+                fontWeight: FontWeight.normal),
+            bodyMedium: const TextStyle(
+                fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16),
+            displaySmall: TextStyle(
+                color: _parentTheme.colorScheme.onTertiary, fontSize: 14),
+          )),
   "dark": FlexThemeData.dark(darkIsTrueBlack: true).copyWith(
       primaryColor: _parentTheme.primaryColor,
       colorScheme: ColorScheme.fromSwatch(
@@ -70,22 +66,19 @@ final themes = {
       checkboxTheme: const CheckboxThemeData(
           checkColor: MaterialStatePropertyAll(Colors.white),
           fillColor: MaterialStatePropertyAll(ColorsEventsManager.redOnePlus)),
-      textTheme:
-          GoogleFonts.openSansTextTheme(ThemeData.dark().textTheme.copyWith(
-                displayLarge: const TextStyle(
-                    fontSize: 26,
-                    color: ColorsEventsManager.redOnePlus,
-                    fontWeight: FontWeight.w700),
-                displayMedium: const TextStyle(
-                    fontSize: 22,
-                    color: ColorsEventsManager.redOnePlus,
-                    fontWeight: FontWeight.w400),
-                bodyLarge: const TextStyle(color: Colors.white, fontSize: 16),
-                bodyMedium: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 16),
-                displaySmall: TextStyle(
-                    color: _parentTheme.colorScheme.onTertiary, fontSize: 14),
-              ))),
+      textTheme: ThemeData.dark().textTheme.copyWith(
+            displayLarge: const TextStyle(
+                fontSize: 26,
+                color: ColorsEventsManager.redOnePlus,
+                fontWeight: FontWeight.w700),
+            displayMedium: const TextStyle(
+                fontSize: 22,
+                color: ColorsEventsManager.redOnePlus,
+                fontWeight: FontWeight.w400),
+            bodyLarge: const TextStyle(color: Colors.white, fontSize: 16),
+            bodyMedium: const TextStyle(
+                fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16),
+            displaySmall: TextStyle(
+                color: _parentTheme.colorScheme.onTertiary, fontSize: 14),
+          )),
 };

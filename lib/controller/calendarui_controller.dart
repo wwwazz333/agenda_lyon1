@@ -29,7 +29,10 @@ class CalendarUIController {
   }
 
   int getIndexOfDate(DateTime date) {
-    return Jiffy(date).diff(Jiffy(firstDate), Units.DAY, true).round().toInt();
+    return Jiffy.parseFromDateTime(date)
+        .diff(Jiffy.parseFromDateTime(firstDate), unit: Unit.day, asFloat: true)
+        .round()
+        .toInt();
   }
 
   void goToGoodPage(DateTime newDate) {

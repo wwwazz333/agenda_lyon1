@@ -147,20 +147,6 @@ class _MySettingsScreen extends ConsumerState<MySettingsScreen> {
                       }).showDialog(context);
                 },
               ),
-              SettingsTile.switchTile(
-                onToggle: (value) {
-                  setState(() {
-                    SettingsApp().jourFeriesEnabled = value;
-                  });
-                },
-                initialValue: SettingsApp().jourFeriesEnabled,
-                leading: const Icon(Icons.calendar_month_sharp),
-                title: const Text('Détection jours feries'),
-                description: SettingsApp().jourFeriesEnabled
-                    ? const Text(
-                        "La détéction des jours feries est activé pour les alarmes. (les cours de 8h ou plus ne déclancherons pas d'alarmes)")
-                    : null,
-              ),
             ],
           ),
         ],
