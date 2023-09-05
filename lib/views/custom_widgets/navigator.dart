@@ -1,4 +1,4 @@
-import 'package:fab_circular_menu/fab_circular_menu.dart';
+import 'package:fab_circular_menu_plus/fab_circular_menu_plus.dart';
 import 'package:flutter/material.dart';
 
 class FloatingNavButton extends StatelessWidget {
@@ -6,11 +6,11 @@ class FloatingNavButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<FabCircularMenuState> fabKey = GlobalKey();
+    final GlobalKey<FabCircularMenuPlusState> fabKey = GlobalKey();
     final secondaryColor = Theme.of(context).primaryColor.withAlpha(50);
 
     return Builder(
-      builder: (context) => FabCircularMenu(
+      builder: (context) => FabCircularMenuPlus(
         key: fabKey,
         alignment: Alignment.bottomRight,
         ringColor: secondaryColor,

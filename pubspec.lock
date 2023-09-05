@@ -249,14 +249,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.8"
-  fab_circular_menu:
+  fab_circular_menu_plus:
     dependency: "direct main"
     description:
-      name: fab_circular_menu
-      sha256: "8fac671b1a37b21bf20ae60bd8cc76eff314b8c7618134e5d549f84d91bd3d46"
+      name: fab_circular_menu_plus
+      sha256: "2b4c25c2fa88d986483ed230dc30fa82e19a13c5258a0cf65f6255ff48fa1d80"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.2"
+    version: "0.0.1"
   ffi:
     dependency: transitive
     description:

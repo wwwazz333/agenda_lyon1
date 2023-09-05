@@ -25,7 +25,7 @@ final _parentTheme = ThemeData(
 final themes = {
   "light": FlexThemeData.light().copyWith(
       primaryColor: _parentTheme.primaryColor,
-      colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.red),
+      colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
       appBarTheme: _parentTheme.appBarTheme,
       elevatedButtonTheme: _parentTheme.elevatedButtonTheme,
       textButtonTheme: _parentTheme.textButtonTheme,
@@ -55,10 +55,10 @@ final themes = {
           )),
   "dark": FlexThemeData.dark(darkIsTrueBlack: true).copyWith(
       primaryColor: _parentTheme.primaryColor,
-      colorScheme: ColorScheme.fromSwatch(
-          primarySwatch: Colors.red,
+      colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.red,
           brightness: Brightness.dark,
-          backgroundColor: Colors.black),
+          background: Colors.black),
       appBarTheme: _parentTheme.appBarTheme,
       elevatedButtonTheme: _parentTheme.elevatedButtonTheme,
       textButtonTheme: _parentTheme.textButtonTheme,
