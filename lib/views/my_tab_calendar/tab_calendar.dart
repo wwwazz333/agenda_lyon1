@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:agenda_lyon1/model/date.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -11,6 +13,7 @@ import '../../model/settings/settings.dart';
 class Header extends ConsumerWidget {
   final DateTime startingDate;
   const Header({required this.startingDate, super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final language = ref.watch(SettingsProvider.languageAppProvider);
@@ -87,7 +90,9 @@ class WeekView extends ConsumerWidget {
             highlightColor: Colors.grey.withAlpha(50),
             borderRadius: const BorderRadius.all(Radius.circular(100)),
             onTap: () {
-              ref.read(selectedDate.notifier).state = dayDate;
+              ref.read(selectedDate.notifier).state = dayDate.midi();
+              var a = ref.read(selectedDate);
+              log(a.toString());
             },
             child: Column(
               children: [

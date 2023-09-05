@@ -121,8 +121,8 @@ class _CalendarScreen extends ConsumerState<CalendarScreen> {
                       itemCount: null,
                       onPageChanged: (newPage) {
                         log("onPageChanged");
-                        ref.read(selectedDate.notifier).state =
-                            _controller.getDateOfIndex(newPage);
+                        final nextPage = _controller.getDateOfIndex(newPage);
+                        ref.read(selectedDate.notifier).state = nextPage;
                       },
                       itemBuilder: (context, index) {
                         return (typeCardToDisplay.cardTimeLineDisplay

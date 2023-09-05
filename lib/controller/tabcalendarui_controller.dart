@@ -56,8 +56,8 @@ class TabCalendarUIController {
 
   List<DateTime> genDateOfPage(int indexPage) {
     return List.generate(7, (i) {
-      final fir = Jiffy.parseFromDateTime(firstDate);
-      fir.add(weeks: indexPage, days: i + startDayWeek);
+      var fir = Jiffy.parseFromDateTime(firstDate);
+      fir = fir.add(weeks: indexPage, days: i + startDayWeek);
       return fir.dateTime;
     });
   }
